@@ -711,6 +711,10 @@ html[data-intro="done"] .sacred-intro {
     from { transform: scale(1.08) translate3d(-1%, 0, 0); }
     to { transform: scale(1.16) translate3d(1.5%, -1%, 0); }
   }
+  @keyframes sanctum-glow {
+    0%, 100% { opacity: .18; transform: scale(.94); }
+    50% { opacity: .34; transform: scale(1.04); }
+  }
   .animate-rise {
     animation: rise var(--dur-hero) var(--ease-out) both;
   }
@@ -764,6 +768,24 @@ html[data-intro="done"] .sacred-intro {
 
   .cinematic-image img {
     animation: cinematic-zoom 18s ease-in-out alternate infinite;
+  }
+
+  .narasimha-stage__glow {
+    position: absolute;
+    z-index: 0;
+    inset: 4% 2%;
+    pointer-events: none;
+    background:
+      radial-gradient(circle at 50% 42%, rgba(215,185,128,.55), rgba(178,140,87,.2) 38%, transparent 70%);
+    filter: blur(34px);
+    animation: sanctum-glow 9s ease-in-out infinite;
+  }
+
+  .narasimha-art {
+    box-shadow:
+      0 1px 0 rgba(255,255,255,.7) inset,
+      0 26px 70px -34px rgba(75,29,25,.62),
+      0 0 0 1px rgba(178,140,87,.18);
   }
 
   .cinematic-backdrop {

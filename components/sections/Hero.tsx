@@ -37,7 +37,7 @@ export default function Hero() {
       <span aria-hidden="true" className="absolute bottom-0 right-[8%] top-0 hidden w-px bg-bronze/12 lg:block" />
 
       <div className="container-page relative grid items-center gap-x-8 gap-y-0 lg:grid-cols-12 lg:gap-y-14">
-        <div className="relative z-20 order-2 -mt-12 border border-bronze/25 bg-paper/95 px-5 pb-7 pt-8 shadow-panel backdrop-blur-md lg:order-1 lg:col-span-7 lg:col-start-1 lg:mt-0 lg:border-0 lg:bg-transparent lg:p-0 lg:shadow-none lg:backdrop-blur-none">
+        <div className="relative z-20 order-2 -mt-12 border border-bronze/25 bg-paper/95 px-5 pb-7 pt-8 shadow-panel backdrop-blur-md lg:order-1 lg:col-span-6 lg:col-start-1 lg:mt-0 lg:border-0 lg:bg-transparent lg:p-0 lg:shadow-none lg:backdrop-blur-none">
           <p className="eyebrow animate-rise mb-5 flex items-center gap-3 [animation-delay:0ms] lg:mb-9">
             <span aria-hidden="true" className="h-px w-7 flex-none bg-bronze/55" />
             Sri Vaishnava practice · South India
@@ -71,8 +71,9 @@ export default function Hero() {
           <AssuranceList className="mt-12 hidden sm:grid-cols-3 lg:ml-[8.333%] lg:grid" />
         </div>
 
-        <div className="animate-fade relative order-1 lg:order-2 lg:col-span-5 lg:-mr-10 lg:ml-2 lg:mt-10 [animation-delay:120ms]">
-          <span aria-hidden="true" className="absolute -inset-5 border border-bronze/15" />
+        <div className="narasimha-stage animate-fade relative order-1 -mx-gutter lg:order-2 lg:col-span-6 lg:-mr-20 lg:ml-4 lg:mt-10 [animation-delay:120ms]">
+          <span aria-hidden="true" className="narasimha-stage__glow" />
+          <span aria-hidden="true" className="absolute -inset-5 z-[1] border border-bronze/20" />
           <span className="eyebrow absolute -right-8 top-0 hidden origin-top-right rotate-90 text-taupe xl:block">
             Narasimha / Sacred art
           </span>
@@ -82,7 +83,7 @@ export default function Hero() {
             priority
             showPlaceholderLabel={false}
             sizes="(max-width: 1023px) 92vw, 42vw"
-            className="cinematic-image mx-auto aspect-[20/19] w-full max-w-xl shadow-panel lg:max-w-none"
+            className="cinematic-image narasimha-art relative z-[2] mx-auto aspect-[20/19] w-full max-w-2xl shadow-panel lg:max-w-none"
           />
 
           <div className="relative z-10 mx-auto mt-0 hidden w-[calc(100%-2rem)] max-w-md -translate-y-5 items-center gap-4 border border-bronze/30 bg-paper/95 px-5 py-4 shadow-card backdrop-blur-sm lg:flex lg:w-[calc(100%-2.5rem)]">
