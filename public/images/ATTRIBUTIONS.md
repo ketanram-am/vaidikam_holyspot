@@ -8,5 +8,6 @@ The website uses locally optimized copies of the following Wikimedia Commons pho
 - `temple/yaganti-temple.jpg` — “15th century Yaganti Umamahesvara temple, Andhra Pradesh India - 01”, Ms Sarah Welch, CC0 1.0. Source: https://commons.wikimedia.org/wiki/File:15th_century_Yaganti_Umamahesvara_temple,_Andhra_Pradesh_India_-_01.jpg
 - `art/lakshmi-ravi-varma.jpg` — “Lakshmi, by Raja Ravi Varma, 1930s, edit”, after Raja Ravi Varma / Ravi Varma Press, public domain. Source: https://commons.wikimedia.org/wiki/File:Lakshmi,_by_Raja_Ravi_Varma,_1930s,_edit.jpg
 - `art/yashoda-krishna.jpg` — “Yashoda with Krishna, Raja Ravi Varma”, Raja Ravi Varma, public domain. Source: https://commons.wikimedia.org/wiki/File:Yashoda_with_Krishna,_Raja_Ravi_Varma.jpg
+- `art/narasimha.webp` — Traditional Narasimha devotional painting supplied for the Vaidikam Holyspot landing page; source and rights details pending confirmation.
 
 The original files were resized and JPEG-compressed without changing their subject matter. Existing root-level material-study images retain their original project provenance.

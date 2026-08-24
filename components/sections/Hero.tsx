@@ -74,25 +74,25 @@ export default function Hero() {
         <div className="animate-fade relative order-1 lg:order-2 lg:col-span-5 lg:-mr-10 lg:ml-2 lg:mt-10 [animation-delay:120ms]">
           <span aria-hidden="true" className="absolute -inset-5 border border-bronze/15" />
           <span className="eyebrow absolute -right-8 top-0 hidden origin-top-right rotate-90 text-taupe xl:block">
-            Sri Lakshmi / Ravi Varma / Devotional art
+            Narasimha / Sacred art
           </span>
           <SacredImage
             src={site.heroImage}
-            alt="Sri Lakshmi standing on a lotus in a devotional painting after Raja Ravi Varma"
+            alt="Traditional South Indian painting of Sri Narasimha defeating Hiranyakashipu, surrounded by attendants and divine attributes"
             priority
             showPlaceholderLabel={false}
             sizes="(max-width: 1023px) 92vw, 42vw"
-            className="cinematic-image mx-auto aspect-[4/5] w-full max-w-xl shadow-panel lg:aspect-[3/4] lg:max-w-none"
+            className="cinematic-image mx-auto aspect-[20/19] w-full max-w-xl shadow-panel lg:max-w-none"
           />
 
           <div className="relative z-10 mx-auto mt-0 hidden w-[calc(100%-2rem)] max-w-md -translate-y-5 items-center gap-4 border border-bronze/30 bg-paper/95 px-5 py-4 shadow-card backdrop-blur-sm lg:flex lg:w-[calc(100%-2.5rem)]">
             <span aria-hidden="true" className="h-8 w-px flex-none bg-bronze/45" />
             <div className="flex min-w-0 flex-col">
               <span className="truncate font-serif text-[1.0625rem] leading-snug text-maroon">
-                Sri Lakshmi
+                Sri Narasimha
               </span>
               <span className="eyebrow-quiet mt-1 truncate">
-                Grace at the centre of practice
+                Divine protection at the heart of devotion
               </span>
             </div>
 

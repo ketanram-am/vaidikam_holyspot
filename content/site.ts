@@ -6,7 +6,7 @@ export const site = {
   tagline: "Sri Vaishnava ritual practice, approached personally.",
   promise:
     "Personal guidance for families in India and abroad, with every ceremony approached through preparation, clarity, and Sri Vaishnava tradition.",
-  heroImage: "/images/art/lakshmi-ravi-varma.jpg" as string | null,
+  heroImage: "/images/art/narasimha.webp" as string | null,
   contact: {
     whatsapp: null as string | null,
     phone: null as string | null,
