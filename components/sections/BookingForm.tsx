@@ -153,11 +153,11 @@ export default function BookingForm() {
     >
       {/* Progress. The list conveys order visually; the live region below
           conveys the same change to assistive technology. */}
-      <ol className="flex flex-col gap-3 sm:flex-row sm:items-center sm:gap-2">
+      <ol className="grid grid-cols-3 gap-2 sm:flex sm:items-center">
         {steps.map((label, i) => (
           <li
             key={label}
-            className="flex flex-1 items-center gap-3"
+            className="flex flex-1 flex-col items-center gap-2 text-center sm:flex-row sm:gap-3 sm:text-left"
             aria-current={i === step ? "step" : undefined}
           >
             <span
@@ -173,7 +173,7 @@ export default function BookingForm() {
               <span className="-rotate-45">{i < step ? "✓" : i + 1}</span>
             </span>
             <span
-              className={`text-small transition-colors duration-300 ${
+              className={`text-[0.7rem] leading-tight transition-colors duration-300 sm:text-small ${
                 i === step ? "font-medium text-maroon" : "text-taupe"
               }`}
             >

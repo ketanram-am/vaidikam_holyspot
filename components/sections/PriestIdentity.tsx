@@ -25,6 +25,10 @@ export default function PriestIdentity() {
               sizes="(max-width: 1023px) 80vw, 40vw"
               className="relative aspect-[4/3] shadow-panel md:aspect-[4/5]"
             />
+            <p className="mt-3 border-l border-bronze/45 pl-3 font-sans text-[0.72rem] leading-relaxed text-taupe md:hidden">
+              Srirangam architectural study — context for the tradition, not a
+              portrait of Mahakaal Prabhu.
+            </p>
             <div className="absolute -bottom-7 -left-6 hidden max-w-[15rem] border border-bronze/25 bg-paper px-5 py-4 shadow-card md:block">
               <p className="eyebrow-quiet text-bronze">Tradition / place</p>
               <p className="mt-2 text-small leading-snug text-maroon">

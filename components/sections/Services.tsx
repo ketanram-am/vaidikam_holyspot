@@ -43,6 +43,9 @@ export default function Services() {
                 <p className="col-span-2 col-start-2 row-start-2 max-w-sm text-small text-charcoal lg:col-span-3 lg:col-start-auto lg:row-start-auto lg:text-body">
                   {cat.description}
                 </p>
+                <p className="service-row__examples col-span-2 col-start-2 row-start-3 text-[0.7rem] leading-relaxed text-bronze lg:hidden">
+                  {cat.examples.slice(0, 2).join(" · ")}
+                </p>
                 <div className="hidden lg:col-span-2 lg:block">
                   <ul className="flex flex-col gap-1">
                     {cat.examples.map((example) => (

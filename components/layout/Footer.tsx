@@ -98,7 +98,7 @@ export default function Footer() {
 
         <nav
           aria-label="Footer"
-          className="site-footer__nav grid grid-cols-2 gap-x-8 gap-y-12 sm:grid-cols-3 md:col-span-2 lg:col-span-7 lg:col-start-6"
+          className="site-footer__nav grid grid-cols-2 gap-x-8 gap-y-12 xs:grid-cols-3 md:col-span-2 lg:col-span-7 lg:col-start-6"
         >
           {columns.map((col) => (
             <div key={col.heading} className="flex flex-col gap-4">

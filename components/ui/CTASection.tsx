@@ -21,7 +21,7 @@ type Props = {
 export default function CTASection({
   title = "Begin a quiet conversation",
   text = "Share the ritual and occasion you have in mind. This is a personal enquiry — not a booking form.",
-  cta = { href: "/booking", label: "Request a Ritual" },
+  cta = { href: "/booking", label: "Begin an enquiry" },
   secondary = { href: "/contact", label: "Or ask a question first" },
 }: Props) {
   return (

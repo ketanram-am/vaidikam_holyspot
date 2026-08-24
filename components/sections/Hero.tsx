@@ -47,6 +47,9 @@ export default function Hero() {
         </div>
       )}
       <span aria-hidden="true" className="hero-deity-veil" />
+      <p className="hero-art-caption eyebrow pointer-events-none absolute right-gutter z-10 border-y border-brass-light/35 bg-maroon-deep/[.92] px-3 py-2 text-brass-light sm:hidden">
+        Sri Narasimha · painting detail
+      </p>
       <span aria-hidden="true" className="absolute bottom-0 left-[8%] top-0 hidden w-px bg-bronze/12 lg:block" />
       <span aria-hidden="true" className="absolute bottom-0 right-[8%] top-0 hidden w-px bg-bronze/12 lg:block" />
 
