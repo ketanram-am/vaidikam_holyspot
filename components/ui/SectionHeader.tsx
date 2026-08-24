@@ -28,6 +28,7 @@ export default function SectionHeader({
 
   return (
     <div
+      data-section-header
       className={
         centered
           ? "flex flex-col items-center"
@@ -35,15 +36,15 @@ export default function SectionHeader({
       }
     >
       <Reveal
-        className={`flex flex-col gap-5 ${
+        className={`section-header__content flex flex-col gap-5 ${
           centered ? "mx-auto max-w-prose items-center text-center" : "max-w-2xl"
         }`}
       >
         {eyebrow && <span className="eyebrow">{eyebrow}</span>}
-        <h2 id={id} className="max-w-[17ch] text-h2 text-balance">
+        <h2 id={id} className="section-header__title max-w-[17ch] text-h2 text-balance">
           {title}
         </h2>
-        {lead && <p className="lead max-w-prose">{lead}</p>}
+        {lead && <p className="section-header__lead lead max-w-prose">{lead}</p>}
         <OrnamentalRule className={`mt-2 max-w-sm ${centered ? "" : "-ml-4"}`} />
       </Reveal>
 

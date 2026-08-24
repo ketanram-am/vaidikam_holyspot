@@ -62,7 +62,7 @@ export default function Hero() {
             className="hero-title-traditional animate-rise max-w-[10ch] text-display [animation-delay:80ms]"
           >
             Devotion, held{" "}
-            <span className="font-serif font-normal italic text-bronze">across distance.</span>
+            <span className="font-display font-medium text-bronze">across distance.</span>
           </h1>
 
           <div className="hero-rule animate-rise mt-6 max-w-xl [animation-delay:130ms] lg:mt-7">
@@ -81,8 +81,7 @@ export default function Hero() {
             <div>
               <p className="eyebrow text-maroon">Personal priestly guidance</p>
               <p className="mt-1 max-w-[46ch] text-[0.82rem] leading-relaxed text-charcoal sm:text-small">
-                Every enquiry is considered by Mahakaal Prabhu before a ritual
-                is recommended or arranged.
+                Mahakaal Prabhu considers each enquiry before recommending a ritual.
               </p>
               <Link href="/about" className="arrow-link mt-1">
                 Meet the priest

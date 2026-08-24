@@ -27,7 +27,7 @@ export default function CTASection({
   return (
     <section
       aria-labelledby="cta-title"
-      className="surface-maroon relative overflow-hidden border-y border-brass/35 section-y"
+      className="closing-cta surface-maroon relative overflow-hidden border-y border-brass/35 section-y"
     >
       <div
         aria-hidden="true"
@@ -45,21 +45,21 @@ export default function CTASection({
       <span className="pointer-events-none absolute inset-y-0 left-[12%] hidden w-px bg-brass-light/15 lg:block" />
 
       <div className="container-page relative">
-        <Reveal className="grid items-end gap-10 lg:grid-cols-12">
+        <Reveal className="closing-cta__grid grid items-end gap-10 lg:grid-cols-12">
           <div className="lg:col-span-7 lg:col-start-2">
             <span className="eyebrow flex items-center gap-3 text-brass-light">
               <KuthuvilakkuMark className="h-8 w-5" /> A personal invitation
             </span>
-            <h2 id="cta-title" className="mt-6 max-w-[15ch] text-h2 text-ivory text-balance">
+            <h2 id="cta-title" className="closing-cta__title mt-6 max-w-[15ch] text-h2 text-ivory text-balance">
               {title}
             </h2>
             <MandapaLintelMark className="mt-7 h-7 max-w-md text-brass-light/55" />
           </div>
           <div className="min-w-0 lg:col-span-3">
-            <p className="max-w-[32ch] text-lead text-ivory/76">{text}</p>
+            <p className="closing-cta__copy max-w-[32ch] text-lead text-ivory/76">{text}</p>
 
           <div className="mt-8 flex flex-col items-start gap-5">
-            <Link href={cta.href} className="btn border-brass bg-brass text-soot hover:bg-brass-light">
+            <Link href={cta.href} className="closing-cta__button btn border-brass bg-brass text-soot hover:bg-brass-light">
               {cta.label}
             </Link>
             {secondary && (

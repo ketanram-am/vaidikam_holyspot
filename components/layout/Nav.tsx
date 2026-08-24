@@ -173,7 +173,7 @@ export default function Nav() {
     <LazyMotion features={domAnimation} strict>
       <header
         ref={headerRef}
-        className={`fixed inset-x-0 top-0 z-40 border-t-2 border-bronze transition-[background-color,border-color,box-shadow] duration-500 ease-calm ${
+        className={`site-header fixed inset-x-0 top-0 z-40 border-t-2 border-bronze transition-[background-color,border-color,box-shadow] duration-500 ease-calm ${
           scrolled || mobileOpen || desktopOpen
             ? "border-b border-hairline bg-ivory/95 shadow-card backdrop-blur-md"
             : "border-b border-transparent bg-ivory/45 backdrop-blur-[2px]"
@@ -367,7 +367,7 @@ export default function Nav() {
             role="dialog"
             aria-modal="true"
             aria-label="Site menu"
-            className="surface-cream fixed inset-x-0 bottom-0 top-[var(--nav-height)] z-30 overflow-y-auto overscroll-contain px-gutter pb-[max(2rem,env(safe-area-inset-bottom))] xl:hidden"
+            className="mobile-navigation surface-cream fixed inset-x-0 bottom-0 top-[var(--nav-height)] z-30 overflow-y-auto overscroll-contain px-gutter pb-[max(2rem,env(safe-area-inset-bottom))] xl:hidden"
             variants={mobilePanel}
             initial="hidden"
             animate="shown"
@@ -379,7 +379,7 @@ export default function Nav() {
                 className="flex flex-col gap-2 border-b border-bronze/30 pb-4 sm:pb-6"
               >
                 <p className="eyebrow">Vaidikam Holyspot / Navigation</p>
-                <p className="max-w-xl text-small text-taupe">
+                <p className="hidden max-w-xl text-small text-taupe sm:block">
                   Begin with the priest, the ritual tradition, or the guidance
                   you need.
                 </p>
@@ -393,7 +393,7 @@ export default function Nav() {
                   aria-current={
                     isActive(pathname, priestNav.href) ? "page" : undefined
                   }
-                  className={`group relative mt-5 flex items-center justify-between gap-5 overflow-hidden border border-bronze/30 bg-paper/65 px-4 py-4 sm:mt-6 sm:px-5 sm:py-5 ${
+                  className={`mobile-priest-link group relative mt-5 flex items-center justify-between gap-5 overflow-hidden border border-bronze/30 bg-paper/65 px-4 py-4 sm:mt-6 sm:px-5 sm:py-5 ${
                     isActive(pathname, priestNav.href)
                       ? "text-maroon shadow-card"
                       : "text-charcoal"
@@ -417,7 +417,7 @@ export default function Nav() {
                 </Link>
               </m.div>
 
-              <div className="mt-6 grid gap-x-10 gap-y-6 sm:mt-8 sm:grid-cols-2 sm:gap-y-9 md:grid-cols-3">
+              <div className="mobile-nav-groups mt-6 grid gap-x-10 gap-y-6 sm:mt-8 sm:grid-cols-2 sm:gap-y-9 md:grid-cols-3">
                 {navGroups.map((group, groupIndex) => (
                   <m.section
                     key={group.label}
@@ -475,7 +475,7 @@ export default function Nav() {
 
               <m.div
                 variants={mobileItem}
-                className="mt-8 flex flex-col items-start gap-4 border-t border-bronze/35 pt-6 sm:mt-10 sm:flex-row sm:items-center sm:justify-between sm:pt-7"
+                className="mobile-nav-footer mt-8 flex flex-col items-start gap-4 border-t border-bronze/35 pt-6 sm:mt-10 sm:flex-row sm:items-center sm:justify-between sm:pt-7"
               >
                 <p className="hidden max-w-md text-small text-taupe sm:block">
                   Enquiries are handled personally, never through a marketplace.

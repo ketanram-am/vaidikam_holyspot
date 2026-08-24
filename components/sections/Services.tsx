@@ -17,13 +17,13 @@ export default function Services() {
         action={<ArrowLink href="/services">View all services</ArrowLink>}
       />
 
-      <div className="mt-headline border-t border-bronze/30">
+      <div className="services-list mt-headline border-t border-bronze/30">
         {categories.map((cat, i) => {
           return (
             <Reveal key={cat.slug} index={i}>
               <Link
                 href={`/${cat.slug}`}
-                className="group relative grid grid-cols-[auto_minmax(0,1fr)_auto] gap-x-4 gap-y-3 overflow-hidden border-b border-bronze/30 py-8 transition-[background-color,padding] duration-500 hover:bg-paper/70 lg:grid-cols-12 lg:items-center lg:gap-6 lg:px-6 lg:py-10 lg:hover:px-8"
+                className="service-row group relative grid grid-cols-[auto_minmax(0,1fr)_auto] gap-x-4 gap-y-3 overflow-hidden border-b border-bronze/30 py-8 transition-[background-color,padding] duration-500 hover:bg-paper/70 lg:grid-cols-12 lg:items-center lg:gap-6 lg:px-6 lg:py-10 lg:hover:px-8"
               >
                 <span aria-hidden="true" className="absolute inset-y-0 left-0 w-0.5 origin-bottom scale-y-0 bg-bronze transition-transform duration-700 ease-arrive group-hover:scale-y-100" />
                 <span className="col-start-1 row-span-2 flex flex-col items-center gap-2 self-start lg:col-span-2 lg:col-start-auto lg:row-span-1 lg:flex-row lg:gap-4 lg:self-auto">
@@ -36,7 +36,7 @@ export default function Services() {
                   />
                 </span>
                 <div className="col-start-2 row-start-1 min-w-0 self-center lg:col-span-4 lg:col-start-auto lg:row-start-auto">
-                  <h3 className="text-[2rem] leading-none transition-colors duration-300 group-hover:text-bronze lg:text-[clamp(2rem,1.65rem+1.7vw,3.25rem)]">
+                  <h3 className="service-row__title text-[2rem] leading-none transition-colors duration-300 group-hover:text-bronze lg:text-[clamp(2rem,1.65rem+1.7vw,3.25rem)]">
                     {cat.title}
                   </h3>
                 </div>

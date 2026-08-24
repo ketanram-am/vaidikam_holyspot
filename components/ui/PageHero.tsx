@@ -76,7 +76,7 @@ export default function PageHero({
   return (
     <section
       aria-labelledby="page-title"
-      className="surface-cream relative overflow-hidden border-b border-bronze/30 pb-14 pt-[calc(var(--nav-height)+2rem)] md:pb-[clamp(4rem,2.5rem+7vw,8rem)] md:pt-[calc(var(--nav-height)+clamp(3rem,1.5rem+7vw,6rem))]"
+      className="page-hero surface-cream relative overflow-hidden border-b border-bronze/30 pb-14 pt-[calc(var(--nav-height)+2rem)] md:pb-[clamp(4rem,2.5rem+7vw,8rem)] md:pt-[calc(var(--nav-height)+clamp(3rem,1.5rem+7vw,6rem))]"
     >
       {crumbLd && (
         <script
@@ -93,7 +93,7 @@ export default function PageHero({
           <Breadcrumbs items={breadcrumbs} />
         )}
 
-        <div className="grid gap-7 md:gap-10 lg:grid-cols-12 lg:items-end">
+        <div className="page-hero__grid grid gap-7 md:gap-10 lg:grid-cols-12 lg:items-end">
           <Reveal className="flex flex-col gap-6 lg:col-span-8 lg:col-start-2">
             {eyebrow && (
               <span className="eyebrow flex items-center gap-3">
@@ -101,13 +101,13 @@ export default function PageHero({
                 {eyebrow}
               </span>
             )}
-            <h1 id="page-title" className="max-w-[15ch] text-h1 text-balance">
+            <h1 id="page-title" className="page-hero__title max-w-[15ch] text-h1 text-balance">
               {title}
             </h1>
           </Reveal>
           {lead && (
             <Reveal delay={0.08} className="lg:col-span-3 lg:pb-2">
-              <p className="lead max-w-prose border-l border-bronze/35 pl-6">{lead}</p>
+              <p className="page-hero__lead lead max-w-prose border-l border-bronze/35 pl-6">{lead}</p>
             </Reveal>
           )}
         </div>

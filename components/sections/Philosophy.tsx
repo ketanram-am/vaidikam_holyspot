@@ -39,9 +39,9 @@ export default function Philosophy() {
           <div className="lg:col-span-2">
             <SacredScript
               inverse
-              className="flex-col items-start gap-1 [&_.sacred-script__rule]:hidden"
+              className="hidden flex-col items-start gap-1 md:flex [&_.sacred-script__rule]:hidden"
             />
-            <p className="eyebrow mt-6 text-brass-light">A note on practice</p>
+            <p className="eyebrow text-brass-light md:mt-6">A note on practice</p>
           </div>
           <div className="relative border-l border-brass-light/30 pl-7 font-serif text-quote text-ivory lg:col-span-8 lg:col-start-4 lg:pl-12">
             <p className="text-balance">

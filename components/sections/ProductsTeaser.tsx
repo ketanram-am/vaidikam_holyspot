@@ -12,6 +12,7 @@ export default function ProductsTeaser() {
       size="band"
       border="y"
       labelledBy="products-title"
+      className="hidden sm:block"
     >
       <Reveal className="mx-auto flex max-w-2xl flex-col items-center text-center">
         <span className="manuscript-tag gap-2">

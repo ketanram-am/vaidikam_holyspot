@@ -51,19 +51,19 @@ function FooterLink({ href, children }: { href: string; children: string }) {
 
 export default function Footer() {
   return (
-    <footer className="surface-cream relative overflow-hidden border-t border-bronze/40">
+    <footer className="site-footer surface-cream relative overflow-hidden border-t border-bronze/40">
       <MandapaPillarMark className="pointer-events-none absolute -bottom-4 left-3 hidden h-[22rem] w-28 text-bronze/[0.04] xl:block" />
       <MandapaPillarMark className="pointer-events-none absolute -bottom-4 right-3 hidden h-[22rem] w-28 -scale-x-100 text-bronze/[0.04] xl:block" />
 
-      <div className="container-page relative pt-10">
+      <div className="site-footer__lintel container-page relative pt-10">
         <MandapaLintelMark
           aria-hidden="true"
           className="h-8 w-full text-bronze/55"
         />
       </div>
 
-      <div className="container-page relative grid gap-x-10 gap-y-14 py-[clamp(4rem,2.5rem+6vw,7rem)] md:grid-cols-2 lg:grid-cols-12">
-        <div className="flex flex-col gap-5 md:col-span-2 lg:col-span-4">
+      <div className="site-footer__main container-page relative grid gap-x-10 gap-y-14 py-[clamp(4rem,2.5rem+6vw,7rem)] md:grid-cols-2 lg:grid-cols-12">
+        <div className="site-footer__intro flex flex-col gap-5 md:col-span-2 lg:col-span-4">
           <BrandLockup />
           <p className="max-w-sm font-serif text-quote text-maroon">
             {site.tagline}
@@ -98,7 +98,7 @@ export default function Footer() {
 
         <nav
           aria-label="Footer"
-          className="grid grid-cols-2 gap-x-8 gap-y-12 sm:grid-cols-3 md:col-span-2 lg:col-span-7 lg:col-start-6"
+          className="site-footer__nav grid grid-cols-2 gap-x-8 gap-y-12 sm:grid-cols-3 md:col-span-2 lg:col-span-7 lg:col-start-6"
         >
           {columns.map((col) => (
             <div key={col.heading} className="flex flex-col gap-4">
@@ -119,7 +119,7 @@ export default function Footer() {
 
       <div className="container-page">
         <div className="h-px bg-bronze/25" />
-        <div className="flex flex-col items-center justify-between gap-3 py-7 text-small text-taupe md:flex-row">
+        <div className="site-footer__legal flex flex-col items-center justify-between gap-3 py-7 text-small text-taupe md:flex-row">
           <p className="flex items-center gap-3">
             <YogaNarasimhaMark
               accentColor="#742F27"

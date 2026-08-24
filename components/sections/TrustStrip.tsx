@@ -10,7 +10,7 @@ export default function TrustStrip() {
       size="none"
       border="y"
       label="Practice at a glance"
-      className="py-[clamp(3rem,2rem+4vw,5rem)]"
+      className="trust-strip py-[clamp(3rem,2rem+4vw,5rem)]"
     >
       <div className="grid gap-8 lg:grid-cols-12 lg:items-center">
         <div className="flex items-center gap-4 lg:col-span-2">
@@ -21,7 +21,7 @@ export default function TrustStrip() {
           <p className="eyebrow">Principles / in practice</p>
         </div>
         <div className="lg:col-span-10">
-          <StatRow items={trustPrinciples} />
+          <StatRow items={trustPrinciples} className="trust-strip__stats" />
         </div>
       </div>
     </Section>

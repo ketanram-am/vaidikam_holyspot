@@ -10,8 +10,8 @@ import OrnamentalRule from "@/components/ui/OrnamentalRule";
 export default function PriestIdentity() {
   return (
     <Section id="priest" tone="ivory" labelledBy="priest-title">
-      <div className="grid items-center gap-[clamp(3rem,1.5rem+6vw,6rem)] lg:grid-cols-12">
-        <Reveal className="relative lg:col-span-5 lg:col-start-2">
+      <div className="priest-layout grid items-center gap-[clamp(3rem,1.5rem+6vw,6rem)] lg:grid-cols-12">
+        <Reveal className="priest-visual relative lg:col-span-5 lg:col-start-2">
           <KolamMark className="pointer-events-none absolute -left-20 -top-20 hidden h-56 w-56 text-bronze/[0.06] lg:block" />
           <div className="relative mx-auto max-w-[20rem] sm:max-w-sm lg:max-w-none">
             <span
@@ -34,7 +34,7 @@ export default function PriestIdentity() {
           </div>
         </Reveal>
 
-        <div className="flex flex-col gap-9 lg:col-span-5 lg:col-start-8">
+        <div className="priest-content flex flex-col gap-9 lg:col-span-5 lg:col-start-8">
           <Reveal className="flex flex-col gap-4">
             <span className="eyebrow flex items-center gap-3">
               <SealMark className="h-4 w-4" /> The practitioner
