@@ -3,11 +3,12 @@ import Link from "next/link";
 import { site } from "@/content/site";
 import OrnamentalRule from "@/components/ui/OrnamentalRule";
 import SacredScript from "@/components/ui/SacredScript";
+import { SealMark } from "@/components/ui/Motifs";
 
 const assurances = [
-  "Rooted in tradition",
-  "Personally guided",
-  "Prepared across distance",
+  "Rooted in Sri Vaishnava sampradaya",
+  "Priestly guidance before arrangements",
+  "Preparation explained with clarity",
 ];
 
 function AssuranceList({ className = "" }: { className?: string }) {
@@ -74,7 +75,24 @@ export default function Hero() {
             {site.promise}
           </p>
 
-          <div className="animate-rise mt-8 flex flex-col items-stretch gap-3 sm:flex-row sm:items-center sm:gap-4 lg:ml-[8.333%] lg:mt-10 [animation-delay:240ms]">
+          <aside className="animate-rise mt-6 flex max-w-xl items-start gap-4 border-l border-bronze/60 pl-4 lg:ml-[8.333%] [animation-delay:210ms]">
+            <SealMark
+              aria-hidden="true"
+              className="mt-0.5 h-8 w-8 flex-none text-bronze"
+            />
+            <div>
+              <p className="eyebrow text-maroon">Personal priestly guidance</p>
+              <p className="mt-1.5 max-w-[42ch] text-small text-charcoal">
+                Every enquiry is considered by Mahakaal Prabhu before a ritual
+                is recommended or arranged.
+              </p>
+              <Link href="/about" className="arrow-link mt-1.5">
+                Meet the priest
+              </Link>
+            </div>
+          </aside>
+
+          <div className="animate-rise mt-7 flex flex-col items-stretch gap-3 sm:flex-row sm:items-center sm:gap-4 lg:ml-[8.333%] [animation-delay:250ms]">
             <Link href="/booking" className="btn-primary w-full sm:w-auto">
               Begin an enquiry
             </Link>
@@ -83,7 +101,7 @@ export default function Hero() {
             </Link>
           </div>
 
-          <AssuranceList className="mt-12 sm:grid-cols-3 lg:ml-[8.333%]" />
+          <AssuranceList className="mt-9 sm:grid-cols-3 lg:ml-[8.333%]" />
         </div>
       </div>
       <p className="eyebrow pointer-events-none absolute bottom-8 right-gutter z-10 hidden border-y border-bronze/25 bg-ivory/55 px-4 py-3 text-bronze backdrop-blur-sm lg:block">

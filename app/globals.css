@@ -789,7 +789,7 @@ html[data-intro="done"] .sacred-intro {
     position: absolute;
     z-index: 0;
     inset: var(--nav-height) 0 0 auto;
-    width: min(82vw, 78rem);
+    width: min(76vw, 74rem);
     overflow: hidden;
     pointer-events: none;
   }
@@ -797,8 +797,8 @@ html[data-intro="done"] .sacred-intro {
   .hero-deity-backdrop__image {
     object-fit: cover;
     object-position: 50% 48%;
-    opacity: .5;
-    filter: saturate(.72) sepia(.06) contrast(.96);
+    opacity: .72;
+    filter: saturate(.86) sepia(.025) contrast(1.01);
     transform-origin: 58% 45%;
     animation: deity-backdrop-drift 24s ease-in-out alternate infinite;
   }
@@ -811,14 +811,15 @@ html[data-intro="done"] .sacred-intro {
     background:
       linear-gradient(90deg,
         theme("colors.ivory") 0%,
-        rgba(248,244,236,.96) 30%,
-        rgba(248,244,236,.74) 50%,
-        rgba(248,244,236,.34) 74%,
-        rgba(248,244,236,.18) 100%),
+        rgba(248,244,236,.98) 32%,
+        rgba(248,244,236,.84) 46%,
+        rgba(248,244,236,.28) 62%,
+        rgba(248,244,236,.06) 80%,
+        transparent 100%),
       linear-gradient(180deg,
-        rgba(248,244,236,.22) 0%,
-        rgba(248,244,236,.05) 45%,
-        rgba(248,244,236,.5) 100%);
+        rgba(248,244,236,.14) 0%,
+        transparent 45%,
+        rgba(248,244,236,.34) 100%);
   }
 
   .cinematic-backdrop {
@@ -892,21 +893,21 @@ html[data-intro="done"] .sacred-intro {
 
   .hero-deity-backdrop__image {
     object-position: 50% 38%;
-    opacity: .4;
-    filter: saturate(.68) sepia(.08) contrast(.94);
+    opacity: .54;
+    filter: saturate(.78) sepia(.04) contrast(.98);
   }
 
   .hero-deity-veil {
     background:
       linear-gradient(180deg,
-        rgba(248,244,236,.16) 0%,
-        rgba(248,244,236,.46) 38%,
-        rgba(248,244,236,.9) 72%,
+        rgba(248,244,236,.08) 0%,
+        rgba(248,244,236,.36) 38%,
+        rgba(248,244,236,.86) 72%,
         theme("colors.ivory") 100%),
       linear-gradient(90deg,
-        rgba(248,244,236,.42) 0%,
-        rgba(248,244,236,.18) 50%,
-        rgba(248,244,236,.38) 100%);
+        rgba(248,244,236,.34) 0%,
+        rgba(248,244,236,.12) 50%,
+        rgba(248,244,236,.28) 100%);
   }
 }
 
