@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { site } from "@/content/site";
 import OrnamentalRule from "@/components/ui/OrnamentalRule";
+import SacredScript from "@/components/ui/SacredScript";
 
 const assurances = [
   "Rooted in tradition",
@@ -51,14 +52,15 @@ export default function Hero() {
 
       <div className="container-page relative z-10 grid items-center lg:grid-cols-12">
         <div className="relative lg:col-span-7 lg:col-start-1">
-          <p className="eyebrow animate-rise mb-5 flex items-center gap-3 [animation-delay:0ms] lg:mb-9">
+          <SacredScript className="animate-rise mb-5 [animation-delay:0ms] lg:mb-6" />
+          <p className="eyebrow animate-rise mb-6 flex items-center gap-3 [animation-delay:40ms] lg:mb-8">
             <span aria-hidden="true" className="h-px w-7 flex-none bg-bronze/55" />
             Sri Vaishnava practice · South India
           </p>
 
           <h1
             id="hero-title"
-            className="animate-rise max-w-[10ch] text-display [animation-delay:80ms]"
+            className="hero-title-traditional animate-rise max-w-[10ch] text-display [animation-delay:80ms]"
           >
             Devotion, held{" "}
             <span className="font-serif font-normal italic text-bronze">across distance.</span>
