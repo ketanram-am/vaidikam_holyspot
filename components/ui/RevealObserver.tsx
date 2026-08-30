@@ -15,19 +15,25 @@ export default function RevealObserver() {
       return;
     }
 
+    const show = (el: Element) => el.setAttribute("data-reveal", "shown");
+
+    // Phones are scrolled by flick, so the reveal has to start well before the
+    // element is on screen or the visitor arrives at content mid-fade. A whole
+    // viewport of lead-in on touch devices means anything the eye can reach
+    // has already finished animating.
+    const touch = window.matchMedia("(hover: none) and (pointer: coarse)").matches;
+    const rootMargin = touch ? "100% 0px 100% 0px" : "0px 0px 40px 0px";
+
     const io = new IntersectionObserver(
       (entries) => {
         for (const entry of entries) {
           if (entry.isIntersecting) {
-            entry.target.setAttribute("data-reveal", "shown");
+            show(entry.target);
             io.unobserve(entry.target);
           }
         }
       },
-      // Fire as soon as a sliver enters, and start 40px early. The reveal then
-      // completes roughly as the element reaches comfortable reading position,
-      // instead of visibly animating after the eye has already arrived.
-      { rootMargin: "0px 0px 40px 0px", threshold: 0 }
+      { rootMargin, threshold: 0 }
     );
 
     const observeAll = () => {
@@ -42,9 +48,30 @@ export default function RevealObserver() {
     const mo = new MutationObserver(observeAll);
     mo.observe(document.body, { childList: true, subtree: true });
 
+    // Safety net. A reveal that never fires is a blank screen, which is a far
+    // worse failure than a reveal that fires without its animation — so
+    // anything still pending after the scroll settles is shown unconditionally.
+    let settle: number | undefined;
+    const onScrollEnd = () => {
+      window.clearTimeout(settle);
+      settle = window.setTimeout(() => {
+        const viewportBottom = window.innerHeight * 1.5;
+        document.querySelectorAll('[data-reveal=""]').forEach((el) => {
+          if (el.getBoundingClientRect().top < viewportBottom) show(el);
+        });
+      }, 700);
+    };
+
+    onScrollEnd();
+    window.addEventListener("scroll", onScrollEnd, { passive: true });
+    window.addEventListener("resize", onScrollEnd, { passive: true });
+
     return () => {
       io.disconnect();
       mo.disconnect();
+      window.clearTimeout(settle);
+      window.removeEventListener("scroll", onScrollEnd);
+      window.removeEventListener("resize", onScrollEnd);
     };
   }, []);
 

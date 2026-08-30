@@ -6,7 +6,8 @@ const category = getCategory("samskaras")!;
 
 export const metadata = pageMetadata({
   title: category.title,
-  description: category.description,
+  description:
+    "Life-cycle ceremonies held with sensitivity to family lineage and custom — including the prenatal samskaras Garbhadhana, Pumsavana, and Simantonnayana.",
   path: "/samskaras",
 });
 

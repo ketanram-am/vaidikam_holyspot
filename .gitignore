@@ -7,3 +7,6 @@ out/
 CHAT_CONTEXT.md
 next-env.d.ts
 *.tsbuildinfo
+
+# Local Claude Code scaffolding (dev-server launch config, local permissions)
+.claude/

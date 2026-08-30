@@ -1,112 +1,131 @@
+"use client";
+
 import Image from "next/image";
 import Link from "next/link";
-import { site } from "@/content/site";
-import OrnamentalRule from "@/components/ui/OrnamentalRule";
-import { SealMark } from "@/components/ui/Motifs";
+import { useRef } from "react";
+import {
+  LazyMotion,
+  domAnimation,
+  m,
+  useReducedMotion,
+  useScroll,
+  useTransform,
+} from "framer-motion";
+import { ArrowDownIcon, ArrowRightIcon } from "@phosphor-icons/react/dist/ssr";
+import { priest, primaryAction, site } from "@/content/site";
+import ArchOverlay, { ArchClip } from "@/components/ui/ArchOverlay";
 
-const assurances = [
-  "Rooted in Sri Vaishnava sampradaya",
-  "Priestly guidance before arrangements",
-  "Preparation explained with clarity",
-];
+/**
+ * The opening — an arched niche holding the Narasimha painting.
+ *
+ * The previous version drew a torana arch as a separate SVG at 116% width over
+ * a frame whose corners were rounded with `border-radius`. Two different curves
+ * never coincide, so the gold arch floated outside the painting and the whole
+ * thing looked pasted together. There is now no overlay at all: the gold is
+ * `border` and `box-shadow` on the same element that clips the image, so the
+ * arch and the picture edge are the same curve by construction and cannot
+ * drift apart.
+ *
+ * The section fills the viewport (100svh) and the image is sized in `svh` so
+ * the whole composition — mark, niche, title, button, scroll cue — is on the
+ * first screen of a phone rather than the button falling below the fold.
+ *
+ * Motion is scroll-linked, so it responds to the reader instead of looping.
+ */
 
-function AssuranceList({ className = "" }: { className?: string }) {
-  return (
-    <ul
-      className={`animate-rise grid max-w-2xl gap-2 border-y border-bronze/25 py-4 [animation-delay:300ms] sm:gap-3 ${className}`}
-    >
-      {assurances.map((assurance, index) => (
-        <li key={assurance} className="flex items-center gap-3 text-[0.78rem] leading-snug text-taupe sm:text-small">
-          <span aria-hidden="true" className="font-serif italic text-bronze/70">
-            {String(index + 1).padStart(2, "0")}
-          </span>
-          <span>{assurance}</span>
-        </li>
-      ))}
-    </ul>
-  );
-}
+const EASE = [0.16, 1, 0.3, 1] as const;
+
+const rise = (delay: number) => ({
+  initial: { opacity: 0, y: 22 },
+  animate: { opacity: 1, y: 0 },
+  transition: { duration: 0.85, delay, ease: EASE },
+});
 
 export default function Hero() {
+  const ref = useRef<HTMLElement>(null);
+  const reduced = useReducedMotion();
+
+  const { scrollYProgress } = useScroll({
+    target: ref,
+    offset: ["start start", "end start"],
+  });
+
+  const artScale = useTransform(scrollYProgress, [0, 1], [1, 1.1]);
+  const artY = useTransform(scrollYProgress, [0, 1], ["0%", "-9%"]);
+  const haloOpacity = useTransform(scrollYProgress, [0, 0.75], [1, 0]);
+  const chakraRotate = useTransform(scrollYProgress, [0, 1], [0, 42]);
+
   return (
-    <section
-      id="top"
-      aria-labelledby="hero-title"
-      className="landing-hero surface-ivory relative overflow-hidden"
-    >
-      {site.heroImage && (
-        <div className="hero-deity-backdrop" aria-hidden="true">
-          <Image
-            src={site.heroImage}
-            alt=""
-            fill
-            priority
-            sizes="100vw"
-            className="hero-deity-backdrop__image"
-          />
-        </div>
-      )}
-      <span aria-hidden="true" className="hero-deity-veil" />
-      <p className="hero-art-caption eyebrow pointer-events-none absolute right-gutter z-10 border-y border-brass-light/35 bg-maroon-deep/[.92] px-3 py-2 text-brass-light sm:hidden">
-        Sri Narasimha · painting detail
-      </p>
-      <span aria-hidden="true" className="absolute bottom-0 left-[8%] top-0 hidden w-px bg-bronze/12 lg:block" />
-      <span aria-hidden="true" className="absolute bottom-0 right-[8%] top-0 hidden w-px bg-bronze/12 lg:block" />
+    <LazyMotion features={domAnimation} strict>
+      <section id="top" ref={ref} aria-labelledby="hero-title" className="shrine">
+        <ArchClip />
+        <span aria-hidden="true" className="shrine__ground" />
+        <m.span
+          aria-hidden="true"
+          className="shrine__halo"
+          style={reduced ? undefined : { opacity: haloOpacity }}
+        />
+        {/* The sourced Sudarshana chakra, turning with the scroll. */}
+        <m.span
+          aria-hidden="true"
+          className="shrine__chakra"
+          style={{
+            maskImage: "url(/images/marks/sudarshana-chakra.svg)",
+            WebkitMaskImage: "url(/images/marks/sudarshana-chakra.svg)",
+            ...(reduced ? {} : { rotate: chakraRotate }),
+          }}
+        />
 
-      <div className="landing-hero__inner container-page relative z-10 grid items-center lg:grid-cols-12">
-        <div className="landing-hero__content relative lg:col-span-7 lg:col-start-1">
-          <p className="hero-kicker eyebrow animate-rise mb-5 flex items-center gap-3 [animation-delay:0ms] lg:mb-6">
-            <span aria-hidden="true" className="h-px w-7 flex-none bg-bronze/55" />
-            Sri Vaishnava practice · South India
-          </p>
+        <div className="container-page shrine__inner">
+          {site.heroImage && (
+            <m.div className="shrine__niche" {...rise(0.05)}>
+              <m.div
+                className="shrine__frame"
+                style={reduced ? undefined : { y: artY }}
+              >
+                <m.div
+                  className="shrine__imagewrap"
+                  style={reduced ? undefined : { scale: artScale }}
+                >
+                  <Image
+                    src={site.heroImage}
+                    alt="Sri Narasimha with Prahlada, in a traditional devotional painting"
+                    fill
+                    priority
+                    sizes="(max-width: 767px) 80vw, 460px"
+                    className="shrine__image"
+                  />
+                </m.div>
+                <span aria-hidden="true" className="shrine__vignette" />
+              </m.div>
+              {/* Sibling of the clipped frame, so the 2px gold is not halved
+                  by the very clip it is tracing. */}
+              <ArchOverlay />
+            </m.div>
+          )}
 
-          <h1
-            id="hero-title"
-            className="hero-title-traditional animate-rise max-w-[10ch] text-display [animation-delay:80ms]"
-          >
-            Devotion, held{" "}
-            <span className="font-display font-medium text-bronze">across distance.</span>
-          </h1>
+          <m.h1 id="hero-title" className="shrine__title" {...rise(0.16)}>
+            Homas, yagas, pujas
+            <span>and the samskaras</span>
+          </m.h1>
 
-          <div className="hero-rule animate-rise mt-6 max-w-xl [animation-delay:130ms] lg:mt-7">
-            <OrnamentalRule className="mb-5 max-w-sm" />
-          </div>
+          <m.p className="shrine__lead" {...rise(0.26)}>
+            Performed by {priest.name} — for families in India and for devotees
+            living abroad.
+          </m.p>
 
-          <p className="hero-copy lead animate-rise max-w-xl lg:ml-[8.333%] [animation-delay:180ms]">
-            {site.promise}
-          </p>
-
-          <aside className="hero-priest animate-rise mt-5 flex max-w-xl items-start gap-3 border-l border-bronze/60 pl-4 lg:ml-[8.333%] [animation-delay:200ms]">
-            <SealMark
-              aria-hidden="true"
-              className="mt-0.5 h-7 w-7 flex-none text-bronze"
-            />
-            <div>
-              <p className="eyebrow text-maroon">Personal priestly guidance</p>
-              <p className="mt-1 max-w-[46ch] text-[0.82rem] leading-relaxed text-charcoal sm:text-small">
-                Mahakaal Prabhu considers each enquiry before recommending a ritual.
-              </p>
-              <Link href="/about" className="arrow-link mt-1">
-                Meet the priest
-              </Link>
-            </div>
-          </aside>
-
-          <div className="hero-actions animate-rise mt-6 flex flex-col items-stretch gap-3 sm:flex-row sm:items-center sm:gap-4 lg:ml-[8.333%] [animation-delay:240ms]">
-            <Link href="/booking" className="btn-primary w-full sm:w-auto">
-              Begin an enquiry
+          <m.div className="shrine__actions" {...rise(0.36)}>
+            <Link href={primaryAction.href} className="btn btn-gold">
+              {primaryAction.label}
+              <ArrowRightIcon size={16} weight="bold" aria-hidden="true" />
             </Link>
-            <Link href="/services" className="arrow-link self-center px-2 sm:self-auto">
-              Explore the practice
-            </Link>
-          </div>
-
-          <AssuranceList className="hero-assurances mt-7 sm:grid-cols-3 lg:ml-[8.333%]" />
+            <a href="#ceremonies" className="shrine__scroll">
+              See the ceremonies
+              <ArrowDownIcon size={14} weight="bold" aria-hidden="true" />
+            </a>
+          </m.div>
         </div>
-      </div>
-      <p className="eyebrow pointer-events-none absolute bottom-8 right-gutter z-10 hidden border-y border-bronze/25 bg-ivory/55 px-4 py-3 text-bronze backdrop-blur-sm lg:block">
-        Sri Narasimha · Sacred art
-      </p>
-    </section>
+      </section>
+    </LazyMotion>
   );
 }

@@ -1,15 +1,13 @@
-import PageHero from "@/components/ui/PageHero";
-import SacredImage from "@/components/ui/SacredImage";
-import Reveal from "@/components/ui/Reveal";
 import Section from "@/components/ui/Section";
-import CTASection from "@/components/ui/CTASection";
-import { Fact, FactGrid, BulletList } from "@/components/ui/Fact";
+import Reveal from "@/components/ui/Reveal";
+import SacredImage from "@/components/ui/SacredImage";
+import ContactCTA from "@/components/sections/ContactCTA";
 import { pageMetadata } from "@/lib/seo";
 import { priest, site } from "@/content/site";
 
 export const metadata = pageMetadata({
-  title: "About the Priest",
-  description: priest.bioShort,
+  title: "The Priest",
+  description: priest.bio[0],
   path: "/about",
 });
 
@@ -18,7 +16,7 @@ const jsonLd = {
   "@type": "Person",
   name: priest.name,
   jobTitle: "Vedic Priest",
-  description: priest.bioShort,
+  description: priest.bio[0],
   worksFor: { "@type": "Organization", name: site.name, url: site.url },
 };
 
@@ -30,83 +28,46 @@ export default function AboutPage() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
 
-      <PageHero
-        eyebrow="The Priest"
-        title={priest.name}
-        lead={priest.bioShort}
-        breadcrumbs={[
-          { href: "/", label: "Home" },
-          { href: "/about", label: "About" },
-        ]}
-      >
-        <p className="eyebrow-quiet text-bronze">
-          {priest.honorific} · {priest.sampradaya}
-        </p>
-      </PageHero>
-
-      <Section tone="ivory" labelledBy="bio-title">
-        <div className="grid gap-[clamp(2.5rem,1.5rem+5vw,4.5rem)] lg:grid-cols-12">
-          <Reveal className="lg:col-span-5">
-            <div className="sticky-aside relative mx-auto max-w-[20rem] sm:max-w-sm lg:max-w-none">
-              <span
-                aria-hidden="true"
-                className="pointer-events-none absolute -bottom-4 -right-4 hidden h-full w-full border border-hairline sm:block"
-              />
-              <SacredImage
-                src={priest.practiceImage}
-                alt="The pillared hall of Sri Ranganathaswamy Temple in Srirangam"
-                showPlaceholderLabel={false}
-                className="relative aspect-[4/5] shadow-panel"
-                priority
-              />
-              <p className="mt-5 border-l border-bronze/40 pl-4 text-small text-taupe">
-                A Srirangam architectural study, not a portrait. An image of{" "}
-                {priest.name} will appear only from his approved archive.
-              </p>
-            </div>
+      <Section tone="ivory" labelledBy="about-title" className="page-top">
+        <div className="priest">
+          <Reveal className="priest__media">
+            <SacredImage
+              src={priest.practiceImage}
+              alt="The pillared hall of Sri Ranganathaswamy Temple, Srirangam"
+              showPlaceholderLabel={false}
+              sizes="(max-width: 767px) 100vw, 40vw"
+              className="aspect-[4/3] md:aspect-[4/5]"
+              priority
+            />
           </Reveal>
 
-          <div className="flex flex-col gap-10 lg:col-span-6 lg:col-start-7">
-            <Reveal className="flex flex-col gap-5">
-              <span className="eyebrow">Biography</span>
-              <h2 id="bio-title" className="sr-only">
-                Biography
-              </h2>
-              {priest.bioLong.map((para, i) => (
-                <p
-                  key={i}
-                  className={`max-w-prose text-charcoal ${
-                    // The opening paragraph is set larger: it is the one
-                    // sentence most visitors will actually read.
-                    i === 0 ? "text-lead" : ""
-                  }`}
-                >
-                  {para}
-                </p>
-              ))}
-            </Reveal>
-
-            <Reveal delay={0.06}>
-              <FactGrid className="border-t border-hairline pt-10">
-                <Fact label="Role">{priest.honorific}</Fact>
-                <Fact label="Tradition">{priest.sampradaya}</Fact>
-                <Fact label="Practice">Personal guidance and ritual service</Fact>
-                <Fact label="Audience">Families in India and abroad</Fact>
-              </FactGrid>
-            </Reveal>
-
-            <Reveal delay={0.1} className="border-t border-hairline pt-10">
-              <span className="eyebrow">Principles of practice</span>
-              <BulletList items={priest.principles} className="mt-5" />
-            </Reveal>
-          </div>
+          <Reveal delay={0.06} className="priest__body">
+            <p className="priest__eyebrow">The priest</p>
+            <h1 id="about-title" className="priest__name">
+              {priest.name}
+            </h1>
+            <p className="priest__role">
+              {[priest.honorific, priest.sampradaya, priest.location]
+                .filter(Boolean)
+                .join(" · ")}
+            </p>
+            {priest.bio.map((paragraph) => (
+              <p key={paragraph} className="priest__para">
+                {paragraph}
+              </p>
+            ))}
+            {/* An image of the priest replaces the temple study once he
+                supplies one. Until then the page does not pretend otherwise. */}
+            {!priest.portrait && (
+              <p className="priest__note">
+                The photograph above is Srirangam, not {priest.name}.
+              </p>
+            )}
+          </Reveal>
         </div>
       </Section>
 
-      <CTASection
-        title="Have a ceremony in mind?"
-        text="Share the ritual and occasion, and the priest will personally respond to discuss what is involved."
-      />
+      <ContactCTA />
     </main>
   );
 }

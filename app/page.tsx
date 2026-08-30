@@ -1,26 +1,11 @@
 import Hero from "@/components/sections/Hero";
-import TrustStrip from "@/components/sections/TrustStrip";
 import PriestIdentity from "@/components/sections/PriestIdentity";
 import Services from "@/components/sections/Services";
-import Philosophy from "@/components/sections/Philosophy";
-import Process from "@/components/sections/Process";
-import GalleryGlimpse from "@/components/sections/GalleryGlimpse";
-import ProductsTeaser from "@/components/sections/ProductsTeaser";
-import CTASection from "@/components/ui/CTASection";
-import SectionDivider from "@/components/ui/SectionDivider";
+import Practical from "@/components/sections/Practical";
+import ContactCTA from "@/components/sections/ContactCTA";
+import BandDivider from "@/components/ui/BandDivider";
 import { site, priest } from "@/content/site";
 import { categories } from "@/content/services";
-
-const areaServed = [
-  "United States",
-  "Canada",
-  "United Kingdom",
-  "Germany",
-  "Australia",
-  "Singapore",
-  "United Arab Emirates",
-  "Europe",
-];
 
 const jsonLd = {
   "@context": "https://schema.org",
@@ -29,17 +14,16 @@ const jsonLd = {
   name: site.name,
   url: site.url,
   description: site.promise,
-  slogan: site.tagline,
   ...(site.contact.email ? { email: site.contact.email } : {}),
+  ...(site.contact.phone ? { telephone: site.contact.phone } : {}),
   provider: {
     "@type": "Person",
     name: priest.name,
     jobTitle: "Vedic Priest",
   },
-  areaServed: areaServed.map((name) => ({ "@type": "Country", name })),
   hasOfferCatalog: {
     "@type": "OfferCatalog",
-    name: "Vedic rituals",
+    name: "Vedic ceremonies",
     itemListElement: categories.map((category) => ({
       "@type": "Offer",
       itemOffered: {
@@ -52,10 +36,14 @@ const jsonLd = {
 };
 
 /**
- * Section order follows the questions a hesitant visitor asks in sequence:
- * what is this → can I trust it → who is he → what is offered → what does he
- * believe → how does it work → do others trust him → what does it look like →
- * what else → shall I begin.
+ * Four sections, in the order a devotee actually asks:
+ * what is this → who performs it → what can he perform → will it work for me
+ * → how do I ask.
+ *
+ * Removed: the trust strip (four numbered slogans), the philosophy band ("A
+ * note on practice"), the four-step process diagram, the gallery mosaic ("A
+ * material study"), and the products teaser for products that do not exist.
+ * None of them answered a question anyone had.
  */
 export default function Home() {
   return (
@@ -66,15 +54,13 @@ export default function Home() {
       />
       <main id="main">
         <Hero />
-        <TrustStrip />
         <PriestIdentity />
         <Services />
-        <SectionDivider tone="cream" />
-        <Philosophy />
-        <Process />
-        <GalleryGlimpse />
-        <ProductsTeaser />
-        <CTASection text="Share the ritual and occasion you have in mind. This is a personal enquiry — the priest will respond to you himself." />
+        {/* The lotus course marks the change of register between the two
+            light bands, which otherwise met at a bare hairline. */}
+        <BandDivider />
+        <Practical />
+        <ContactCTA />
       </main>
     </>
   );
