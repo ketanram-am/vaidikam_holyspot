@@ -14,33 +14,34 @@ import {
 import { ArrowDownIcon, ArrowRightIcon } from "@phosphor-icons/react/dist/ssr";
 import { priest, primaryAction, site } from "@/content/site";
 
-
 /**
- * The opening — the Narasimha painting, framed.
+ * The opening: Sri Narasimha as the page itself.
  *
- * Five attempts went into arching this image before the actual problem showed
- * up: the source is 2200x2091, so it is very nearly SQUARE (1.052). Every
- * version forced it into a 4:5 portrait box, which threw away about a quarter
- * of the painting, and then imposed an arch on top of a composition that has
- * its own painted rectangular border. No arch geometry could ever fit,
- * because the shape being fitted was not the shape of the picture.
+ * Every previous version put the painting inside a container — an arched
+ * niche, a gilt frame, a feathered card — and every one read as an object
+ * pasted onto a background, because that is what it was. The fix is not a
+ * better container; it is to stop containing it. The painting is now
+ * full-bleed, edge to edge, and the type sits on the ground it dissolves into.
+ * A background cannot look standalone, because it is not standing on anything.
  *
- * So the painting is now shown at its own ratio, uncropped, in a rectangular
- * gilt frame — which is how a devotional painting is actually presented. The
- * arch is gone rather than fixed; it was decoration fighting the subject.
+ * Removed to get here:
+ *  - the arch (five attempts; the source is 2200x2091, so nearly square, and
+ *    no arch fits a square that has its own painted rectangular border);
+ *  - the gilt frame (crisp edges are precisely what made it read as pasted on);
+ *  - the Sudarshana chakra (behind the figure it overlapped the deity and
+ *    muddied both — and the painting carries its own halo already).
  *
- * The section still fills the viewport (100svh) and the frame is sized in
- * `svh`, so the whole composition sits on the first screen of a phone.
- *
- * Motion is scroll-linked, so it responds to the reader instead of looping.
+ * The image fades out downward through a mask rather than sitting under a
+ * veil, so the deity keeps full colour where he is actually looked at while
+ * the lower page becomes a clean dark field for the type.
  */
 
 const EASE = [0.16, 1, 0.3, 1] as const;
 
 const rise = (delay: number) => ({
-  initial: { opacity: 0, y: 22 },
+  initial: { opacity: 0, y: 20 },
   animate: { opacity: 1, y: 0 },
-  transition: { duration: 0.85, delay, ease: EASE },
+  transition: { duration: 0.9, delay, ease: EASE },
 });
 
 export default function Hero() {
@@ -52,68 +53,47 @@ export default function Hero() {
     offset: ["start start", "end start"],
   });
 
-  const artScale = useTransform(scrollYProgress, [0, 1], [1, 1.1]);
-  const artY = useTransform(scrollYProgress, [0, 1], ["0%", "-9%"]);
-  const haloOpacity = useTransform(scrollYProgress, [0, 0.75], [1, 0]);
-  const chakraRotate = useTransform(scrollYProgress, [0, 1], [0, 42]);
+  // Drifts and grows slightly as the section leaves, so the parallax reads as
+  // depth rather than as the image sliding away.
+  const artY = useTransform(scrollYProgress, [0, 1], ["0%", "-10%"]);
+  const artScale = useTransform(scrollYProgress, [0, 1], [1, 1.12]);
 
   return (
     <LazyMotion features={domAnimation} strict>
       <section id="top" ref={ref} aria-labelledby="hero-title" className="shrine">
-        <span aria-hidden="true" className="shrine__ground" />
-        <m.span
-          aria-hidden="true"
-          className="shrine__halo"
-          style={reduced ? undefined : { opacity: haloOpacity }}
-        />
-        {/* The sourced chakra, turning with the scroll. It sits low and
-            behind, so it never crosses the painting — overlapping the two
-            muddied both. */}
-        <m.span
-          aria-hidden="true"
-          className="shrine__chakra"
-          style={{
-            maskImage: "url(/images/marks/sudarshana-chakra.svg)",
-            WebkitMaskImage: "url(/images/marks/sudarshana-chakra.svg)",
-            ...(reduced ? {} : { rotate: chakraRotate }),
-          }}
-        />
+        {site.heroImage && (
+          <m.div
+            aria-hidden="true"
+            className="shrine__art"
+            style={reduced ? undefined : { y: artY, scale: artScale }}
+          >
+            <Image
+              src={site.heroImage}
+              alt=""
+              fill
+              priority
+              sizes="100vw"
+              className="shrine__img"
+            />
+          </m.div>
+        )}
+
+        {/* Warms the field the type sits on and carries the painting's greens
+            down into the page instead of ending them at an edge. */}
+        <span aria-hidden="true" className="shrine__field" />
 
         <div className="container-page shrine__inner">
-          {site.heroImage && (
-            <m.div className="shrine__niche" {...rise(0.05)}>
-              <m.div
-                className="shrine__frame"
-                style={reduced ? undefined : { y: artY }}
-              >
-                <m.div
-                  className="shrine__imagewrap"
-                  style={reduced ? undefined : { scale: artScale }}
-                >
-                  <Image
-                    src={site.heroImage}
-                    alt="Sri Narasimha with Prahlada, in a traditional devotional painting"
-                    fill
-                    priority
-                    sizes="(max-width: 767px) 80vw, 460px"
-                    className="shrine__image"
-                  />
-                </m.div>
-              </m.div>
-            </m.div>
-          )}
-
-          <m.h1 id="hero-title" className="shrine__title" {...rise(0.16)}>
+          <m.h1 id="hero-title" className="shrine__title" {...rise(0.15)}>
             Homas, yagas, pujas
             <span>and the samskaras</span>
           </m.h1>
 
-          <m.p className="shrine__lead" {...rise(0.26)}>
+          <m.p className="shrine__lead" {...rise(0.25)}>
             Performed by {priest.name} — for families in India and for devotees
             living abroad.
           </m.p>
 
-          <m.div className="shrine__actions" {...rise(0.36)}>
+          <m.div className="shrine__actions" {...rise(0.35)}>
             <Link href={primaryAction.href} className="btn btn-gold">
               {primaryAction.label}
               <ArrowRightIcon size={16} weight="bold" aria-hidden="true" />

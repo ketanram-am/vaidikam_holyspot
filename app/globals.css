@@ -420,73 +420,78 @@
   /* --- The shrine (hero) ---------------------------------------------- */
 
   /*
-    An arched niche holding the Narasimha painting.
+    Sri Narasimha as the page, not as an object on it.
 
-    The gold arch is `border` + `box-shadow` on the same element that clips the
-    image. That is deliberate: the previous version drew the arch as a separate
-    SVG over a `border-radius` frame, and because two different curves never
-    coincide the gold floated outside the painting. Here they are the same
-    curve by construction, so they cannot drift.
+    The painting is a full-bleed background layer masked to fade out downward;
+    the type sits on the dark field below. See Hero.tsx for the containers this
+    replaced and why each of them read as pasted-on.
   */
   .shrine {
     position: relative;
     isolation: isolate;
     display: flex;
-    /* Fills the phone screen, minus the fixed header. */
     min-height: 100svh;
     flex-direction: column;
-    justify-content: center;
+    /* Type is anchored to the bottom, under the painting rather than over it. */
+    justify-content: flex-end;
     overflow: hidden;
-    padding-top: calc(var(--nav-height) + 1rem);
-    padding-bottom: 1.5rem;
-    background: #2b110e;
+    padding-top: var(--nav-height);
+    padding-bottom: clamp(2rem, 6svh, 4rem);
+    /* The ground the painting dissolves into. Sampled toward the painting's
+       own dark green-browns so the fade has somewhere to land. */
+    background:
+      radial-gradient(ellipse 90% 40% at 50% 0%, #3d2116 0%, transparent 70%),
+      linear-gradient(180deg, #2f1611 0%, #24100c 55%, #1b0b08 100%);
     color: theme("colors.ivory");
   }
 
-  .shrine__ground {
+  .shrine__art {
     position: absolute;
-    inset: 0;
-    z-index: -3;
-    background:
-      radial-gradient(ellipse 95% 50% at 50% 30%, #7a3026 0%, #481813 48%, #2b110e 80%),
-      linear-gradient(180deg, transparent 58%, rgba(16, 7, 5, .9) 100%);
-  }
-
-  .shrine__halo {
-    position: absolute;
-    inset: 0;
     z-index: -2;
-    background: radial-gradient(
-      circle 15rem at 50% 34%,
-      rgba(226, 199, 141, .34),
-      rgba(201, 162, 95, .1) 44%,
-      transparent 70%
+    /* Bleeds past the top so the parallax has somewhere to travel. */
+    inset: -4% 0 auto;
+    /* Tall enough to be the subject of the screen, short enough to leave the
+       lower third as a clean field for the type. */
+    height: 78svh;
+    transform-origin: 50% 30%;
+    /* The fade is a mask, not an overlay: the deity keeps full colour where he
+       is looked at, and the image genuinely ends in nothing rather than
+       sitting behind a translucent sheet. */
+    mask-image: linear-gradient(
+      180deg,
+      #000 0%,
+      #000 46%,
+      rgba(0, 0, 0, .75) 68%,
+      rgba(0, 0, 0, .28) 86%,
+      transparent 100%
     );
-    animation: halo-breathe 9s var(--ease-calm) infinite alternate;
+    -webkit-mask-image: linear-gradient(
+      180deg,
+      #000 0%,
+      #000 46%,
+      rgba(0, 0, 0, .75) 68%,
+      rgba(0, 0, 0, .28) 86%,
+      transparent 100%
+    );
   }
 
-  
-  
-  /* --- The niche --- */
+  .shrine__img {
+    object-fit: cover;
+    /* Keeps the face and the raised arms in the upper half on a portrait
+       phone, where `cover` has to crop the sides of a near-square source. */
+    object-position: 50% 22%;
+  }
 
-  /* The sourced Sudarshana chakra, masked so it takes the gold. */
-  .shrine__chakra {
+  /* A soft warm wash over the lower painting, so the transition from image to
+     ground is a change of light rather than a change of material. */
+  .shrine__field {
     position: absolute;
-    z-index: -2;
-    top: 74%;
-    left: 50%;
-    width: min(150vw, 40rem);
-    aspect-ratio: 1;
-    background: var(--gold);
-    opacity: .07;
-    translate: -50% -50%;
-    mask-repeat: no-repeat;
-    mask-position: center;
-    mask-size: contain;
-    -webkit-mask-repeat: no-repeat;
-    -webkit-mask-position: center;
-    -webkit-mask-size: contain;
+    z-index: -1;
+    inset: 0;
     pointer-events: none;
+    background:
+      radial-gradient(ellipse 70% 34% at 50% 24%, rgba(255, 226, 168, .12), transparent 70%),
+      linear-gradient(180deg, transparent 44%, rgba(27, 11, 8, .5) 74%, rgba(27, 11, 8, .88) 100%);
   }
 
   .shrine__inner {
@@ -496,53 +501,14 @@
     text-align: center;
   }
 
-  .shrine__niche {
-    position: relative;
-    /* Sized in svh so the niche plus the type plus the button all fit one
-       phone screen. This is what was pushing the button below the fold. */
-    width: min(76vw, 37svh);
-    margin-inline: auto;
-  }
-
-  /* The arch is drawn by ArchOverlay as one path — see that component for why
-     border-radius and mask-image both failed here. The frame itself is a plain
-     rectangle; the overlay cuts the arch out of it. */
-  /*
-    The frame carries the painting's OWN ratio (2200/2091 — very nearly
-    square). Every previous version forced 4/5 and threw away a quarter of the
-    picture; that mismatch, not the arch geometry, is why the shape never sat
-    right against the background.
-  */
-  .shrine__frame {
-    position: relative;
-    aspect-ratio: 2200 / 2091;
-    /* A gilt frame: gold fillet, dark reveal, outer gold line — the sequence
-       of a real picture frame, and it follows a rectangle exactly. */
-    border: 1px solid rgba(226, 199, 141, .85);
-    box-shadow:
-      0 0 0 4px #24100d,
-      0 0 0 5px rgba(201, 162, 95, .55),
-      0 0 0 10px #1b0a08,
-      0 0 46px -6px rgba(201, 162, 95, .3),
-      0 30px 64px -28px rgba(0, 0, 0, .9);
-  }
-
-  .shrine__imagewrap { position: absolute; inset: 0; overflow: hidden; }
-
-  /* Ratio matches the file, so `cover` crops nothing. */
-  .shrine__image { object-fit: cover; object-position: 50% 50%; }
-
-  /* --- Type --- */
-
   .shrine__title {
     max-width: 20ch;
-    margin-top: clamp(1.1rem, 3svh, 1.9rem);
-    color: theme("colors.ivory");
-    font-size: clamp(1.6rem, 5.4vw, 2.1rem);
+    font-size: clamp(1.75rem, 6vw, 2.2rem);
     font-weight: 400;
-    line-height: 1.16;
+    line-height: 1.14;
     letter-spacing: -.02em;
-    text-shadow: 0 2px 22px rgba(0, 0, 0, .55);
+    color: theme("colors.ivory");
+    text-shadow: 0 2px 26px rgba(0, 0, 0, .75);
   }
 
   .shrine__title span {
@@ -552,20 +518,21 @@
   }
 
   .shrine__lead {
-    max-width: 36ch;
-    margin-top: .8rem;
-    color: rgba(248, 244, 236, .78);
+    max-width: 38ch;
+    margin-top: .85rem;
+    color: rgba(248, 244, 236, .8);
     font-size: .9375rem;
     line-height: 1.55;
+    text-shadow: 0 1px 14px rgba(0, 0, 0, .6);
   }
 
   .shrine__actions {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: .85rem;
+    gap: .9rem;
     width: 100%;
-    margin-top: clamp(1.1rem, 3svh, 1.75rem);
+    margin-top: 1.5rem;
   }
 
   .shrine__actions .btn { width: 100%; max-width: 20rem; }
@@ -590,8 +557,8 @@
   .shrine__scroll:hover { color: var(--gold-light); }
 
   @media (min-width: 768px) {
-    .shrine__niche { width: min(42vw, 42svh); }
-    .shrine__title { font-size: clamp(2.1rem, 4vw, 2.9rem); }
+    .shrine__art { height: 82svh; }
+    .shrine__title { font-size: clamp(2.2rem, 4.4vw, 3rem); }
     .shrine__lead { font-size: 1.0625rem; }
 
     .shrine__actions {
@@ -604,9 +571,40 @@
   }
 
   @media (min-width: 1024px) {
-    .shrine__niche { width: min(28vw, 44svh); }
-    .shrine__title { font-size: 3.1rem; max-width: 24ch; }
-    .shrine__chakra { width: 48rem; }
+    /* `contain` was tried here and reintroduced the exact problem the
+       full-bleed treatment exists to solve: it left hard vertical edges, so
+       the painting was a rectangle sitting on the page again. It stays
+       `cover`, and the mask gains a horizontal fade so the sides dissolve
+       into the ground instead of ending on a line. */
+    .shrine__art {
+      height: 92svh;
+      mask-image:
+        linear-gradient(
+          180deg,
+          #000 0%,
+          #000 44%,
+          rgba(0, 0, 0, .72) 66%,
+          rgba(0, 0, 0, .26) 86%,
+          transparent 100%
+        ),
+        linear-gradient(90deg, transparent 0%, #000 16%, #000 84%, transparent 100%);
+      mask-composite: intersect;
+      -webkit-mask-image:
+        linear-gradient(
+          180deg,
+          #000 0%,
+          #000 44%,
+          rgba(0, 0, 0, .72) 66%,
+          rgba(0, 0, 0, .26) 86%,
+          transparent 100%
+        ),
+        linear-gradient(90deg, transparent 0%, #000 16%, #000 84%, transparent 100%);
+      -webkit-mask-composite: source-in;
+    }
+
+    .shrine__img { object-position: 50% 16%; }
+
+    .shrine__title { font-size: 3.1rem; max-width: 26ch; }
   }
 
   /* --- Priest --------------------------------------------------------- */
