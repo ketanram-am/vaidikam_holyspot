@@ -1,112 +1,110 @@
+"use client";
+
 import Image from "next/image";
 import Link from "next/link";
-import { site } from "@/content/site";
-import OrnamentalRule from "@/components/ui/OrnamentalRule";
-import { SealMark } from "@/components/ui/Motifs";
+import { useRef } from "react";
+import {
+  LazyMotion,
+  domAnimation,
+  m,
+  useReducedMotion,
+  useScroll,
+  useTransform,
+} from "framer-motion";
+import { ArrowDownIcon, ArrowRightIcon } from "@phosphor-icons/react/dist/ssr";
+import { priest, primaryAction, site } from "@/content/site";
 
-const assurances = [
-  "Rooted in Sri Vaishnava sampradaya",
-  "Priestly guidance before arrangements",
-  "Preparation explained with clarity",
-];
+/**
+ * The opening: Sri Narasimha as the page itself.
+ *
+ * Every previous version put the painting inside a container — an arched
+ * niche, a gilt frame, a feathered card — and every one read as an object
+ * pasted onto a background, because that is what it was. The fix is not a
+ * better container; it is to stop containing it. The painting is now
+ * full-bleed, edge to edge, and the type sits on the ground it dissolves into.
+ * A background cannot look standalone, because it is not standing on anything.
+ *
+ * Removed to get here:
+ *  - the arch (five attempts; the source is 2200x2091, so nearly square, and
+ *    no arch fits a square that has its own painted rectangular border);
+ *  - the gilt frame (crisp edges are precisely what made it read as pasted on);
+ *  - the Sudarshana chakra (behind the figure it overlapped the deity and
+ *    muddied both — and the painting carries its own halo already).
+ *
+ * The image fades out downward through a mask rather than sitting under a
+ * veil, so the deity keeps full colour where he is actually looked at while
+ * the lower page becomes a clean dark field for the type.
+ */
 
-function AssuranceList({ className = "" }: { className?: string }) {
-  return (
-    <ul
-      className={`animate-rise grid max-w-2xl gap-2 border-y border-bronze/25 py-4 [animation-delay:300ms] sm:gap-3 ${className}`}
-    >
-      {assurances.map((assurance, index) => (
-        <li key={assurance} className="flex items-center gap-3 text-[0.78rem] leading-snug text-taupe sm:text-small">
-          <span aria-hidden="true" className="font-serif italic text-bronze/70">
-            {String(index + 1).padStart(2, "0")}
-          </span>
-          <span>{assurance}</span>
-        </li>
-      ))}
-    </ul>
-  );
-}
+const EASE = [0.16, 1, 0.3, 1] as const;
+
+const rise = (delay: number) => ({
+  initial: { opacity: 0, y: 20 },
+  animate: { opacity: 1, y: 0 },
+  transition: { duration: 0.9, delay, ease: EASE },
+});
 
 export default function Hero() {
+  const ref = useRef<HTMLElement>(null);
+  const reduced = useReducedMotion();
+
+  const { scrollYProgress } = useScroll({
+    target: ref,
+    offset: ["start start", "end start"],
+  });
+
+  // Drifts and grows slightly as the section leaves, so the parallax reads as
+  // depth rather than as the image sliding away.
+  const artY = useTransform(scrollYProgress, [0, 1], ["0%", "-10%"]);
+  const artScale = useTransform(scrollYProgress, [0, 1], [1, 1.12]);
+
   return (
-    <section
-      id="top"
-      aria-labelledby="hero-title"
-      className="landing-hero surface-ivory relative overflow-hidden"
-    >
-      {site.heroImage && (
-        <div className="hero-deity-backdrop" aria-hidden="true">
-          <Image
-            src={site.heroImage}
-            alt=""
-            fill
-            priority
-            sizes="100vw"
-            className="hero-deity-backdrop__image"
-          />
-        </div>
-      )}
-      <span aria-hidden="true" className="hero-deity-veil" />
-      <p className="hero-art-caption eyebrow pointer-events-none absolute right-gutter z-10 border-y border-brass-light/35 bg-maroon-deep/[.92] px-3 py-2 text-brass-light sm:hidden">
-        Sri Narasimha · painting detail
-      </p>
-      <span aria-hidden="true" className="absolute bottom-0 left-[8%] top-0 hidden w-px bg-bronze/12 lg:block" />
-      <span aria-hidden="true" className="absolute bottom-0 right-[8%] top-0 hidden w-px bg-bronze/12 lg:block" />
-
-      <div className="landing-hero__inner container-page relative z-10 grid items-center lg:grid-cols-12">
-        <div className="landing-hero__content relative lg:col-span-7 lg:col-start-1">
-          <p className="hero-kicker eyebrow animate-rise mb-5 flex items-center gap-3 [animation-delay:0ms] lg:mb-6">
-            <span aria-hidden="true" className="h-px w-7 flex-none bg-bronze/55" />
-            Sri Vaishnava practice · South India
-          </p>
-
-          <h1
-            id="hero-title"
-            className="hero-title-traditional animate-rise max-w-[10ch] text-display [animation-delay:80ms]"
+    <LazyMotion features={domAnimation} strict>
+      <section id="top" ref={ref} aria-labelledby="hero-title" className="shrine">
+        {site.heroImage && (
+          <m.div
+            aria-hidden="true"
+            className="shrine__art"
+            style={reduced ? undefined : { y: artY, scale: artScale }}
           >
-            Devotion, held{" "}
-            <span className="font-display font-medium text-bronze">across distance.</span>
-          </h1>
-
-          <div className="hero-rule animate-rise mt-6 max-w-xl [animation-delay:130ms] lg:mt-7">
-            <OrnamentalRule className="mb-5 max-w-sm" />
-          </div>
-
-          <p className="hero-copy lead animate-rise max-w-xl lg:ml-[8.333%] [animation-delay:180ms]">
-            {site.promise}
-          </p>
-
-          <aside className="hero-priest animate-rise mt-5 flex max-w-xl items-start gap-3 border-l border-bronze/60 pl-4 lg:ml-[8.333%] [animation-delay:200ms]">
-            <SealMark
-              aria-hidden="true"
-              className="mt-0.5 h-7 w-7 flex-none text-bronze"
+            <Image
+              src={site.heroImage}
+              alt=""
+              fill
+              priority
+              sizes="100vw"
+              className="shrine__img"
             />
-            <div>
-              <p className="eyebrow text-maroon">Personal priestly guidance</p>
-              <p className="mt-1 max-w-[46ch] text-[0.82rem] leading-relaxed text-charcoal sm:text-small">
-                Mahakaal Prabhu considers each enquiry before recommending a ritual.
-              </p>
-              <Link href="/about" className="arrow-link mt-1">
-                Meet the priest
-              </Link>
-            </div>
-          </aside>
+          </m.div>
+        )}
 
-          <div className="hero-actions animate-rise mt-6 flex flex-col items-stretch gap-3 sm:flex-row sm:items-center sm:gap-4 lg:ml-[8.333%] [animation-delay:240ms]">
-            <Link href="/booking" className="btn-primary w-full sm:w-auto">
-              Begin an enquiry
-            </Link>
-            <Link href="/services" className="arrow-link self-center px-2 sm:self-auto">
-              Explore the practice
-            </Link>
-          </div>
+        {/* Warms the field the type sits on and carries the painting's greens
+            down into the page instead of ending them at an edge. */}
+        <span aria-hidden="true" className="shrine__field" />
 
-          <AssuranceList className="hero-assurances mt-7 sm:grid-cols-3 lg:ml-[8.333%]" />
+        <div className="container-page shrine__inner">
+          <m.h1 id="hero-title" className="shrine__title" {...rise(0.15)}>
+            Homas, yagas, pujas
+            <span>and the samskaras</span>
+          </m.h1>
+
+          <m.p className="shrine__lead" {...rise(0.25)}>
+            Performed by {priest.name} — for families in India and for devotees
+            living abroad.
+          </m.p>
+
+          <m.div className="shrine__actions" {...rise(0.35)}>
+            <Link href={primaryAction.href} className="btn btn-gold">
+              {primaryAction.label}
+              <ArrowRightIcon size={16} weight="bold" aria-hidden="true" />
+            </Link>
+            <a href="#ceremonies" className="shrine__scroll">
+              See the ceremonies
+              <ArrowDownIcon size={14} weight="bold" aria-hidden="true" />
+            </a>
+          </m.div>
         </div>
-      </div>
-      <p className="eyebrow pointer-events-none absolute bottom-8 right-gutter z-10 hidden border-y border-bronze/25 bg-ivory/55 px-4 py-3 text-bronze backdrop-blur-sm lg:block">
-        Sri Narasimha · Sacred art
-      </p>
-    </section>
+      </section>
+    </LazyMotion>
   );
 }

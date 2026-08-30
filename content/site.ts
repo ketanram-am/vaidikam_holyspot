@@ -1,74 +1,112 @@
+/**
+ * Site content.
+ *
+ * OPEN QUESTION — sampradaya. The site previously stated "Sri Vaishnava"
+ * throughout. The priest's name (Chaitanya Das) and the stated audience
+ * (ISKCON devotees) both point to the Gaudiya Vaishnava line rather than the
+ * Sri Vaishnava one; those are different sampradayas. Rather than assert the
+ * wrong tradition on a real priest's own site, `priest.sampradaya` is null and
+ * nothing on the page claims a lineage. Set it once confirmed and it will
+ * appear in the hero and on the About page.
+ *
+ * Rule for this file: a string earns its place only if a devotee deciding
+ * whether to contact this priest actually needs it. Slogans, principles,
+ * "notes on practice", and material studies were removed — they were
+ * generated filler and they buried the four things a visitor is here for:
+ * who he is, what he performs, whether he can do it for them, and how to ask.
+ *
+ * Nothing in this file is aspirational. If a thing does not exist yet, it is
+ * not described here.
+ */
+
 export const site = {
   name: "Vaidikam Holyspot",
-  // Canonical origin. Set this to the live domain before launch — metadata,
+  // Canonical origin. Set to the live domain before launch — metadata,
   // sitemap, and JSON-LD all derive absolute URLs from it.
   url: "https://vaidhikamholyspot.com",
-  tagline: "Sri Vaishnava ritual practice, approached personally.",
+  /** One factual sentence. Used for meta description and the hero. */
   promise:
-    "Personal guidance for families in India and abroad, with every ceremony approached through preparation, clarity, and Sri Vaishnava tradition.",
+    "Homas, yagas, pujas, and samskaras performed by Mahakaal Chaitanya Das, for families in India and for devotees living abroad.",
   heroImage: "/images/art/narasimha.webp" as string | null,
   contact: {
-    whatsapp: null as string | null,
-    phone: null as string | null,
-    email: null as string | null,
+    // Indian mobile, stored in E.164 so tel: and wa.me links both work.
+    whatsapp: "+91 79752 33449" as string | null,
+    phone: "+91 79752 33449" as string | null,
+    email: "holyspot123@gmail.com" as string | null,
   },
 };
 
 export const priest = {
-  name: "Mahakaal Prabhu",
-  honorific: "Sri Vaishnava Vedic Priest",
+  name: "Mahakaal Chaitanya Das",
+  honorific: "Vedic Priest",
+  location: "South India",
   portrait: null as string | null,
   practiceImage: "/images/temple/srirangam-hall.jpg" as string | null,
-  sampradaya: "Sri Vaishnava tradition",
-  bioShort:
-    "A personal Vedic practice for devotees seeking thoughtful guidance and ceremonies approached according to Sri Vaishnava tradition.",
-  bioLong: [
-    "Mahakaal Prabhu’s work begins with listening. Every enquiry is understood in the context of the family, the occasion, and the tradition they wish to uphold before a ritual is recommended or arranged.",
-    "This personal approach is especially important for families living outside India, who may need clarity about preparation, participation, or the right ceremony for a meaningful family occasion.",
-  ],
-  principles: [
-    "Guidance before recommendation",
-    "Respect for family tradition",
-    "Clear preparation and communication",
+  // See the note at the top of this file: the sampradaya line is deliberately
+  // unset until confirmed, rather than asserting the wrong one.
+  sampradaya: null as string | null,
+  bio: [
+    "Mahakaal Chaitanya Das performs Vedic ceremonies — homas, yagas, pujas, and the life-cycle samskaras — for families in India and for devotees living abroad.",
+    "Devotees outside India usually need to know three things: which ceremony applies to their occasion, what the family must provide, and whether it can be performed in their absence. Those are answered directly, before anything is arranged.",
   ],
 };
 
-export const trustPrinciples = [
-  { value: "01", label: "Personal guidance" },
-  { value: "02", label: "Sri Vaishnava tradition" },
-  { value: "03", label: "For families worldwide" },
-  { value: "04", label: "No marketplace hand-off" },
-];
-
-export const process = [
+/**
+ * The practical questions, and only the practical questions. A devotee abroad
+ * has four: can he do it for me, what do I have to do, how far ahead, and
+ * what does it cost. Everything else was reassurance copy.
+ */
+export const practical = [
   {
-    step: "01",
-    title: "Enquire",
-    text: "Share the ritual and occasion you have in mind. No obligation, no checkout.",
+    q: "Can a ceremony be performed if I live outside India?",
+    a: "Some ceremonies can; others require the family to be present. Which applies to yours is confirmed before anything is arranged.",
   },
   {
-    step: "02",
-    title: "Understand",
-    text: "Mahakaal Prabhu considers the occasion, family practice, location, and timing.",
+    q: "What does my family need to provide?",
+    a: "This depends on the ceremony. Materials, participation, and who needs to be present are explained in full beforehand.",
   },
   {
-    step: "03",
-    title: "Prepare",
-    text: "The appropriate ritual, participation, materials, and practical arrangements are explained.",
+    q: "How far in advance should I ask?",
+    a: "As early as you can. Lead time depends on the ceremony, the place, and the people involved.",
   },
   {
-    step: "04",
-    title: "Confirm",
-    text: "Only after there is clarity on both sides are the ceremony and timing confirmed.",
+    q: "How is dakshina handled?",
+    a: "Dakshina and material costs are discussed privately once the ceremony is settled. There is no listed price and no checkout.",
+  },
+  {
+    q: "I don't know the name of the ceremony I need.",
+    a: "Describe the occasion in your own words. The appropriate ceremony will be identified for you.",
   },
 ];
 
-export const testimonials: {
-  quote: string;
-  name: string;
-  location: string;
-}[] = [];
+/**
+ * What to put in the message.
+ *
+ * This replaced a five-question Q&A on the home page. A visitor who has
+ * decided to write does not need "how is dakshina handled?" at that moment —
+ * they need to know what to say. The Q&A still exists in full on /contact,
+ * where someone who has not decided yet will look for it.
+ */
+export const enquiry = [
+  {
+    label: "The occasion",
+    detail: "A new home, a birth, an annual observance, a specific difficulty.",
+  },
+  {
+    label: "Where and when",
+    detail: "The city, and the date or month you have in mind.",
+  },
+  {
+    label: "Any family custom",
+    detail: "Your sampradaya or gotra, if you know it. It is not required.",
+  },
+];
 
+/**
+ * Contextual imagery: Sri Vaishnava architecture and public-domain devotional
+ * art. Deliberately not photographs of real ceremonies — those would need the
+ * family's consent. Credits in public/images/ATTRIBUTIONS.md.
+ */
 export const gallery: {
   alt: string;
   caption: string;
@@ -77,100 +115,50 @@ export const gallery: {
 }[] = [
   {
     alt: "The pillared hall of Sri Ranganathaswamy Temple in Srirangam",
-    caption: "Pillared hall · Sri Ranganathaswamy Temple, Srirangam",
+    caption: "Sri Ranganathaswamy Temple, Srirangam",
     src: "/images/temple/srirangam-hall.jpg",
     layout: "landscape",
   },
   {
-    alt: "Yashoda with the child Krishna beside a white cow in a painting by Raja Ravi Varma",
-    caption: "Yashoda with Krishna · Raja Ravi Varma, public domain",
-    src: "/images/art/yashoda-krishna.jpg",
-    layout: "portrait",
-  },
-  {
-    alt: "A traditional South Indian brass lamp",
-    caption: "Brass lamp · ritual light and preparation",
-    src: "/images/brass-lamp.jpg",
-    layout: "square",
-  },
-  {
     alt: "The layered gopurams of Sri Ranganathaswamy Temple in Srirangam",
-    caption: "Temple towers · Sri Ranganathaswamy Temple, Srirangam",
+    caption: "Sri Ranganathaswamy Temple, Srirangam",
     src: "/images/temple/srirangam-temple.jpg",
     layout: "landscape",
   },
   {
-    alt: "Carved soapstone pillar detail from Karnataka",
-    caption: "Carved stone · the discipline of the maker’s hand",
-    src: "/images/stone-pillar.jpg",
-    layout: "square",
+    alt: "Yashoda with the child Krishna beside a white cow, painted by Raja Ravi Varma",
+    caption: "Yashoda with Krishna · Raja Ravi Varma",
+    src: "/images/art/yashoda-krishna.jpg",
+    layout: "portrait",
   },
   {
-    alt: "A granite-pillared corridor receding into shade",
-    caption: "Temple corridor · rhythm, shade, and procession",
-    src: "/images/stone-corridor.jpg",
-    layout: "landscape",
+    alt: "Garuda standing in anjali mudra, Chennakeshava temple, Belur",
+    caption: "Garuda · Chennakeshava temple, Belur",
+    src: "/images/deity/garuda-belur.jpg",
+    layout: "portrait",
   },
+];
+
+export const navGroups = [
   {
-    alt: "The lived streets surrounding Sri Ranganathaswamy Temple",
-    caption: "Temple streets · the lived world around Srirangam",
-    src: "/images/temple/srirangam-market.jpg",
-    layout: "landscape",
-  },
-  {
-    alt: "A historic palm-leaf manuscript folio",
-    caption: "Palm-leaf manuscript · text carried through generations",
-    src: "/images/palm-manuscript.jpg",
-    layout: "landscape",
+    label: "Ceremonies",
+    items: [
+      { href: "/homas", label: "Homas", description: "Fire rituals" },
+      { href: "/yagas", label: "Yagas", description: "Extended observances" },
+      { href: "/pujas", label: "Pujas", description: "Worship" },
+      { href: "/samskaras", label: "Samskaras", description: "Life-cycle rites" },
+    ],
   },
 ];
 
 export const priestNav = {
   href: "/about",
   label: "The Priest",
-  description: "Meet Mahakaal Prabhu",
+  description: "Mahakaal Prabhu",
 };
 
-export const navGroups = [
-  {
-    label: "Rituals",
-    items: [
-      { href: "/homas", label: "Homas", description: "Sacred fire offerings" },
-      { href: "/yagas", label: "Yagas", description: "Extended Vedic observances" },
-      { href: "/pujas", label: "Pujas", description: "Personal forms of worship" },
-      {
-        href: "/samskaras",
-        label: "Samskaras",
-        description: "Life-cycle ceremonies",
-      },
-    ],
-  },
-  {
-    label: "Guidance",
-    items: [
-      {
-        href: "/consultation",
-        label: "Consultation",
-        description: "Ask before making arrangements",
-      },
-      { href: "/faqs", label: "FAQs", description: "Preparation and process" },
-      { href: "/contact", label: "Contact", description: "Begin a private question" },
-    ],
-  },
-  {
-    label: "Explore",
-    items: [
-      {
-        href: "/gallery",
-        label: "Gallery",
-        description: "Architecture and devotional art",
-      },
-      { href: "/articles", label: "Articles", description: "Notes on tradition" },
-      {
-        href: "/services",
-        label: "All services",
-        description: "View the complete practice",
-      },
-    ],
-  },
-];
+/** The single action on the site. There is no second, competing one. */
+export const primaryAction = {
+  href: "/contact",
+  label: "Contact the priest",
+};

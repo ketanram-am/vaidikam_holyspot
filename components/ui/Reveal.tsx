@@ -9,6 +9,9 @@ type RevealProps = {
   index?: number;
   as?: "div" | "section" | "li" | "span";
   className?: string;
+  /** Passed through so a revealed element can still be a labelled landmark. */
+  id?: string;
+  "aria-labelledby"?: string;
 };
 
 /**
@@ -25,11 +28,13 @@ export default function Reveal({
   index,
   as: Tag = "div",
   className = "",
+  ...rest
 }: RevealProps) {
   const seconds = delay ?? (index !== undefined ? stagger(index) : 0);
 
   return (
     <Tag
+      {...rest}
       data-reveal=""
       style={seconds ? { transitionDelay: `${seconds}s` } : undefined}
       className={className}

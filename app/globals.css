@@ -2,41 +2,53 @@
 @tailwind components;
 @tailwind utilities;
 
+/*
+  This stylesheet was 1,989 lines. Most of it styled components that no longer
+  exist — a hero with an animated deity backdrop and veil, a four-band trust
+  strip, a philosophy quote band, a process diagram, a gallery mosaic, a
+  products teaser, two nav dropdown panels, an animated intro overlay, and a
+  long mobile override block correcting all of it.
+
+  It is now written mobile-first: the phone rule is the base rule and desktop
+  is the enhancement, so there is no override block to keep in sync.
+*/
+
 @layer base {
   :root {
     --font-newsreader: "Newsreader", Georgia, serif;
     --font-jakarta: "Plus Jakarta Sans", system-ui, sans-serif;
     --font-tiro-sanskrit: "Tiro Devanagari Sanskrit", serif;
-    --font-tiro-tamil: "Tiro Tamil", serif;
-    --nav-height: 68px;
-
-    /* Motion tokens — mirrored in lib/motion.ts. Change both together.
-       ease-out is expo: crisp departure, soft landing. */
+    --nav-height: 60px;
     --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
-    --ease-soft: cubic-bezier(0.4, 0, 0.2, 1);
-    --ease-exit: cubic-bezier(0.4, 0, 1, 1);
-    --dur-fast: 200ms;
-    --dur-base: 300ms;
-    --dur-reveal: 760ms;
-    --dur-hero: 900ms;
-    --reveal-rise: 28px;
+    --ease-calm: cubic-bezier(.4, 0, .2, 1);
+    --gutter: 1.25rem;
+    /* Gold is the one accent that carries weight, so it is a token rather
+       than a colour repeated at slightly different values. */
+    --gold: #c9a25f;
+    --gold-light: #e2c78d;
+    --gold-dim: rgba(201, 162, 95, .35);
   }
 
   @media (min-width: 768px) {
     :root {
-      --nav-height: 76px;
+      --nav-height: 72px;
+      --gutter: 2rem;
+    }
+  }
+
+  @media (min-width: 1280px) {
+    :root {
+      --gutter: 3rem;
     }
   }
 
   html {
-    scroll-behavior: smooth;
-    -webkit-font-smoothing: antialiased;
-    text-rendering: optimizeLegibility;
     -webkit-text-size-adjust: 100%;
-    scroll-padding-top: calc(var(--nav-height) + 16px);
+    -webkit-font-smoothing: antialiased;
+    scroll-behavior: smooth;
+    scroll-padding-top: calc(var(--nav-height) + 1rem);
   }
 
-  /* Global horizontal-overflow guard: nothing may exceed the viewport */
   html,
   body {
     max-width: 100%;
@@ -44,833 +56,1378 @@
   }
 
   body {
-    @apply bg-ivory text-ink font-sans antialiased text-body;
-    background-image:
-      radial-gradient(circle at 12% 18%, rgba(130, 87, 47, 0.055), transparent 24rem),
-      radial-gradient(circle at 88% 72%, rgba(100, 44, 38, 0.035), transparent 28rem);
-    font-feature-settings: "kern" 1, "liga" 1;
+    @apply bg-ivory text-ink font-sans;
     position: relative;
+    font-size: 1rem;
+    line-height: 1.6;
+    /* Two very wide, very faint warm glows. They stop the ivory reading as
+       flat #fff-adjacent paper without ever becoming a visible gradient. */
+    background-image:
+      radial-gradient(ellipse 60rem 40rem at 8% 6%, rgba(130, 87, 47, .07), transparent 70%),
+      radial-gradient(ellipse 50rem 36rem at 92% 62%, rgba(116, 47, 39, .05), transparent 70%);
+    background-attachment: fixed;
   }
 
-  body::before {
+  /* Paper grain. Fixed and multiplied so the whole page shares one sheet of
+     texture rather than each band having its own. */
+  body::after {
     position: fixed;
     inset: 0;
-    z-index: 100;
-    pointer-events: none;
+    z-index: 60;
     content: "";
-    opacity: 0.035;
+    pointer-events: none;
+    opacity: .04;
     mix-blend-mode: multiply;
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.8'/%3E%3C/svg%3E");
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
   }
 
   h1, h2, h3, h4 {
     @apply font-display text-maroon;
-    font-weight: 430;
+    font-weight: 500;
+    font-variation-settings: "opsz" 48;
+    letter-spacing: -.018em;
     text-wrap: balance;
-    font-variation-settings: "opsz" 72;
-    font-feature-settings: "kern" 1, "liga" 1;
   }
 
-  p {
-    text-wrap: pretty;
-  }
+  p { text-wrap: pretty; }
 
-  img, svg, video, canvas {
-    max-width: 100%;
-    height: auto;
-  }
+  img, svg { max-width: 100%; height: auto; }
 
-  ::selection {
-    background: #e7dcc7;
-    color: #2b2622;
-  }
+  ::selection { background: #e7dcc7; color: #2b2622; }
 
   :focus-visible {
-    outline: 1px solid #805b38;
-    outline-offset: 5px;
-    box-shadow: 0 0 0 2px #f8f4ec, 0 0 0 3px rgba(128, 91, 56, 0.35);
+    outline: 2px solid theme("colors.bronze");
+    outline-offset: 3px;
   }
 }
 
 @layer components {
   .container-page {
     @apply mx-auto w-full max-w-content;
-    padding-inline: theme("spacing.gutter");
+    padding-inline: var(--gutter);
   }
 
-  .section-y {
-    padding-block: theme("spacing.section");
+  /* One vertical rhythm for every band. */
+  .section-y { padding-block: 2.75rem; }
+
+  @media (min-width: 768px) {
+    .section-y { padding-block: 4.5rem; }
   }
 
-  /* Secondary bands (related items, teasers, closing CTAs) sit shorter than a
-     primary section, so the page's vertical rhythm stays legible. */
-  .section-band {
-    padding-block: theme("spacing.band");
+  /* The first band on an inner page clears the fixed header. */
+  .page-top { padding-top: calc(var(--nav-height) + 2rem); }
+
+  /* Section heading. One size everywhere, so no page shouts louder than
+     another. */
+  .sec__title { font-size: 1.6rem; line-height: 1.15; }
+
+  @media (min-width: 768px) {
+    .sec__title { font-size: 2.15rem; }
   }
 
-  /* The one gap between a section header and its content. */
-  .mt-headline {
-    margin-top: theme("spacing.headline");
+  .surface-ivory { background-color: theme("colors.ivory"); }
+  .surface-cream { background-color: theme("colors.cream"); }
+  .surface-paper { background-color: theme("colors.paper"); }
+  .surface-maroon {
+    background-color: theme("colors.maroon");
+    color: theme("colors.ivory");
   }
 
-  .mb-headline {
-    margin-bottom: theme("spacing.headline");
-  }
+  /* --- Buttons -------------------------------------------------------- */
 
-  /* The loud label. Reserved for section eyebrows. */
-  .eyebrow {
-    @apply font-sans text-[0.6875rem] font-medium uppercase tracking-[0.18em] text-bronze;
-    line-height: 1.4;
-  }
-
-  /* The quiet label. For metadata, captions and stat descriptions, where an
-     accent colour would compete with the value it describes. It stays at 12px
-     — the smallest legible size — and differentiates by weight and colour
-     rather than by shrinking further. */
-  .eyebrow-quiet {
-    @apply font-sans text-[0.6875rem] font-medium uppercase tracking-[0.16em] text-taupe;
-  }
-
-  .lead {
-    @apply font-serif text-lead text-charcoal;
-    font-weight: 420;
-    font-variation-settings: "opsz" 16;
-  }
-
-  .hero-title-traditional {
-    font-weight: 390;
-    font-variation-settings: "opsz" 72, "wght" 390;
-    letter-spacing: -.035em;
-    line-height: .96;
-    text-shadow:
-      0 1px 0 rgba(255,255,255,.38),
-      0 18px 48px rgba(75,29,25,.07);
-  }
-
-  .hero-title-traditional em,
-  .hero-title-traditional i {
-    font-weight: 380;
-  }
-
-  .landing-hero {
-    display: flex;
-    min-height: 100svh;
-    align-items: center;
-    padding-top: calc(var(--nav-height) + clamp(2rem, 4vh, 3.5rem));
-    padding-bottom: clamp(2.5rem, 4vh, 4rem);
-  }
-
-  .sacred-script {
-    @apply flex w-fit flex-wrap items-center gap-x-3 gap-y-1 text-bronze;
-    font-family: var(--font-tiro-sanskrit);
-  }
-
-  .sacred-script__devanagari {
-    font-size: clamp(1.05rem, .96rem + .45vw, 1.35rem);
-    line-height: 1.25;
-    text-shadow: 0 5px 18px rgba(130,87,47,.12);
-  }
-
-  .sacred-script__rule {
-    @apply h-px w-6 bg-current opacity-40;
-  }
-
-  .sacred-script__transliteration {
-    @apply text-[0.72rem] italic tracking-[0.07em] opacity-75;
-  }
-
-  .sacred-script--inverse {
-    @apply text-brass-light;
-  }
-
-  /* Every interactive element clears the 44x44px touch-target minimum */
+  /* Every button gets: a 1px inset keyline (the double-rule of a temple
+     panel), a light sweep on hover, and a 1px press. The detail is what makes
+     a button feel made rather than defaulted. */
   .btn {
-    @apply relative inline-flex min-h-tap items-center justify-center gap-2 overflow-hidden
-           border px-7 py-3 text-[0.75rem] font-semibold uppercase tracking-[0.16em]
-           transition-[background-color,border-color,color,box-shadow,transform]
-           duration-300 ease-calm active:translate-y-px;
-    min-height: 48px;
-    border-radius: 1px;
+    @apply relative inline-flex items-center justify-center;
     isolation: isolate;
-  }
-
-  .btn-primary {
-    @apply btn border-maroon-deep bg-maroon text-ivory shadow-card hover:border-bronze hover:bg-maroon-deep hover:shadow-lift
-           disabled:cursor-not-allowed disabled:opacity-45 disabled:shadow-none
-           disabled:hover:bg-maroon disabled:active:translate-y-0;
-    background-image:
-      linear-gradient(112deg, rgba(255,255,255,.09), transparent 38%),
-      linear-gradient(180deg, rgba(255,255,255,.025), rgba(0,0,0,.07));
-  }
-
-  .btn-ghost {
-    @apply btn border-bronze/55 bg-transparent text-maroon
-           hover:border-bronze hover:bg-bronze/5
-           disabled:cursor-not-allowed disabled:opacity-45;
+    overflow: hidden;
+    min-height: 50px;
+    padding-inline: 1.6rem;
+    border: 1px solid transparent;
+    border-radius: 2px;
+    font-size: .8125rem;
+    font-weight: 600;
+    letter-spacing: .08em;
+    text-align: center;
+    text-transform: uppercase;
+    transition:
+      background-color 260ms var(--ease-calm),
+      border-color 260ms var(--ease-calm),
+      color 260ms var(--ease-calm),
+      box-shadow 260ms var(--ease-calm),
+      transform 120ms var(--ease-calm);
   }
 
   .btn::before {
     position: absolute;
-    inset: 0;
+    inset: 4px;
+    z-index: -1;
     content: "";
-    background: linear-gradient(115deg, transparent 20%, rgba(255,255,255,.15) 48%, transparent 72%);
-    transform: translateX(-110%);
-    transition: transform 800ms var(--ease-out);
-  }
-
-  .btn:hover::before {
-    transform: translateX(110%);
+    border: 1px solid currentColor;
+    border-radius: 1px;
+    opacity: .22;
+    transition: opacity 260ms var(--ease-calm), inset 260ms var(--ease-calm);
   }
 
   .btn::after {
     position: absolute;
-    inset: 3px;
-    pointer-events: none;
-    content: "";
-    border: 1px solid currentColor;
-    opacity: .18;
-    transition: opacity 400ms var(--ease-out);
-  }
-
-  .btn:hover::after {
-    opacity: .36;
-  }
-
-  .tap-link {
-    @apply inline-flex min-h-tap items-center;
-  }
-
-  .hairline-rule {
-    @apply h-px w-full bg-hairline;
-  }
-
-  /* --- Surfaces ------------------------------------------------------- */
-
-  .card {
-    @apply relative flex h-full flex-col border border-hairline bg-paper shadow-card;
-    border-radius: 1px;
-    background-image:
-      linear-gradient(135deg, rgba(173,133,78,.12) 0, transparent 12px),
-      linear-gradient(315deg, rgba(173,133,78,.09) 0, transparent 12px),
-      linear-gradient(rgba(255,255,255,.28), rgba(255,255,255,0));
-  }
-
-  .card::before {
-    position: absolute;
-    inset: 5px;
-    pointer-events: none;
-    content: "";
-    border: 1px solid rgba(128,91,56,.13);
-  }
-
-  /* A card that is itself a link. The lift is 2px — enough to register as a
-     response, small enough that a grid of them never feels bouncy. */
-  .card-interactive {
-    @apply card transition-[border-color,box-shadow,transform] duration-200 ease-calm
-           hover:-translate-y-1 hover:border-bronze hover:shadow-lift;
-    transform-origin: 50% 100%;
-  }
-
-  .card-interactive::after {
-    position: absolute;
     inset: 0;
-    pointer-events: none;
+    z-index: -1;
     content: "";
-    background: linear-gradient(115deg, transparent 20%, rgba(255,255,255,.34) 48%, transparent 72%);
-    transform: translateX(-120%);
-    transition: transform 900ms var(--ease-out);
+    background: linear-gradient(
+      110deg,
+      transparent 24%,
+      rgba(255, 255, 255, .26) 48%,
+      transparent 72%
+    );
+    transform: translateX(-115%);
+    transition: transform 780ms var(--ease-out);
   }
 
-  .card-interactive:hover::after {
-    transform: translateX(120%);
+  .btn { gap: .6rem; }
+
+  .btn svg { flex: none; transition: transform 320ms var(--ease-out); }
+
+  .btn:hover svg { transform: translateX(3px); }
+
+  .btn:hover::after { transform: translateX(115%); }
+  .btn:hover::before { opacity: .5; }
+  .btn:active { transform: translateY(1px); }
+
+  .btn-primary {
+    @apply btn;
+    border-color: theme("colors.maroon-deep");
+    background:
+      linear-gradient(180deg, rgba(255, 255, 255, .07), rgba(0, 0, 0, .09)),
+      theme("colors.maroon");
+    color: theme("colors.ivory");
+    box-shadow: 0 12px 26px -18px rgba(75, 29, 25, .8);
   }
 
-  .card-pad {
-    @apply p-[clamp(1.5rem,1.1rem+1.5vw,2.25rem)];
+  .btn-primary:hover {
+    border-color: var(--gold-dim);
+    background:
+      linear-gradient(180deg, rgba(255, 255, 255, .1), rgba(0, 0, 0, .05)),
+      theme("colors.maroon-deep");
+    box-shadow: 0 16px 34px -18px rgba(75, 29, 25, .9);
   }
 
-  /* Long-form asides that track the reader on wide screens. */
-  .sticky-aside {
-    @apply lg:sticky lg:top-[calc(var(--nav-height)+2rem)];
+  /* The gold button. Reserved for the single action in the shrine. */
+  .btn-gold {
+    @apply btn;
+    border-color: var(--gold-light);
+    background: linear-gradient(180deg, var(--gold-light), var(--gold));
+    color: #2a1b12;
+    box-shadow: 0 14px 32px -16px rgba(201, 162, 95, .55);
   }
 
-  /* --- Arrow affordance ------------------------------------------------ */
-
-  .arrow-link {
-    @apply relative inline-flex min-h-tap items-center gap-2 text-[0.75rem] font-semibold
-           uppercase tracking-[0.14em] text-maroon transition-colors duration-200 hover:text-bronze;
+  .btn-gold:hover {
+    background: linear-gradient(180deg, #f0dbaa, var(--gold-light));
+    box-shadow: 0 18px 40px -16px rgba(226, 199, 141, .7);
   }
 
-  .arrow-link::after {
-    position: absolute;
-    left: 0;
-    bottom: 6px;
-    width: calc(100% - 1.4rem);
-    height: 1px;
-    content: "";
-    background: currentColor;
-    transform: scaleX(.24);
-    transform-origin: left;
-    opacity: .45;
-    transition: transform 420ms var(--ease-out);
+  /* A quiet outlined button for secondary routes on light ground. */
+  .btn-ghost {
+    @apply btn;
+    border-color: rgba(130, 87, 47, .5);
+    background: rgba(252, 249, 243, .6);
+    color: theme("colors.maroon");
   }
 
-  .arrow-link:hover::after {
-    transform: scaleX(1);
+  .btn-ghost:hover {
+    border-color: theme("colors.bronze");
+    background: theme("colors.paper");
   }
 
-  .arrow-link svg,
-  .group:hover .arrow-link svg {
-    @apply transition-transform duration-200 ease-calm;
-  }
-
-  .arrow-link:hover svg,
-  .group:hover .arrow-link svg,
-  .group:focus-visible .arrow-link svg {
-    transform: translateX(4px);
-  }
-
-  .input {
-    @apply min-h-tap w-full border border-hairline bg-ivory px-4 py-3
-           text-ink transition-[border-color,box-shadow] duration-200
-           placeholder:text-taupe
-           focus:border-bronze focus:outline-none
-           focus:ring-2 focus:ring-brass/25 focus:ring-offset-0
-           disabled:cursor-not-allowed disabled:opacity-50;
-    border-radius: 1px;
-    box-shadow: inset 0 1px 0 rgba(255,255,255,.42);
-    /* 16px minimum prevents iOS Safari zoom-on-focus */
-    font-size: 16px;
-  }
-
-  /* The focus ring is already drawn by .input; the global outline would double it. */
-  .input:focus-visible {
-    outline: none;
-  }
-
-  .input[aria-invalid="true"] {
-    @apply border-maroon;
-  }
-
-  select.input {
-    @apply appearance-none bg-no-repeat pr-10;
-    background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%236F665E' stroke-width='1.5'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
-    background-position: right 0.875rem center;
-    background-size: 1.15rem;
-  }
+  /* --- Brand lockup --------------------------------------------------- */
 
   .brand-lockup {
-    @apply inline-flex min-h-tap w-fit items-center gap-3;
+    display: inline-flex;
+    align-items: center;
+    gap: .6rem;
+    min-height: 44px;
   }
 
   .brand-seal {
-    @apply block h-11 w-11 flex-none text-maroon transition-transform duration-500 ease-arrive;
-    filter: drop-shadow(0 5px 12px rgba(69,27,24,.08));
-  }
-
-  .brand-lockup:hover .brand-seal {
-    transform: translateY(-1px) scale(1.045);
+    display: block;
+    flex: none;
+    width: 2.1rem;
+    height: 2.1rem;
   }
 
   .brand-wordmark {
-    @apply flex flex-col font-display text-[1.08rem] leading-[0.86];
-    font-variation-settings: "opsz" 72;
-    font-weight: 520;
-    letter-spacing: .01em;
+    display: flex;
+    flex-direction: column;
+    font-family: var(--font-newsreader);
+    font-variation-settings: "opsz" 48;
+    font-weight: 600;
+    font-size: 1.05rem;
+    line-height: 1;
+    letter-spacing: .005em;
   }
 
+  /* "Holyspot" is the second line and reads as a subtitle, so it is set in
+     the sans face at label size rather than continuing the serif. */
   .brand-wordmark span:last-child {
-    @apply mt-1 font-sans text-[0.55rem] font-semibold uppercase tracking-[0.28em] text-bronze;
+    margin-top: .22rem;
+    color: theme("colors.bronze");
+    font-family: var(--font-jakarta);
+    font-size: .5625rem;
+    font-weight: 600;
+    letter-spacing: .22em;
+    text-transform: uppercase;
   }
 
-  .nav-desktop-link {
-    @apply relative inline-flex min-h-tap items-center px-3 text-[0.7rem] font-semibold uppercase tracking-[0.14em] transition-colors duration-300;
+  @media (min-width: 768px) {
+    .brand-seal {
+      width: 2.5rem;
+      height: 2.5rem;
+    }
+
+    .brand-wordmark {
+      font-size: 1.2rem;
+    }
   }
 
-  .nav-desktop-underline {
-    @apply absolute inset-x-3 bottom-1 h-px origin-left bg-bronze transition-transform duration-500 ease-arrive;
+  /* --- Header --------------------------------------------------------- */
+
+  .nav {
+    position: fixed;
+    inset-inline: 0;
+    top: 0;
+    z-index: 40;
+    border-bottom: 1px solid theme("colors.hairline");
+    background: rgba(248, 244, 236, .94);
+    backdrop-filter: blur(8px);
   }
 
-  .nav-desktop-link:hover .nav-desktop-underline {
-    transform: scaleX(1);
+  .nav__bar {
+    display: flex;
+    height: var(--nav-height);
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
   }
 
-  .ornamental-rule {
-    @apply flex w-full items-center opacity-65;
+  .nav__desktop { display: none; }
+
+  /* The toggle was a bare 24px glyph floating at the edge. It is now a
+     bordered control with a word beside it, so it reads as a button. */
+  .nav__toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: .5rem;
+    height: 40px;
+    padding-inline: .75rem;
+    border: 1px solid rgba(130, 87, 47, .4);
+    border-radius: 2px;
+    background: rgba(252, 249, 243, .7);
+    color: theme("colors.maroon");
+    font-size: .6875rem;
+    font-weight: 600;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+    transition: border-color 200ms var(--ease-calm),
+      background-color 200ms var(--ease-calm);
   }
 
-  .ornamental-rule svg {
-    overflow: visible;
+  .nav__toggle:hover { border-color: theme("colors.bronze"); }
+
+  @media (min-width: 1024px) {
+    .nav__desktop { display: flex; align-items: center; gap: .35rem; }
+
+    .nav__link {
+      display: inline-flex;
+      align-items: center;
+      min-height: 44px;
+      padding-inline: .75rem;
+      color: theme("colors.charcoal");
+      font-size: .9375rem;
+      transition: color 200ms var(--ease-out);
+    }
+
+    .nav__link {
+      position: relative;
+      font-weight: 500;
+    }
+
+    /* A gold rule that grows from the centre. */
+    .nav__link::after {
+      position: absolute;
+      inset-inline: .75rem;
+      bottom: 8px;
+      height: 1px;
+      content: "";
+      background: var(--gold);
+      transform: scaleX(0);
+      transition: transform 320ms var(--ease-out);
+    }
+
+    .nav__link:hover,
+    .nav__link[data-active="true"] { color: theme("colors.maroon"); }
+
+    .nav__link:hover::after,
+    .nav__link[data-active="true"]::after { transform: scaleX(1); }
+
+    .nav__cta {
+      margin-left: .75rem;
+      min-height: 42px;
+      padding-inline: 1.15rem;
+      font-size: .8125rem;
+    }
+
+    .nav__toggle { display: none; }
   }
 
-  .sacred-niche {
-    background-image:
-      linear-gradient(135deg, rgba(178,140,87,.18), transparent 28%),
-      linear-gradient(315deg, rgba(128,91,56,.11), transparent 24%);
-    box-shadow:
-      0 1px 0 rgba(255,255,255,.7) inset,
-      0 18px 45px -32px rgba(32,26,23,.52);
+  /* --- Mobile sheet --------------------------------------------------- */
+
+  .sheet {
+    position: fixed;
+    inset: var(--nav-height) 0 0;
+    z-index: 39;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+    overscroll-behavior: contain;
   }
 
-  .surface-ivory,
-  .surface-cream,
-  .surface-paper,
-  .surface-maroon {
+  .sheet__nav {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    padding-top: .5rem;
+  }
+
+  .sheet__link {
+    display: flex;
+    align-items: center;
+    min-height: 60px;
+    border-bottom: 1px solid rgba(130, 87, 47, .18);
+    color: theme("colors.maroon");
+    font-family: var(--font-newsreader);
+    font-size: 1.3rem;
+  }
+
+  .sheet__link[data-active="true"] { color: theme("colors.bronze"); }
+
+  .sheet__foot {
+    padding-block: 1.25rem max(1.25rem, env(safe-area-inset-bottom));
+  }
+
+  .sheet__cta { width: 100%; }
+
+  /* --- The shrine (hero) ---------------------------------------------- */
+
+  /*
+    Sri Narasimha as the page, not as an object on it.
+
+    The painting is a full-bleed background layer masked to fade out downward;
+    the type sits on the dark field below. See Hero.tsx for the containers this
+    replaced and why each of them read as pasted-on.
+  */
+  .shrine {
     position: relative;
     isolation: isolate;
-  }
-
-  .surface-ivory {
-    background-color: theme("colors.ivory");
-    background-image:
-      linear-gradient(90deg, transparent, rgba(130,87,47,.025) 48%, transparent),
-      radial-gradient(circle at 8% 70%, rgba(130,87,47,.04), transparent 22rem);
-  }
-
-  .surface-cream {
-    background-color: theme("colors.cream");
-    background-image:
-      linear-gradient(115deg, rgba(255,255,255,.18), transparent 42%),
-      repeating-linear-gradient(0deg, transparent 0 31px, rgba(91,85,78,.022) 31px 32px);
-  }
-
-  .surface-paper {
-    background-color: theme("colors.paper");
-    background-image:
-      radial-gradient(circle at 50% 0, rgba(255,255,255,.35), transparent 34rem);
-  }
-
-  .surface-maroon {
-    color: theme("colors.ivory");
-    background-color: theme("colors.maroon");
-    background-image:
-      radial-gradient(circle at 70% 20%, rgba(209,176,120,.11), transparent 25rem),
-      linear-gradient(105deg, rgba(0,0,0,.08), transparent 36%);
-  }
-
-  .manuscript-tag {
-    @apply inline-flex min-h-tap items-center border-y border-hairline px-4 text-[0.6875rem] font-semibold uppercase tracking-[0.18em] text-bronze;
-    background: rgba(248,242,232,.52);
-  }
-
-  .corner-frame {
-    position: relative;
-  }
-
-  .corner-frame::before,
-  .corner-frame::after {
-    position: absolute;
-    z-index: 2;
-    width: 28px;
-    height: 28px;
-    pointer-events: none;
-    content: "";
-  }
-
-  .corner-frame::before {
-    top: -7px;
-    left: -7px;
-    border-top: 1px solid theme("colors.brass");
-    border-left: 1px solid theme("colors.brass");
-  }
-
-  .corner-frame::after {
-    right: -7px;
-    bottom: -7px;
-    border-right: 1px solid theme("colors.brass");
-    border-bottom: 1px solid theme("colors.brass");
-  }
-}
-
-html[data-intro="play"] header [data-brand-lockup] {
-  opacity: 0;
-}
-
-html[data-intro="skip"] .sacred-intro,
-html[data-intro="done"] .sacred-intro {
-  display: none;
-}
-
-.sacred-intro {
-  position: fixed;
-  inset: 0;
-  z-index: 200;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  overflow: hidden;
-  background-color: #4b1d19;
-  color: #d7b980;
-  transition: background-color 760ms var(--ease-out);
-}
-
-.sacred-intro::before {
-  position: absolute;
-  inset: 0;
-  content: "";
-  background:
-    radial-gradient(circle at 50% 45%, rgba(209, 176, 120, .13), transparent 26rem),
-    linear-gradient(115deg, rgba(255, 255, 255, .018), transparent 42%);
-  transition: opacity 620ms var(--ease-out);
-}
-
-.sacred-intro__field {
-  position: absolute;
-  inset: 0;
-  display: grid;
-  place-items: center;
-  opacity: .42;
-  transition: opacity 620ms var(--ease-out), transform 820ms var(--ease-out);
-}
-
-.sacred-intro__field::before,
-.sacred-intro__field::after {
-  position: absolute;
-  width: min(72vw, 50rem);
-  height: 1px;
-  content: "";
-  background: linear-gradient(90deg, transparent, currentColor, transparent);
-  opacity: .22;
-  transform: rotate(45deg);
-}
-
-.sacred-intro__field::after {
-  transform: rotate(-45deg);
-}
-
-.sacred-intro__ring {
-  position: absolute;
-  border: 1px solid currentColor;
-  border-radius: 50%;
-  opacity: 0;
-  animation: intro-ring 1500ms var(--ease-out) forwards;
-}
-
-.sacred-intro__ring--outer {
-  width: min(76vw, 38rem);
-  aspect-ratio: 1;
-  animation-delay: 180ms;
-}
-
-.sacred-intro__ring--inner {
-  width: min(58vw, 27rem);
-  aspect-ratio: 1;
-  animation-delay: 360ms;
-}
-
-.sacred-intro__lockup {
-  position: relative;
-  display: inline-flex;
-  align-items: center;
-  gap: clamp(1rem, 2.5vw, 2rem);
-  width: min(calc(100vw - 3rem), 34rem);
-  transform-origin: top left;
-  animation: intro-lockup 900ms 180ms var(--ease-out) both;
-  will-change: transform;
-}
-
-.sacred-intro__mark {
-  display: block;
-  width: clamp(6.25rem, 19vw, 8.5rem);
-  flex: none;
-  filter: drop-shadow(0 0 26px rgba(209, 176, 120, .16));
-}
-
-.sacred-intro__wordmark {
-  display: flex;
-  min-width: 0;
-  flex-direction: column;
-  color: #f8f4ec;
-  opacity: 0;
-  animation: intro-words 700ms 980ms var(--ease-out) forwards;
-}
-
-.sacred-intro__wordmark > span:first-child {
-  font-family: var(--font-newsreader);
-  font-variation-settings: "opsz" 72;
-  font-weight: 520;
-  font-size: clamp(2.2rem, 7vw, 4rem);
-  line-height: .84;
-  letter-spacing: -.02em;
-}
-
-.sacred-intro__wordmark > span:nth-child(2) {
-  margin-top: .65rem;
-  color: #d7b980;
-  font-size: clamp(.72rem, 2vw, .9rem);
-  font-weight: 600;
-  letter-spacing: .31em;
-  line-height: 1;
-  text-transform: uppercase;
-}
-
-.sacred-intro__wordmark > span:last-child {
-  margin-top: 1.25rem;
-  color: rgba(243, 236, 223, .58);
-  font-size: clamp(.62rem, 1.6vw, .72rem);
-  font-weight: 500;
-  letter-spacing: .15em;
-  line-height: 1.45;
-  text-transform: uppercase;
-  transition: opacity 300ms ease;
-}
-
-.sacred-intro__wordmark > span:last-child > span {
-  font-family: var(--font-tiro-sanskrit);
-  font-size: 1.12em;
-  letter-spacing: .05em;
-  text-transform: none;
-}
-
-.sacred-intro__skip {
-  position: absolute;
-  right: clamp(1.25rem, 4vw, 3rem);
-  bottom: clamp(1.25rem, 4vw, 2.5rem);
-  min-height: 44px;
-  border-bottom: 1px solid rgba(209, 176, 120, .4);
-  color: rgba(243, 236, 223, .68);
-  font-size: .68rem;
-  font-weight: 600;
-  letter-spacing: .18em;
-  opacity: 0;
-  text-transform: uppercase;
-  animation: intro-words 500ms 1450ms var(--ease-out) forwards;
-  transition: color 200ms ease, border-color 200ms ease;
-}
-
-.sacred-intro__skip:hover {
-  border-color: #d7b980;
-  color: #f8f4ec;
-}
-
-.sacred-intro--merging {
-  background-color: transparent;
-}
-
-.sacred-intro--merging::before,
-.sacred-intro--merging .sacred-intro__field {
-  opacity: 0;
-}
-
-.sacred-intro--merging .sacred-intro__field {
-  transform: scale(1.12);
-}
-
-.sacred-intro--merging .sacred-intro__wordmark > span:last-child {
-  opacity: 0;
-}
-
-.narasimha-mark--animated .narasimha-mark__line {
-  stroke-dasharray: 420;
-  stroke-dashoffset: 420;
-  animation: narasimha-draw 1450ms 260ms var(--ease-out) forwards;
-}
-
-.narasimha-mark--animated .narasimha-mark__halo {
-  opacity: 0;
-  transform-box: fill-box;
-  transform-origin: center;
-  animation: narasimha-halo 1600ms 100ms var(--ease-out) forwards;
-}
-
-.narasimha-mark--animated .narasimha-mark__accent {
-  opacity: 0;
-  animation: narasimha-accent 520ms 1320ms ease-out forwards;
-}
-
-@keyframes intro-ring {
-  from { opacity: 0; transform: scale(.78); }
-  to { opacity: .26; transform: scale(1); }
-}
-
-@keyframes intro-lockup {
-  from { opacity: 0; transform: scale(.92); }
-  to { opacity: 1; transform: scale(1); }
-}
-
-@keyframes intro-words {
-  from { opacity: 0; transform: translate3d(0, 12px, 0); }
-  to { opacity: 1; transform: none; }
-}
-
-@keyframes narasimha-draw {
-  to { stroke-dashoffset: 0; }
-}
-
-@keyframes narasimha-halo {
-  from { opacity: 0; transform: rotate(-12deg) scale(.82); }
-  to { opacity: 1; transform: rotate(0) scale(1); }
-}
-
-@keyframes narasimha-accent {
-  0% { opacity: 0; filter: drop-shadow(0 0 0 transparent); }
-  60% { opacity: 1; filter: drop-shadow(0 0 7px currentColor); }
-  100% { opacity: 1; filter: drop-shadow(0 0 2px currentColor); }
-}
-
-@layer utilities {
-  /* Above-the-fold entrance. Kept short and low-travel: long hero fades
-     directly inflate Speed Index without adding perceived elegance. */
-  @keyframes rise {
-    from { opacity: 0; transform: translate3d(0, 18px, 0); }
-    to   { opacity: 1; transform: none; }
-  }
-  @keyframes fade {
-    from { opacity: 0; transform: scale(1.018); filter: saturate(.7); }
-    to   { opacity: 1; transform: none; }
-  }
-  @keyframes line-draw {
-    to { transform: scaleX(1); }
-  }
-  @keyframes drift {
-    0%, 100% { transform: translate3d(0, 0, 0) rotate(0deg); }
-    50% { transform: translate3d(0, -10px, 0) rotate(.7deg); }
-  }
-  @keyframes cinematic-zoom {
-    from { transform: scale(1.035); }
-    to { transform: scale(1.11) translate3d(-1.2%, -.6%, 0); }
-  }
-  @keyframes backdrop-drift {
-    from { transform: scale(1.08) translate3d(-1%, 0, 0); }
-    to { transform: scale(1.16) translate3d(1.5%, -1%, 0); }
-  }
-  @keyframes deity-backdrop-drift {
-    from { transform: scale(1.06) translate3d(0, 0, 0); }
-    to { transform: scale(1.12) translate3d(1.2%, -.6%, 0); }
-  }
-  .animate-rise {
-    animation: rise var(--dur-hero) var(--ease-out) both;
-  }
-  .animate-fade {
-    animation: fade var(--dur-hero) var(--ease-out) both;
-  }
-
-  /* Disclosure body. Height cannot be transitioned from `auto`, so the answer
-     is faded and nudged instead — the same gesture as a scroll reveal. */
-  @keyframes disclose {
-    from { opacity: 0; transform: translate3d(0, -4px, 0); }
-    to   { opacity: 1; transform: none; }
-  }
-  .animate-disclose {
-    animation: disclose 260ms var(--ease-out) both;
-  }
-
-  /* Loading placeholders. A slow, low-contrast sweep — never a pulse. */
-  @keyframes shimmer {
-    from { background-position: 200% 0; }
-    to   { background-position: -200% 0; }
-  }
-  .skeleton {
-    border-radius: 1px;
-    background-image: linear-gradient(
-      90deg,
-      theme("colors.cream") 25%,
-      theme("colors.sand") 50%,
-      theme("colors.cream") 75%
-    );
-    background-size: 200% 100%;
-    animation: shimmer 2.4s linear infinite;
-  }
-
-  /* A hairline that fades out at both ends — used to close a section without
-     drawing a hard rule across the full width. */
-  .rule-fade {
-    height: 1px;
-    background: linear-gradient(
-      90deg,
-      transparent,
-      theme("colors.hairline") 20%,
-      theme("colors.hairline") 80%,
-      transparent
-    );
-  }
-
-  .slow-drift {
-    animation: drift 14s ease-in-out infinite;
-  }
-
-  .cinematic-image img {
-    animation: cinematic-zoom 18s ease-in-out alternate infinite;
-  }
-
-  .hero-deity-backdrop {
-    position: absolute;
-    z-index: 0;
-    inset: var(--nav-height) 0 0 auto;
-    width: min(76vw, 74rem);
+    display: flex;
+    min-height: 100svh;
+    flex-direction: column;
+    /* Type is anchored to the bottom, under the painting rather than over it. */
+    justify-content: flex-end;
     overflow: hidden;
-    pointer-events: none;
+    padding-top: var(--nav-height);
+    padding-bottom: clamp(2rem, 6svh, 4rem);
+    /* The ground the painting dissolves into. Sampled toward the painting's
+       own dark green-browns so the fade has somewhere to land. */
+    background:
+      radial-gradient(ellipse 90% 40% at 50% 0%, #3d2116 0%, transparent 70%),
+      linear-gradient(180deg, #2f1611 0%, #24100c 55%, #1b0b08 100%);
+    color: theme("colors.ivory");
   }
 
-  .hero-deity-backdrop__image {
-    object-fit: cover;
-    object-position: 50% 48%;
-    opacity: .72;
-    filter: saturate(.86) sepia(.025) contrast(1.01);
-    transform-origin: 58% 45%;
-    animation: deity-backdrop-drift 24s ease-in-out alternate infinite;
-  }
-
-  .hero-deity-veil {
+  .shrine__art {
     position: absolute;
-    z-index: 1;
+    z-index: -2;
+    /* Bleeds past the top so the parallax has somewhere to travel. */
+    inset: -4% 0 auto;
+    /* Tall enough to be the subject of the screen, short enough to leave the
+       lower third as a clean field for the type. */
+    height: 78svh;
+    transform-origin: 50% 30%;
+    /* The fade is a mask, not an overlay: the deity keeps full colour where he
+       is looked at, and the image genuinely ends in nothing rather than
+       sitting behind a translucent sheet. */
+    mask-image: linear-gradient(
+      180deg,
+      #000 0%,
+      #000 46%,
+      rgba(0, 0, 0, .75) 68%,
+      rgba(0, 0, 0, .28) 86%,
+      transparent 100%
+    );
+    -webkit-mask-image: linear-gradient(
+      180deg,
+      #000 0%,
+      #000 46%,
+      rgba(0, 0, 0, .75) 68%,
+      rgba(0, 0, 0, .28) 86%,
+      transparent 100%
+    );
+  }
+
+  .shrine__img {
+    object-fit: cover;
+    /* Keeps the face and the raised arms in the upper half on a portrait
+       phone, where `cover` has to crop the sides of a near-square source. */
+    object-position: 50% 22%;
+  }
+
+  /* A soft warm wash over the lower painting, so the transition from image to
+     ground is a change of light rather than a change of material. */
+  .shrine__field {
+    position: absolute;
+    z-index: -1;
     inset: 0;
     pointer-events: none;
     background:
-      linear-gradient(90deg,
-        theme("colors.ivory") 0%,
-        rgba(248,244,236,.98) 32%,
-        rgba(248,244,236,.84) 46%,
-        rgba(248,244,236,.28) 62%,
-        rgba(248,244,236,.06) 80%,
-        transparent 100%),
-      linear-gradient(180deg,
-        rgba(248,244,236,.14) 0%,
-        transparent 45%,
-        rgba(248,244,236,.34) 100%);
+      radial-gradient(ellipse 70% 34% at 50% 24%, rgba(255, 226, 168, .12), transparent 70%),
+      linear-gradient(180deg, transparent 44%, rgba(27, 11, 8, .5) 74%, rgba(27, 11, 8, .88) 100%);
   }
 
-  .cinematic-backdrop {
-    animation: backdrop-drift 26s ease-in-out alternate infinite;
+  .shrine__inner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  .shrine__title {
+    max-width: 20ch;
+    font-size: clamp(1.75rem, 6vw, 2.2rem);
+    font-weight: 400;
+    line-height: 1.14;
+    letter-spacing: -.02em;
+    color: theme("colors.ivory");
+    text-shadow: 0 2px 26px rgba(0, 0, 0, .75);
+  }
+
+  .shrine__title span {
+    display: block;
+    color: var(--gold-light);
+    font-style: italic;
+  }
+
+  .shrine__lead {
+    max-width: 38ch;
+    margin-top: .85rem;
+    color: rgba(248, 244, 236, .8);
+    font-size: .9375rem;
+    line-height: 1.55;
+    text-shadow: 0 1px 14px rgba(0, 0, 0, .6);
+  }
+
+  .shrine__actions {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: .9rem;
+    width: 100%;
+    margin-top: 1.5rem;
+  }
+
+  .shrine__actions .btn { width: 100%; max-width: 20rem; }
+
+  .shrine__scroll {
+    display: inline-flex;
+    align-items: center;
+    gap: .45rem;
+    min-height: 40px;
+    color: rgba(226, 199, 141, .72);
+    font-size: .625rem;
+    font-weight: 600;
+    letter-spacing: .18em;
+    text-transform: uppercase;
+  }
+
+  .shrine__scroll svg {
+    color: var(--gold);
+    animation: nudge-down 2.4s var(--ease-calm) infinite;
+  }
+
+  .shrine__scroll:hover { color: var(--gold-light); }
+
+  @media (min-width: 768px) {
+    .shrine__art { height: 82svh; }
+    .shrine__title { font-size: clamp(2.2rem, 4.4vw, 3rem); }
+    .shrine__lead { font-size: 1.0625rem; }
+
+    .shrine__actions {
+      flex-direction: row;
+      justify-content: center;
+      gap: 2rem;
+    }
+
+    .shrine__actions .btn { width: auto; }
+  }
+
+  @media (min-width: 1024px) {
+    /* `contain` was tried here and reintroduced the exact problem the
+       full-bleed treatment exists to solve: it left hard vertical edges, so
+       the painting was a rectangle sitting on the page again. It stays
+       `cover`, and the mask gains a horizontal fade so the sides dissolve
+       into the ground instead of ending on a line. */
+    .shrine__art {
+      height: 92svh;
+      mask-image:
+        linear-gradient(
+          180deg,
+          #000 0%,
+          #000 44%,
+          rgba(0, 0, 0, .72) 66%,
+          rgba(0, 0, 0, .26) 86%,
+          transparent 100%
+        ),
+        linear-gradient(90deg, transparent 0%, #000 16%, #000 84%, transparent 100%);
+      mask-composite: intersect;
+      -webkit-mask-image:
+        linear-gradient(
+          180deg,
+          #000 0%,
+          #000 44%,
+          rgba(0, 0, 0, .72) 66%,
+          rgba(0, 0, 0, .26) 86%,
+          transparent 100%
+        ),
+        linear-gradient(90deg, transparent 0%, #000 16%, #000 84%, transparent 100%);
+      -webkit-mask-composite: source-in;
+    }
+
+    .shrine__img { object-position: 50% 16%; }
+
+    .shrine__title { font-size: 3.1rem; max-width: 26ch; }
+  }
+
+  /* --- Priest --------------------------------------------------------- */
+
+  .priest { display: flex; flex-direction: column; gap: 1.75rem; }
+
+  .priest__body { display: flex; flex-direction: column; gap: .85rem; }
+
+  .priest__eyebrow {
+    color: theme("colors.bronze");
+    font-size: .6875rem;
+    font-weight: 600;
+    letter-spacing: .2em;
+    text-transform: uppercase;
+  }
+
+  .priest__name {
+    font-size: 1.75rem;
+    line-height: 1.12;
+  }
+
+  @media (min-width: 768px) {
+    .priest__name { font-size: 2.35rem; }
+  }
+
+  .priest__role {
+    color: theme("colors.bronze");
+    font-size: .8125rem;
+    font-weight: 600;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+  }
+
+  .priest__para { max-width: 60ch; color: theme("colors.charcoal"); }
+
+  .priest__note { color: theme("colors.stone"); font-size: .8125rem; }
+
+  @media (min-width: 768px) {
+    .priest { flex-direction: row; align-items: flex-start; gap: 3rem; }
+    .priest__media { flex: 0 0 34%; }
+    .priest__body { flex: 1; }
+  }
+
+  /* --- Section head ---------------------------------------------------- */
+
+  .head { display: flex; flex-direction: column; align-items: flex-start; }
+
+  .head__eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: .55rem;
+    color: theme("colors.bronze");
+    font-size: .6875rem;
+    font-weight: 600;
+    letter-spacing: .2em;
+    text-transform: uppercase;
+  }
+
+  .head__lamp { width: .95rem; height: 1.45rem; flex: none; }
+
+  .head__title {
+    margin-top: .7rem;
+    font-size: 1.75rem;
+    line-height: 1.12;
+  }
+
+  .head__lead {
+    max-width: 44ch;
+    margin-top: .7rem;
+    color: theme("colors.charcoal");
+    font-size: 1.0625rem;
+    line-height: 1.55;
+  }
+
+  .head__rule {
+    width: 9rem;
+    height: auto;
+    margin-top: 1.1rem;
+    color: theme("colors.bronze");
+    opacity: .6;
+  }
+
+  @media (min-width: 768px) {
+    .head__title { font-size: 2.35rem; }
+  }
+
+  /* --- Sourced marks --------------------------------------------------- */
+
+  /* Every mark is a masked block, so a real SVG file takes `background`. */
+  .mark {
+    display: block;
+    mask-repeat: no-repeat;
+    mask-position: center;
+    mask-size: contain;
+    -webkit-mask-repeat: no-repeat;
+    -webkit-mask-position: center;
+    -webkit-mask-size: contain;
+  }
+
+  .head__tilak {
+    width: .55rem;
+    height: 1.3rem;
+    flex: none;
+    background: var(--gold);
+  }
+
+  .head__rule {
+    width: 4.5rem;
+    height: 2px;
+    margin-top: 1.1rem;
+    background: linear-gradient(90deg, var(--gold), rgba(201, 162, 95, .1));
+  }
+
+  /* --- Ornamented bands ------------------------------------------------ */
+
+  /* A section carrying a large, very faint chakra watermark. It gives the
+     band depth without any element the reader has to look past. */
+  .marked { position: relative; isolation: isolate; overflow: hidden; }
+
+  .marked__chakra {
+    position: absolute;
+    z-index: -1;
+    top: -7rem;
+    right: -10rem;
+    width: 26rem;
+    aspect-ratio: 1;
+    background: var(--gold);
+    opacity: .1;
+    animation: slow-spin 220s linear infinite;
+    pointer-events: none;
+  }
+
+  @media (min-width: 1024px) {
+    .marked__chakra { width: 38rem; top: -10rem; right: -12rem; }
+  }
+
+  /* A dark band. The page had drifted to one continuous pale sheet after the
+     maroon philosophy band was removed; the ceremonies list carries the dark
+     register instead, so the shrine at the top and the enquiry at the bottom
+     are no longer the only dark ground. */
+  .marked--dark {
+    background:
+      radial-gradient(ellipse 80% 60% at 50% 0%, #6d2a22 0%, transparent 60%),
+      theme("colors.maroon");
+    color: theme("colors.ivory");
+  }
+
+  .marked--dark .head__eyebrow { color: var(--gold-light); }
+  .marked--dark .head__title { color: theme("colors.ivory"); }
+  .marked--dark .head__lead { color: rgba(248, 244, 236, .78); }
+  .marked--dark .head__rule {
+    background: linear-gradient(90deg, var(--gold-light), rgba(201, 162, 95, .1));
+  }
+
+  .marked--dark .catlist { border-color: rgba(226, 199, 141, .28); }
+
+  .marked--dark .catlist__row {
+    border-color: rgba(226, 199, 141, .2);
+  }
+
+  .marked--dark .catlist__name { color: theme("colors.ivory"); }
+  .marked--dark .catlist__meta { color: rgba(226, 199, 141, .75); }
+  .marked--dark .catlist__arrow { color: var(--gold-light); }
+
+  .marked--dark .catlist__row:hover {
+    background: rgba(226, 199, 141, .06);
+  }
+
+  .marked--dark .catlist__row::before {
+    background: linear-gradient(180deg, var(--gold-light), rgba(226, 199, 141, .15));
+  }
+
+  /* --- Band rule ------------------------------------------------------- */
+
+  .rule {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding-block: 1.25rem;
+    background: theme("colors.cream");
+  }
+
+  /* Deepen the paper surfaces a little. They had drifted close enough to
+     white that the site read as a document rather than as this palette. */
+
+
+  .rule__line {
+    height: 1px;
+    flex: 1;
+    background: linear-gradient(90deg, transparent, rgba(130, 87, 47, .35));
+  }
+
+  .rule__line:last-child {
+    background: linear-gradient(90deg, rgba(130, 87, 47, .35), transparent);
+  }
+
+  /* The sourced chakra, masked so it takes the bronze. */
+  .rule__mark {
+    width: 1.6rem;
+    height: 1.6rem;
+    flex: none;
+    background: theme("colors.bronze");
+    opacity: .7;
+  }
+
+  @media (min-width: 768px) {
+    .rule { padding-block: 1.75rem; }
+    .rule__mark { width: 2.1rem; height: 2.1rem; }
+  }
+
+  /* --- Category list -------------------------------------------------- */
+
+  .catlist { margin-top: 1.5rem; border-top: 1px solid theme("colors.hairline"); }
+
+  .catlist__row {
+    position: relative;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: center;
+    gap: .25rem 1rem;
+    min-height: 76px;
+    padding-block: 1rem;
+    padding-inline: .1rem;
+    border-bottom: 1px solid theme("colors.hairline");
+    transition: padding-inline 380ms var(--ease-out),
+      background-color 280ms var(--ease-calm);
+  }
+
+  /* A brass stem grows up the left edge on hover — the row lights rather
+     than merely tinting. */
+  .catlist__row::before {
+    position: absolute;
+    inset-block: .55rem;
+    left: 0;
+    width: 2px;
+    content: "";
+    background: linear-gradient(180deg, var(--gold), rgba(201, 162, 95, .15));
+    transform: scaleY(0);
+    transform-origin: bottom;
+    transition: transform 420ms var(--ease-out);
+  }
+
+  .catlist__row:hover::before { transform: scaleY(1); }
+
+  .catlist__row:hover {
+    padding-inline: .85rem .1rem;
+    background: rgba(252, 249, 243, .7);
+  }
+
+  .catlist__name {
+    grid-column: 1;
+    color: theme("colors.maroon");
+    font-family: var(--font-newsreader);
+    font-size: 1.4rem;
+    line-height: 1.1;
+  }
+
+  .catlist__meta {
+    grid-column: 1;
+    grid-row: 2;
+    color: theme("colors.stone");
+    font-size: .875rem;
+  }
+
+  .catlist__arrow {
+    grid-row: 1 / span 2;
+    grid-column: 2;
+    color: theme("colors.bronze");
+    font-size: 1.25rem;
+    transition: transform 200ms var(--ease-out);
+  }
+
+  .catlist__row:hover .catlist__arrow { transform: translateX(4px); }
+
+  @media (min-width: 768px) {
+    .catlist__row { grid-template-columns: minmax(0, 1fr) auto 2rem; }
+    .catlist__name { font-size: 1.7rem; }
+    .catlist__meta { grid-row: 1; grid-column: 2; }
+    .catlist__arrow { grid-row: 1; grid-column: 3; justify-self: end; }
+  }
+
+  /* --- Category page head --------------------------------------------- */
+
+  .cathead__title { font-size: 2rem; line-height: 1.1; }
+
+  .cathead__lead {
+    max-width: 46ch;
+    margin-top: .85rem;
+    color: theme("colors.charcoal");
+    font-size: 1.0625rem;
+    line-height: 1.55;
+  }
+
+  @media (min-width: 768px) {
+    .cathead__title { font-size: 2.75rem; }
+  }
+
+  /* --- Ceremony index -------------------------------------------------- */
+
+  .cx__title { font-size: 1.6rem; line-height: 1.15; }
+
+  .cx__lead {
+    max-width: 42ch;
+    margin-top: .7rem;
+    color: theme("colors.charcoal");
+    font-size: 1.0625rem;
+    line-height: 1.55;
+  }
+
+  .cx__groups {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    margin-top: 2rem;
+  }
+
+  /* No heading above it any more, so it does not need the gap for one. */
+  .cx__groups--top { margin-top: 0; }
+
+  .cxg__head {
+    display: flex;
+    gap: .9rem;
+    align-items: center;
+    padding-bottom: .75rem;
+    border-bottom: 1px solid theme("colors.hairline");
+  }
+
+  /* The artwork is a small framed square, not a background. It identifies
+     the group the way an icon would, but with a real image. */
+  .cxg__figure {
+    position: relative;
+    flex: none;
+    width: 5.5rem;
+    height: 7rem;
+    overflow: hidden;
+    border: 1px solid theme("colors.hairline");
+    border-radius: 2px;
+    background: theme("colors.cream");
+  }
+
+  .cxg__img { object-fit: cover; object-position: 50% 20%; }
+
+  .cxg__title {
+    font-family: var(--font-newsreader);
+    font-size: 1.3rem;
+    line-height: 1.1;
+    color: theme("colors.maroon");
+  }
+
+  .cxg__qualifier {
+    margin-top: .25rem;
+    color: theme("colors.stone");
+    font-size: .875rem;
+    line-height: 1.35;
+  }
+
+  .cxg__items { margin-top: .25rem; }
+
+  .cxi {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: .28rem;
+    padding-block: .9rem;
+    border-bottom: 1px solid theme("colors.hairline");
+  }
+
+  .cxi:last-child { border-bottom: 0; }
+
+  .cxi__name {
+    font-family: var(--font-newsreader);
+    font-size: 1.125rem;
+    line-height: 1.25;
+    color: theme("colors.maroon");
+  }
+
+  .cxi__deity { color: theme("colors.stone"); font-size: .9375rem; line-height: 1.4; }
+
+  .cxi__purpose {
+    margin-top: .15rem;
+    padding: .1rem .4rem;
+    border: 1px solid rgba(178, 140, 87, .5);
+    color: theme("colors.bronze");
+    font-size: .6875rem;
+    font-weight: 600;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+
+  .cx__notes {
+    display: flex;
+    flex-direction: column;
+    gap: .5rem;
+    margin-top: 1.75rem;
+    padding-top: 1rem;
+    border-top: 1px solid theme("colors.hairline");
+  }
+
+  .cx__notes p { color: theme("colors.stone"); font-size: .875rem; line-height: 1.5; }
+
+  @media (min-width: 768px) {
+    .cx__title { font-size: 2.15rem; }
+    .cxg__figure { width: 7.5rem; height: 9.5rem; }
+    .cxg__title { font-size: 1.6rem; }
+  }
+
+  @media (min-width: 1024px) {
+    .cx__groups { gap: 3rem; margin-top: 3rem; }
+
+    .cxg {
+      display: grid;
+      grid-template-columns: minmax(0, 4fr) minmax(0, 8fr);
+      gap: 2.5rem;
+      align-items: start;
+    }
+
+    /* The group head follows the reader down its own rows, so a long list
+       never loses the deity it belongs to. */
+    .cxg__head {
+      position: sticky;
+      top: calc(var(--nav-height) + 2rem);
+      flex-direction: column;
+      gap: 1rem;
+      align-items: flex-start;
+      padding-bottom: 0;
+      border-bottom: 0;
+    }
+
+    .cxg__figure { width: 100%; height: auto; aspect-ratio: 4 / 5; }
+
+    .cxg__items { margin-top: 0; border-top: 1px solid theme("colors.hairline"); }
+
+    .cxi {
+      display: grid;
+      grid-template-columns: minmax(0, 6fr) minmax(0, 5fr) auto;
+      column-gap: 1.5rem;
+      align-items: baseline;
+      padding-block: 1.1rem;
+    }
+
+    .cxi__name { font-size: 1.2rem; }
+
+    .cxi__purpose { margin-top: 0; justify-self: end; }
+  }
+
+  /* --- Q&A ------------------------------------------------------------ */
+
+  .qa { margin-top: 1.5rem; border-top: 1px solid theme("colors.hairline"); }
+
+  .qa__item {
+    padding-block: 1.1rem;
+    border-bottom: 1px solid theme("colors.hairline");
+  }
+
+  .qa__q {
+    color: theme("colors.maroon");
+    font-family: var(--font-newsreader);
+    font-size: 1.125rem;
+    line-height: 1.3;
+  }
+
+  .qa__a {
+    max-width: 62ch;
+    margin-top: .4rem;
+    color: theme("colors.charcoal");
+  }
+
+  @media (min-width: 768px) {
+    .qa__item {
+      display: grid;
+      grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+      gap: 2rem;
+      padding-block: 1.4rem;
+    }
+    .qa__a { margin-top: 0; }
+  }
+
+  /* --- Enquiry steps --------------------------------------------------- */
+
+  .steps {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    margin-top: 1.5rem;
+    border-top: 1px solid theme("colors.hairline");
+  }
+
+  .steps__item {
+    display: flex;
+    gap: 1rem;
+    align-items: baseline;
+    padding-block: 1.1rem;
+    border-bottom: 1px solid theme("colors.hairline");
+  }
+
+  /* The number is set in the serif at display size — it does the work an icon
+     would, without inventing a glyph for "the occasion". */
+  .steps__num {
+    flex: none;
+    width: 1.6rem;
+    color: var(--gold);
+    font-family: var(--font-newsreader);
+    font-size: 1.5rem;
+    font-style: italic;
+    line-height: 1;
+  }
+
+  .steps__label {
+    font-family: var(--font-newsreader);
+    font-size: 1.125rem;
+    line-height: 1.25;
+    color: theme("colors.maroon");
+  }
+
+  .steps__detail {
+    max-width: 52ch;
+    margin-top: .3rem;
+    color: theme("colors.charcoal");
+    font-size: .9375rem;
+    line-height: 1.5;
+  }
+
+  .steps__note {
+    margin-top: 1.25rem;
+  }
+
+  .steps__note p {
+    max-width: 56ch;
+    color: theme("colors.stone");
+    font-size: .9375rem;
+    line-height: 1.55;
+  }
+
+  @media (min-width: 768px) {
+    .steps__num { width: 2.2rem; font-size: 2rem; }
+    .steps__label { font-size: 1.25rem; }
+  }
+
+  /* --- Contact -------------------------------------------------------- */
+
+  .contact__lead {
+    max-width: 48ch;
+    margin-top: .85rem;
+    color: theme("colors.charcoal");
+    font-size: 1.0625rem;
+    line-height: 1.55;
+  }
+
+  .contact__channels {
+    margin-top: 1.75rem;
+    border-top: 1px solid theme("colors.hairline");
+  }
+
+  .contact__channels a {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 1rem;
+    min-height: 60px;
+    padding-block: 1rem;
+    border-bottom: 1px solid theme("colors.hairline");
+    color: theme("colors.maroon");
+    font-family: var(--font-newsreader);
+    font-size: 1.2rem;
+  }
+
+  .contact__channels a span {
+    color: theme("colors.charcoal");
+    font-family: var(--font-jakarta);
+    font-size: .9375rem;
+  }
+
+  .contact__missing {
+    margin-top: 1.5rem;
+    padding: 1rem;
+    border: 1px dashed rgba(130, 87, 47, .45);
+    color: theme("colors.stone");
+    font-size: .9375rem;
+  }
+
+  .qa--contact { margin-top: 2.75rem; }
+
+  /* --- Closing CTA ---------------------------------------------------- */
+
+  .cta {
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+    padding-block: 2.75rem;
+    background:
+      radial-gradient(ellipse 80% 60% at 50% 0%, #7d3128 0%, transparent 62%),
+      theme("colors.maroon");
+  }
+
+  .cta__chakra {
+    position: absolute;
+    z-index: -1;
+    right: -8rem;
+    bottom: -11rem;
+    width: 24rem;
+    aspect-ratio: 1;
+    background: var(--gold);
+    opacity: .11;
+    animation: slow-spin 200s linear infinite reverse;
+    pointer-events: none;
+  }
+
+  .cta__glow {
+    position: absolute;
+    z-index: -1;
+    inset-inline: 0;
+    top: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--gold-dim) 30%, var(--gold-dim) 70%, transparent);
+  }
+
+  .cta__eyebrow {
+    color: var(--gold-light);
+    font-size: .6875rem;
+    font-weight: 600;
+    letter-spacing: .2em;
+    text-transform: uppercase;
+  }
+
+  .cta__title {
+    margin-top: .7rem;
+    color: theme("colors.ivory");
+    font-size: 1.75rem;
+    line-height: 1.12;
+  }
+
+  .cta__rule {
+    display: block;
+    width: 4.5rem;
+    height: 2px;
+    margin-top: 1rem;
+    background: linear-gradient(90deg, var(--gold-light), rgba(201, 162, 95, .1));
+  }
+
+  .cta__text {
+    max-width: 46ch;
+    margin-top: 1rem;
+    color: rgba(248, 244, 236, .82);
+  }
+
+  .cta__actions {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    margin-top: 1.75rem;
+  }
+
+  .cta__button { width: 100%; }
+
+  /* The direct routes. Set as a list of icon links so WhatsApp, phone, and
+     email are each one tap and visibly distinct. */
+  .cta__direct {
+    display: flex;
+    flex-direction: column;
+    gap: .1rem;
+  }
+
+  .cta__direct a {
+    display: inline-flex;
+    align-items: center;
+    gap: .6rem;
+    min-height: 44px;
+    color: rgba(248, 244, 236, .88);
+    font-size: .9375rem;
+    transition: color 200ms var(--ease-calm);
+  }
+
+  .cta__direct a svg { color: var(--gold-light); flex: none; }
+
+  .cta__direct a:hover { color: var(--gold-light); }
+
+  .cta__note {
+    margin-top: 1.25rem;
+    color: rgba(248, 244, 236, .6);
+    font-size: .8125rem;
+  }
+
+  @media (min-width: 768px) {
+    .cta { padding-block: 4.5rem; }
+    .cta__title { font-size: 2.35rem; }
+
+    .cta__actions {
+      flex-direction: row;
+      align-items: center;
+      gap: 2.5rem;
+    }
+
+    .cta__button { width: auto; }
+
+    .cta__direct { flex-direction: row; gap: 1.75rem; }
+  }
+
+  /* --- Footer --------------------------------------------------------- */
+
+  .foot { border-top: 1px solid theme("colors.hairline"); }
+
+  .foot__inner {
+    display: flex;
+    flex-direction: column;
+    gap: 1.75rem;
+    padding-block: 2.5rem;
+  }
+
+  .foot__role {
+    margin-top: .85rem;
+    color: theme("colors.stone");
+    font-size: .8125rem;
+  }
+
+  .foot__nav { display: flex; flex-wrap: wrap; gap: .25rem 1.5rem; }
+
+  .foot__link {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    color: theme("colors.charcoal");
+    font-size: .9375rem;
+  }
+
+  .foot__link:hover { color: theme("colors.maroon"); }
+
+  .foot__contact { display: flex; flex-wrap: wrap; gap: .5rem 1.5rem; }
+
+  .foot__contact a {
+    color: theme("colors.maroon");
+    font-size: .9375rem;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+  .foot__legal {
+    padding-block: 1rem;
+    border-top: 1px solid theme("colors.hairline");
+    color: theme("colors.stone");
+    font-size: .8125rem;
+  }
+
+  @media (min-width: 768px) {
+    .foot__inner {
+      flex-direction: row;
+      justify-content: space-between;
+      padding-block: 3.5rem;
+    }
+  }
+
+  /* --- Image frame ---------------------------------------------------- */
+
+  .sacred-niche {
+    position: relative;
+    overflow: hidden;
+    border: 1px solid theme("colors.hairline");
+    border-radius: 2px;
+    background: theme("colors.cream");
   }
 }
 
-/* Scroll reveal: fade + gentle rise, driven by a single IntersectionObserver.
-   Elements stay visible if JS never runs, so content is never hidden.
+/* --- Keyframes -------------------------------------------------------- */
 
-   Tuned for "fast out, soft land": most of the distance is covered in the
-   first third of the duration, so the element feels like it arrives with the
-   scroll rather than trailing behind it. */
+@keyframes rise {
+  from { opacity: 0; transform: translate3d(0, 20px, 0); }
+  to   { opacity: 1; transform: none; }
+}
+
+@keyframes halo-breathe {
+  from { opacity: .75; transform: scale(1); }
+  to   { opacity: 1; transform: scale(1.07); }
+}
+
+@keyframes deity-drift {
+  from { transform: scale(1.04) translate3d(0, 0, 0); }
+  to   { transform: scale(1.11) translate3d(0, -1.4%, 0); }
+}
+
+@keyframes slow-spin {
+  from { transform: translateX(-50%) rotate(0deg); }
+  to   { transform: translateX(-50%) rotate(360deg); }
+}
+
+@keyframes sheen-sweep {
+  0%        { background-position: 200% 0; }
+  55%, 100% { background-position: -60% 0; }
+}
+
+@keyframes nudge-down {
+  0%, 100% { transform: translateY(0); opacity: .75; }
+  50%      { transform: translateY(4px); opacity: 1; }
+}
+
+/*
+  Scroll reveal. Content stays visible if JS never runs. On touch devices the
+  blur is dropped and the fade shortened — a 760ms blur-in meant a phone being
+  flick-scrolled showed blank bands, which read as a broken page.
+*/
 @layer components {
-  /* The transition must live on BOTH states. CSS resolves transitions from the
-     after-change style, so declaring it only on [data-reveal=""] meant the flip
-     to "shown" had no transition at all and the element popped in. */
   [data-reveal] {
     transition:
-      opacity var(--dur-reveal) var(--ease-out),
-      transform var(--dur-reveal) var(--ease-out),
-      filter calc(var(--dur-reveal) * 1.15) var(--ease-out);
+      opacity 500ms var(--ease-out),
+      transform 500ms var(--ease-out);
   }
 
-  [data-reveal=""] {
-    opacity: 0;
-    transform: translate3d(0, var(--reveal-rise), 0);
-    filter: blur(4px);
-    will-change: opacity, transform;
-  }
+  [data-reveal=""] { opacity: 0; transform: translate3d(0, 16px, 0); }
 
-  [data-reveal="shown"] {
-    opacity: 1;
-    transform: none;
-    filter: none;
-    will-change: auto;
-  }
+  [data-reveal="shown"] { opacity: 1; transform: none; }
 
-  /* No JS, or reduced motion: show everything immediately */
   html[data-reveal-off] [data-reveal] {
     opacity: 1;
     transform: none;
     transition: none;
+  }
+
+  @media (hover: none) and (pointer: coarse) {
+    [data-reveal] {
+      transition:
+        opacity 260ms var(--ease-out),
+        transform 320ms var(--ease-out);
+    }
+    [data-reveal=""] { transform: translate3d(0, 10px, 0); }
   }
 }
 
@@ -878,591 +1435,17 @@ html[data-intro="done"] .sacred-intro {
   [data-reveal] {
     opacity: 1 !important;
     transform: none !important;
-    filter: none !important;
     transition: none !important;
   }
-}
 
-@media (max-width: 639px) {
-  :root {
-    --nav-height: 64px;
-  }
-
-  body::before {
-    display: none;
-  }
-
-  .container-page {
-    padding-inline: 1.125rem;
-  }
-
-  .section-y {
-    padding-block: 3.5rem;
-  }
-
-  .section-band {
-    padding-block: 2.75rem;
-  }
-
-  main .text-display {
-    font-size: 3.2rem;
-    line-height: .96;
-    letter-spacing: -.03em;
-  }
-
-  main .text-h1 {
-    font-size: 2.65rem;
-    line-height: 1;
-    letter-spacing: -.025em;
-  }
-
-  main .text-h2 {
-    font-size: 2.2rem;
-    line-height: 1.04;
-    letter-spacing: -.02em;
-  }
-
-  main .text-h3 {
-    font-size: 1.55rem;
-    line-height: 1.12;
-  }
-
-  main .text-quote {
-    font-size: 1.75rem;
-    line-height: 1.18;
-  }
-
-  main h1,
-  main h2,
-  main h3 {
-    font-weight: 500;
-    font-variation-settings: "opsz" 48, "wght" 500;
-  }
-
-  .eyebrow {
-    font-size: .625rem;
-    letter-spacing: .14em;
-  }
-
-  .eyebrow-quiet {
-    font-size: .625rem;
-    letter-spacing: .13em;
-  }
-
-  .lead,
-  .text-lead {
-    font-size: 1.05rem;
-    line-height: 1.55;
-  }
-
-  .ornamental-rule {
-    max-width: 100%;
-  }
-
-  .ornamental-rule svg {
-    height: 1.1rem;
-  }
-
-  [data-section-header] {
-    gap: 1.25rem;
-  }
-
-  .section-header__content {
-    gap: .8rem;
-  }
-
-  .section-header__title {
-    max-width: 15ch;
-  }
-
-  .section-header__lead {
-    max-width: 34ch;
-    font-family: var(--font-jakarta);
-    font-size: .95rem;
-    line-height: 1.6;
-  }
-
-  .section-header__content .ornamental-rule {
-    margin-top: .25rem;
-    margin-left: 0;
-  }
-
-  [data-section-header] > [data-reveal]:last-child {
-    margin-top: .25rem;
-  }
-
-  .corner-frame::before,
-  .corner-frame::after {
-    display: none;
-  }
-
-  .site-header .brand-seal {
-    width: 2.35rem;
-    height: 2.35rem;
-  }
-
-  .site-header .brand-wordmark {
-    font-size: 1rem;
-  }
-
-  .site-header .brand-wordmark span:last-child {
-    margin-top: .2rem;
-    font-size: .5rem;
-    letter-spacing: .22em;
-  }
-
-  .site-header button[aria-controls="mobile-menu"] {
-    gap: .65rem;
-  }
-
-  .mobile-navigation {
-    padding-inline: 1.125rem;
-  }
-
-  .mobile-navigation > div {
-    padding-top: 1rem;
-    padding-bottom: calc(6rem + env(safe-area-inset-bottom));
-  }
-
-  .mobile-navigation > div > div:first-child {
-    padding-bottom: .75rem;
-  }
-
-  .mobile-priest-link {
-    margin-top: .85rem;
-    padding: .85rem 1rem;
-  }
-
-  .mobile-priest-link .font-serif {
-    font-size: 1.3rem;
-  }
-
-  .mobile-nav-groups {
-    margin-top: 1.25rem;
-    gap: 1.25rem;
-  }
-
-  .mobile-nav-groups section > div {
-    padding-bottom: .45rem;
-  }
-
-  .mobile-nav-groups a {
-    min-height: 42px;
-    padding-block: .5rem;
-  }
-
-  .mobile-nav-groups a .font-serif {
-    font-size: 1.05rem;
-  }
-
-  .mobile-nav-footer {
-    position: fixed;
-    z-index: 10;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    margin-top: 1.25rem;
-    margin-inline: 0;
-    padding: .85rem 1.125rem max(.85rem, env(safe-area-inset-bottom));
-    border-top: 1px solid rgba(130,87,47,.35);
-    background: #eee5d7;
-    box-shadow: 0 -16px 28px -26px rgba(75,29,25,.55);
-  }
-
-  .mobile-nav-footer p {
-    display: none;
-  }
-
-  .mobile-nav-footer .btn-primary {
-    width: 100%;
-  }
-
-  .landing-hero {
-    --mobile-art-height: min(48svh, 21rem);
-    display: block;
-    min-height: 0;
-    padding-top: calc(var(--nav-height) + var(--mobile-art-height) + .75rem);
-    padding-bottom: 2.75rem;
-  }
-
-  .landing-hero__content {
-    padding-top: .85rem;
-    border-top: 1px solid rgba(130,87,47,.22);
-  }
-
-  .landing-hero .hero-kicker {
-    margin-bottom: 1.1rem;
-  }
-
-  .landing-hero .hero-rule {
-    margin-top: 1.5rem;
-  }
-
-  .landing-hero .hero-rule .ornamental-rule {
-    margin-bottom: 1.25rem;
-  }
-
-  .landing-hero .hero-copy {
-    max-width: 34ch;
-    font-family: var(--font-jakarta);
-    font-size: .98rem;
-    line-height: 1.65;
-  }
-
-  .landing-hero .hero-priest {
-    margin-top: 1.25rem;
-    gap: .65rem;
-    padding-left: .75rem;
-  }
-
-  .landing-hero .hero-priest svg {
-    width: 1.35rem;
-    height: 1.35rem;
-  }
-
-  .landing-hero .hero-priest p:not(.eyebrow) {
-    font-size: .78rem;
-    line-height: 1.5;
-  }
-
-  .landing-hero .hero-actions {
-    margin-top: 1.5rem;
-  }
-
-  .landing-hero .hero-actions .btn-primary {
-    width: 100%;
-  }
-
-  .landing-hero .hero-assurances {
-    margin-top: 1.5rem;
-    padding-block: .8rem;
-  }
-
-  .landing-hero .hero-assurances li {
-    font-size: .74rem;
-  }
-
-  .hero-deity-backdrop {
-    inset: var(--nav-height) 0 auto;
-    width: 100%;
-    height: var(--mobile-art-height);
-  }
-
-  .hero-art-caption {
-    top: calc(var(--nav-height) + var(--mobile-art-height) - 2.45rem);
-  }
-
-  .hero-deity-backdrop__image {
-    object-position: 50% 36%;
-    opacity: .64;
-    filter: saturate(.84) sepia(.025) contrast(1);
-  }
-
-  .hero-deity-veil {
-    background:
-      linear-gradient(180deg,
-        rgba(248,244,236,.04) 0%,
-        rgba(248,244,236,.18) 45%,
-        rgba(248,244,236,.82) 78%,
-        theme("colors.ivory") 100%),
-      linear-gradient(90deg,
-        rgba(248,244,236,.18) 0%,
-        transparent 50%,
-        rgba(248,244,236,.15) 100%);
-  }
-
-  .trust-strip {
-    padding-block: 1.75rem;
-  }
-
-  .trust-strip > .container-page > .grid {
-    gap: 1rem;
-  }
-
-  .trust-strip__stats {
-    gap: 0;
-    border-top: 1px solid rgba(130,87,47,.2);
-  }
-
-  .trust-strip__stats dd {
-    min-height: 6rem;
-    padding: .9rem .75rem;
-    border-bottom: 1px solid rgba(130,87,47,.18);
-  }
-
-  .trust-strip__stats dd span:first-of-type {
-    font-size: 1.7rem;
-    font-style: normal;
-  }
-
-  .trust-strip__stats dd span:last-child {
-    margin-top: .6rem;
-    font-size: .57rem;
-    line-height: 1.5;
-  }
-
-  .priest-layout {
-    gap: 2.25rem;
-  }
-
-  .priest-content {
-    gap: 1.75rem;
-  }
-
-  .priest-content .lead {
-    font-family: var(--font-jakarta);
-    font-size: .98rem;
-    line-height: 1.65;
-  }
-
-  .priest-content [class*="pt-8"] {
-    padding-top: 1.25rem;
-  }
-
-  .mt-headline {
-    margin-top: 2rem;
-  }
-
-  .services-list {
-    margin-top: 2rem;
-  }
-
-  .service-row {
-    gap: .65rem .85rem;
-    padding-block: 1.35rem;
-  }
-
-  .service-row__title {
-    font-size: 1.7rem;
-  }
-
-  .service-row p {
-    font-size: .85rem;
-    line-height: 1.55;
-  }
-
-  .service-row__examples {
-    font-size: .69rem !important;
-    line-height: 1.5 !important;
-  }
-
-  section[aria-label="The guiding philosophy"] > div:first-child {
-    height: 11rem;
-  }
-
-  section[aria-label="The guiding philosophy"] .section-y {
-    padding-block: 2.75rem;
-  }
-
-  section[aria-label="The guiding philosophy"] [data-reveal] {
-    gap: 1.5rem;
-  }
-
-  section[aria-label="The guiding philosophy"] .text-quote {
-    padding-left: 1.25rem;
-  }
-
-  section[aria-label="The guiding philosophy"] footer {
-    margin-top: 1.5rem;
-  }
-
-  .process-list {
-    margin-top: 2rem;
-  }
-
-  .process-step {
-    grid-template-columns: 2.75rem minmax(0, 1fr);
-    gap: .55rem;
-    padding-block: 1.4rem;
-  }
-
-  .process-step > span {
-    font-size: 1.65rem;
-    font-style: normal;
-  }
-
-  .process-step h3 {
-    font-size: 1.45rem;
-  }
-
-  .process-step p {
-    margin-top: .55rem;
-    font-size: .92rem;
-    line-height: 1.6;
-  }
-
-  .closing-cta {
-    padding-block: 3.25rem;
-  }
-
-  .closing-cta__grid {
-    gap: 1.75rem;
-  }
-
-  .closing-cta__title {
-    margin-top: 1rem;
-    font-size: 2.35rem;
-  }
-
-  .closing-cta__title + svg {
-    margin-top: 1.25rem;
-    height: 1.2rem;
-  }
-
-  .closing-cta__copy {
-    font-family: var(--font-jakarta);
-    font-size: .98rem;
-    line-height: 1.65;
-  }
-
-  .closing-cta__copy + div {
-    margin-top: 1.5rem;
-    gap: .75rem;
-  }
-
-  .closing-cta__button {
-    width: 100%;
-  }
-
-  .closing-cta__grid > div:last-child > p:last-child {
-    margin-top: 1.5rem;
-  }
-
-  .page-hero {
-    padding-top: calc(var(--nav-height) + 1.5rem);
-    padding-bottom: 2.75rem;
-  }
-
-  .page-hero__grid {
-    gap: 1.25rem;
-  }
-
-  .page-hero__grid [data-reveal] {
-    gap: 1rem;
-  }
-
-  .page-hero__title {
-    font-size: 2.65rem;
-  }
-
-  .page-hero__lead {
-    padding-top: 1rem;
-    padding-left: 0;
-    border-top: 1px solid rgba(130,87,47,.3);
-    border-left: 0;
-    font-family: var(--font-jakarta);
-    font-size: .98rem;
-    line-height: 1.65;
-  }
-
-  .page-hero [class*="mt-12"] {
-    margin-top: 2rem;
-  }
-
-  .site-footer__lintel {
-    padding-top: 1.5rem;
-  }
-
-  .site-footer__lintel svg {
-    height: 1.25rem;
-  }
-
-  .site-footer__main {
-    gap: 2.5rem;
-    padding-block: 3rem;
-  }
-
-  .site-footer__intro {
-    gap: .9rem;
-  }
-
-  .site-footer__intro .text-quote {
-    font-size: 1.75rem;
-    line-height: 1.08;
-  }
-
-  .site-footer__intro p.text-small {
-    font-size: .82rem;
-    line-height: 1.55;
-  }
-
-  .site-footer__nav {
-    gap: 2rem 1rem;
-  }
-
-  .site-footer__nav > div {
-    gap: .65rem;
-  }
-
-  .site-footer__nav .tap-link {
-    min-height: 40px;
-    font-size: .78rem;
-  }
-
-  .site-footer__legal {
-    padding-block: 1.25rem;
-    font-size: .72rem;
-  }
-}
-
-@media (min-width: 1024px) and (max-height: 820px) {
-  .landing-hero {
-    padding-top: calc(var(--nav-height) + .75rem);
-    padding-bottom: .75rem;
-  }
-
-  .landing-hero .text-display {
-    font-size: clamp(3.4rem, 4.7vw, 4.25rem);
-  }
-
-  .landing-hero .hero-kicker {
-    margin-bottom: .55rem;
-  }
-
-  .landing-hero .hero-rule {
-    margin-top: .6rem;
-  }
-
-  .landing-hero .hero-rule .ornamental-rule {
-    margin-bottom: .55rem;
-  }
-
-  .landing-hero .hero-copy {
-    font-size: 1rem;
-    line-height: 1.4;
-  }
-
-  .landing-hero .hero-priest {
-    margin-top: .5rem;
-  }
-
-  .landing-hero .hero-priest p:not(.eyebrow) {
-    line-height: 1.3;
-  }
-
-  .landing-hero .hero-priest svg {
-    width: 1.35rem;
-    height: 1.35rem;
-  }
-
-  .landing-hero .hero-actions {
-    margin-top: .55rem;
-  }
-
-  .landing-hero .hero-assurances {
-    margin-top: .6rem;
-    padding-top: .4rem;
-    padding-bottom: .4rem;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  *,
-  *::before,
-  *::after {
-    animation-duration: 0.001ms !important;
+  *, *::before, *::after {
+    animation-duration: .001ms !important;
     animation-iteration-count: 1 !important;
-    transition-duration: 0.001ms !important;
+    transition-duration: .001ms !important;
     scroll-behavior: auto !important;
   }
+
+  /* framer-motion respects prefers-reduced-motion itself; the halo breathes
+     in CSS and must be stopped here. */
+  .shrine__halo { animation: none !important; }
 }
