@@ -2,7 +2,7 @@ import Link from "next/link";
 import Section from "@/components/ui/Section";
 import Reveal from "@/components/ui/Reveal";
 import SectionHead from "@/components/ui/SectionHead";
-import { ChakraRosette } from "@/components/ui/Ornament";
+import Mark from "@/components/ui/Mark";
 import { ArrowRightIcon } from "@phosphor-icons/react/dist/ssr";
 import { categories } from "@/content/services";
 import { ceremonyIndex, ceremonyCount } from "@/content/ceremonies";
@@ -20,11 +20,11 @@ export default function Services() {
   return (
     <Section
       id="ceremonies"
-      tone="paper"
+      tone="maroon"
       labelledBy="ceremonies-title"
-      className="marked"
+      className="marked marked--dark"
     >
-      <ChakraRosette className="marked__chakra" />
+      <Mark name="sudarshana-chakra" className="marked__chakra" />
 
       <SectionHead
         id="ceremonies-title"

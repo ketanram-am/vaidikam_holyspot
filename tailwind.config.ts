@@ -20,10 +20,10 @@ const config: Config = {
     },
     extend: {
       colors: {
-        ivory: "#F8F4EC",
-        cream: "#EEE5D7",
+        ivory: "#F4EEE2",
+        cream: "#E7DAC6",
         sand: "#D7C6AA",
-        paper: "#FCF9F3",
+        paper: "#F9F3E8",
         ink: "#201A17",
         charcoal: "#3A302A",
         taupe: "#75685E",

@@ -6,7 +6,7 @@ import {
   ArrowRightIcon,
 } from "@phosphor-icons/react/dist/ssr";
 import { primaryAction, priest, site } from "@/content/site";
-import { ChakraRosette, RuleDiamond } from "@/components/ui/Ornament";
+import Mark from "@/components/ui/Mark";
 
 /**
  * The one closing action.
@@ -22,7 +22,7 @@ export default function ContactCTA() {
 
   return (
     <section aria-labelledby="contact-title" className="cta surface-maroon">
-      <ChakraRosette className="cta__chakra" />
+      <Mark name="sudarshana-chakra" className="cta__chakra" />
       <span aria-hidden="true" className="cta__glow" />
 
       <div className="container-page cta__inner">
@@ -30,7 +30,7 @@ export default function ContactCTA() {
         <h2 id="contact-title" className="cta__title">
           Ask about a ceremony
         </h2>
-        <RuleDiamond className="cta__rule" />
+        <span aria-hidden="true" className="cta__rule" />
         <p className="cta__text">
           Describe the occasion in your own words. {priest.name} will tell you
           which ceremony applies and what it involves.

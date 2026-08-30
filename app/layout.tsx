@@ -20,6 +20,11 @@ const newsreader = Newsreader({
   axes: ["opsz"],
   variable: "--font-newsreader",
   display: "swap",
+  // Next cannot derive fallback metrics for this variable face and logs
+  // "Failed to find font override values" on every build. The size-adjust it
+  // would emit is not worth a build-time error for a font that is loaded with
+  // `swap` anyway.
+  adjustFontFallback: false,
 });
 
 const jakarta = Plus_Jakarta_Sans({
@@ -27,6 +32,7 @@ const jakarta = Plus_Jakarta_Sans({
   weight: "variable",
   variable: "--font-jakarta",
   display: "swap",
+  adjustFontFallback: false,
 });
 
 export const metadata: Metadata = {

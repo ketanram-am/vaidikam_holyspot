@@ -13,22 +13,24 @@ import {
 } from "framer-motion";
 import { ArrowDownIcon, ArrowRightIcon } from "@phosphor-icons/react/dist/ssr";
 import { priest, primaryAction, site } from "@/content/site";
-import ArchOverlay, { ArchClip } from "@/components/ui/ArchOverlay";
+
 
 /**
- * The opening — an arched niche holding the Narasimha painting.
+ * The opening — the Narasimha painting, framed.
  *
- * The previous version drew a torana arch as a separate SVG at 116% width over
- * a frame whose corners were rounded with `border-radius`. Two different curves
- * never coincide, so the gold arch floated outside the painting and the whole
- * thing looked pasted together. There is now no overlay at all: the gold is
- * `border` and `box-shadow` on the same element that clips the image, so the
- * arch and the picture edge are the same curve by construction and cannot
- * drift apart.
+ * Five attempts went into arching this image before the actual problem showed
+ * up: the source is 2200x2091, so it is very nearly SQUARE (1.052). Every
+ * version forced it into a 4:5 portrait box, which threw away about a quarter
+ * of the painting, and then imposed an arch on top of a composition that has
+ * its own painted rectangular border. No arch geometry could ever fit,
+ * because the shape being fitted was not the shape of the picture.
  *
- * The section fills the viewport (100svh) and the image is sized in `svh` so
- * the whole composition — mark, niche, title, button, scroll cue — is on the
- * first screen of a phone rather than the button falling below the fold.
+ * So the painting is now shown at its own ratio, uncropped, in a rectangular
+ * gilt frame — which is how a devotional painting is actually presented. The
+ * arch is gone rather than fixed; it was decoration fighting the subject.
+ *
+ * The section still fills the viewport (100svh) and the frame is sized in
+ * `svh`, so the whole composition sits on the first screen of a phone.
  *
  * Motion is scroll-linked, so it responds to the reader instead of looping.
  */
@@ -58,14 +60,15 @@ export default function Hero() {
   return (
     <LazyMotion features={domAnimation} strict>
       <section id="top" ref={ref} aria-labelledby="hero-title" className="shrine">
-        <ArchClip />
         <span aria-hidden="true" className="shrine__ground" />
         <m.span
           aria-hidden="true"
           className="shrine__halo"
           style={reduced ? undefined : { opacity: haloOpacity }}
         />
-        {/* The sourced Sudarshana chakra, turning with the scroll. */}
+        {/* The sourced chakra, turning with the scroll. It sits low and
+            behind, so it never crosses the painting — overlapping the two
+            muddied both. */}
         <m.span
           aria-hidden="true"
           className="shrine__chakra"
@@ -96,11 +99,7 @@ export default function Hero() {
                     className="shrine__image"
                   />
                 </m.div>
-                <span aria-hidden="true" className="shrine__vignette" />
               </m.div>
-              {/* Sibling of the clipped frame, so the 2px gold is not halved
-                  by the very clip it is tracing. */}
-              <ArchOverlay />
             </m.div>
           )}
 
