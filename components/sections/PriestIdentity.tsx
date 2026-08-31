@@ -26,20 +26,28 @@ export default function PriestIdentity() {
         </Reveal>
 
         <Reveal delay={0.06} className="priest__body">
-          <p className="priest__eyebrow">The priest</p>
+          <p className="priest__eyebrow">{priest.experience} of practice</p>
+
+          {/* The name is the one piece of type on the page given a display
+              treatment of its own — it is what a visitor is deciding about. */}
           <h2 id="priest-title" className="priest__name">
             {priest.name}
           </h2>
+          <p className="priest__initiated">{priest.initiatedName}</p>
+
           <p className="priest__role">
             {[priest.honorific, priest.sampradaya, priest.location]
               .filter(Boolean)
               .join(" · ")}
           </p>
-          {priest.bio.map((paragraph) => (
+          {priest.bioShort.map((paragraph) => (
             <p key={paragraph} className="priest__para">
               {paragraph}
             </p>
           ))}
+          <p className="priest__teachers">
+            Trained under {priest.teachers.join(" and ")}.
+          </p>
         </Reveal>
       </div>
     </Section>

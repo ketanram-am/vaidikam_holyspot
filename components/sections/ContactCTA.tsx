@@ -26,14 +26,15 @@ export default function ContactCTA() {
       <span aria-hidden="true" className="cta__glow" />
 
       <div className="container-page cta__inner">
-        <p className="cta__eyebrow">A personal enquiry</p>
+        <p className="cta__eyebrow">Speak to me directly</p>
         <h2 id="contact-title" className="cta__title">
-          Ask about a ceremony
+          Tell me what you need
         </h2>
         <span aria-hidden="true" className="cta__rule" />
         <p className="cta__text">
-          Describe the occasion in your own words. {priest.name} will tell you
-          which ceremony applies and what it involves.
+          Describe the occasion in your own words — you do not need the
+          Sanskrit name of a ceremony. I will tell you which one applies and
+          what it involves.
         </p>
 
         <div className="cta__actions">

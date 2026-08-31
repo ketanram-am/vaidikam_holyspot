@@ -1,7 +1,8 @@
 import Hero from "@/components/sections/Hero";
 import PriestIdentity from "@/components/sections/PriestIdentity";
 import Services from "@/components/sections/Services";
-import Practical from "@/components/sections/Practical";
+import Consultations from "@/components/sections/Consultations";
+import Gallery from "@/components/sections/Gallery";
 import ContactCTA from "@/components/sections/ContactCTA";
 import BandDivider from "@/components/ui/BandDivider";
 import { site, priest } from "@/content/site";
@@ -56,10 +57,12 @@ export default function Home() {
         <Hero />
         <PriestIdentity />
         <Services />
-        {/* The lotus course marks the change of register between the two
-            light bands, which otherwise met at a bare hairline. */}
+        <Consultations />
+        {/* Renders nothing until real photographs are registered in
+            content/site.ts — an empty grid of placeholders would be worse
+            than no section. */}
+        <Gallery />
         <BandDivider />
-        <Practical />
         <ContactCTA />
       </main>
     </>

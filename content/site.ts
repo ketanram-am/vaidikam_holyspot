@@ -1,13 +1,9 @@
 /**
  * Site content.
  *
- * OPEN QUESTION — sampradaya. The site previously stated "Sri Vaishnava"
- * throughout. The priest's name (Chaitanya Das) and the stated audience
- * (ISKCON devotees) both point to the Gaudiya Vaishnava line rather than the
- * Sri Vaishnava one; those are different sampradayas. Rather than assert the
- * wrong tradition on a real priest's own site, `priest.sampradaya` is null and
- * nothing on the page claims a lineage. Set it once confirmed and it will
- * appear in the hero and on the About page.
+ * VOICE: first person. This is the priest's own site, so the copy is his —
+ * "tell me the occasion", not "contact him". Third-person copy made the site
+ * read as an agency listing a practitioner.
  *
  * Rule for this file: a string earns its place only if a devotee deciding
  * whether to contact this priest actually needs it. Slogans, principles,
@@ -26,7 +22,7 @@ export const site = {
   url: "https://vaidhikamholyspot.com",
   /** One factual sentence. Used for meta description and the hero. */
   promise:
-    "Homas, yagas, pujas, and samskaras performed by Mahakaal Chaitanya Das, for families in India and for devotees living abroad.",
+    "Vedic homas, pujas and samskaras, with astrological and vastu consultation — for families and individuals in India and abroad.",
   heroImage: "/images/art/narasimha.webp" as string | null,
   contact: {
     // Indian mobile, stored in E.164 so tel: and wa.me links both work.
@@ -37,18 +33,34 @@ export const site = {
 };
 
 export const priest = {
-  name: "Mahakaal Chaitanya Das",
-  honorific: "Vedic Priest",
-  location: "South India",
+  /** The name he practises under. */
+  name: "Pt. Praveen Sagar",
+  /** His initiated Gaudiya name. Shown beside the practising name, not instead. */
+  initiatedName: "Mahakaal Chaitanya Das",
+  honorific: "Vedic Priest & Spiritual Guide",
+  location: "Bengaluru",
+  experience: "15+ years",
   portrait: null as string | null,
   practiceImage: "/images/temple/srirangam-hall.jpg" as string | null,
-  // See the note at the top of this file: the sampradaya line is deliberately
-  // unset until confirmed, rather than asserting the wrong one.
-  sampradaya: null as string | null,
-  bio: [
-    "Mahakaal Chaitanya Das performs Vedic ceremonies — homas, yagas, pujas, and the life-cycle samskaras — for families in India and for devotees living abroad.",
-    "Devotees outside India usually need to know three things: which ceremony applies to their occasion, what the family must provide, and whether it can be performed in their absence. Those are answered directly, before anything is arranged.",
+  sampradaya: "Pāñcarātra tradition · Gaudiya Vedānta" as string | null,
+
+  /** Homepage version — short, his own words, first person. */
+  bioShort: [
+    "With over fifteen years of experience in Vedic rituals and samskaras, I am a Vedic priest and spiritual guide based in Bengaluru.",
+    "My training has been shaped by the guidance of several respected teachers, including U. Ve. Bhaskar Bhattacharya and U. Ve. Bharat Iyengar Swami. I specialise in Vedic samskaras, pūjās, homas, deity worship and traditional spiritual practices, with studies spanning Pāñcarātra traditions, Yājūṣa Pūrvaprayoga and Gaudiya Vedānta.",
   ],
+
+  /** The About page. Supplied by the priest; kept close to his own wording. */
+  bioLong: [
+    "With over 15 years of experience in performing Vedic rituals, samskaras, pujas, homas and traditional spiritual practices, I have dedicated my life to learning, preserving and sharing the rich traditions of Sanātana Dharma.",
+    "My journey has been shaped by the guidance of many respected teachers and Ācāryas, through whom I have studied different aspects of Vedic tradition, ritual practice, mantra, worship and spiritual philosophy. Among my teachers and mentors are U. Ve. Bhaskar Bhattacharya and U. Ve. Bharat Iyengar Swami, whose guidance has been an important part of my learning and practice.",
+    "Over the years I have gained practical experience in conducting a wide range of Vedic samskaras, pūjās, homas and religious ceremonies, with an emphasis on following traditional procedures with sincerity and attention to detail. My areas of practice include Gṛha Praveśa, Vāstu-related rituals, Navagraha worship, Āyuṣya Homa, Mṛtyuñjaya Homa, Sudarśana Homa, Narasiṃha Homa, Gaṇapati Homa and various other Vedic ceremonies.",
+    "I have also studied and practised Pāñcarātra traditions, including teachings associated with the Nārada Pāñcarātra and Padma Saṃhitā, along with Yājūṣa Pūrvaprayoga and traditional approaches to deity worship.",
+    "Alongside ritual practice I have been involved in teaching Vedic culture, reading and explaining ślokas, spiritual guidance, and sharing the philosophical teachings of Gaudiya Vedānta. My aim is not merely to perform a ritual, but to help people understand its purpose, tradition and spiritual significance.",
+    "Based in Bengaluru, I serve families and individuals seeking authentic guidance for their Vedic samskaras, religious ceremonies, spiritual practices and traditional rituals, while striving to maintain the sanctity and integrity of the traditions passed down through the Guru–Śiṣya paramparā.",
+  ],
+
+  teachers: ["U. Ve. Bhaskar Bhattacharya", "U. Ve. Bharat Iyengar Swami"],
 };
 
 /**
@@ -59,48 +71,77 @@ export const priest = {
 export const practical = [
   {
     q: "Can a ceremony be performed if I live outside India?",
-    a: "Some ceremonies can; others require the family to be present. Which applies to yours is confirmed before anything is arranged.",
+    a: "Some can; others need you present. I will tell you which applies to yours before anything is arranged.",
   },
   {
-    q: "What does my family need to provide?",
-    a: "This depends on the ceremony. Materials, participation, and who needs to be present are explained in full beforehand.",
+    q: "What do I need to provide?",
+    a: "It depends on the ceremony. I explain the materials, who needs to be present, and your part in it beforehand.",
   },
   {
     q: "How far in advance should I ask?",
-    a: "As early as you can. Lead time depends on the ceremony, the place, and the people involved.",
+    a: "As early as you can. Lead time depends on the ceremony, the place, and who is involved.",
   },
   {
     q: "How is dakshina handled?",
-    a: "Dakshina and material costs are discussed privately once the ceremony is settled. There is no listed price and no checkout.",
+    a: "We discuss dakshina and material costs privately once the ceremony is settled. There is no listed price and no checkout.",
   },
   {
     q: "I don't know the name of the ceremony I need.",
-    a: "Describe the occasion in your own words. The appropriate ceremony will be identified for you.",
+    a: "Describe the occasion in your own words and I will tell you which ceremony applies.",
   },
 ];
 
 /**
- * What to put in the message.
+ * Consultation — astrology and vastu.
  *
- * This replaced a five-question Q&A on the home page. A visitor who has
- * decided to write does not need "how is dakshina handled?" at that moment —
- * they need to know what to say. The Q&A still exists in full on /contact,
- * where someone who has not decided yet will look for it.
+ * Kept to what a consultation actually is and what it is not. No predictive
+ * claims, no remedies-for-a-fee framing: this is guidance about which rite
+ * suits an occasion and how a site or chart bears on it.
  */
-export const enquiry = [
+export const consultations = [
   {
-    label: "The occasion",
-    detail: "A new home, a birth, an annual observance, a specific difficulty.",
+    slug: "astrology",
+    title: "Astrological consultation",
+    sanskrit: "Jyotiṣa",
+    image: "/images/deity/navagraha-sculptures.jpg",
+    imageAlt:
+      "Black basalt panels of Surya, Soma and Mangala from a Navagraha set",
+    lead: "For choosing a time, and for understanding which observance suits your circumstances.",
+    body: [
+      "Most of what families ask me for is muhūrta — an auspicious time. A marriage, a gṛha praveśa, a naming, the start of something: the tradition holds that when a rite is performed matters as much as that it is performed, and settling that is the first thing I do for most ceremonies.",
+      "I also read a chart to advise which observance is appropriate. Where the Navagraha are indicated I will say so plainly, and where they are not I will say that too.",
+    ],
+    note: "This is guidance on ritual and timing within Jyotiṣa. I do not make predictions about health, litigation or finance, and I do not sell remedies.",
   },
   {
-    label: "Where and when",
-    detail: "The city, and the date or month you have in mind.",
-  },
-  {
-    label: "Any family custom",
-    detail: "Your sampradaya or gotra, if you know it. It is not required.",
+    slug: "vastu",
+    title: "Vastu consultation",
+    sanskrit: "Vāstu",
+    image: "/images/temple/srirangam-hall.jpg",
+    imageAlt: "The pillared hall of Sri Ranganathaswamy Temple, Srirangam",
+    lead: "For a new home or a new site, before you move in and before you build.",
+    body: [
+      "Vāstu concerns the placement and orientation of a dwelling — the direction it faces, where the kitchen and the shrine sit, how the site is entered. I look at a plan, or at the place itself, and advise what the tradition asks for.",
+      "It usually leads to a rite rather than replacing one: Vāstu Śānti to propitiate the deities of the site, Gṛha Praveśa on entering, and Vāstu Rakṣoghna where a site needs clearing. Those are ceremonies I perform myself, so the advice and the rite are not handed between two people.",
+    ],
+    note: "I advise on orientation, placement and the appropriate rite. I do not recommend demolition or structural work, and I do not sell corrective products.",
   },
 ];
+
+/**
+ * Photographs of pujas and ceremonies.
+ *
+ * EMPTY BY DESIGN until real photographs are supplied. Drop files into
+ * public/images/gallery/ (see the README there) and register them here.
+ *
+ * Consent first: these are private religious occasions and the people in them
+ * are identifiable. Nothing goes in without the family agreeing.
+ */
+export const galleryPhotos: {
+  src: string;
+  alt: string;
+  caption: string;
+}[] = [];
 
 /**
  * Contextual imagery: Sri Vaishnava architecture and public-domain devotional
@@ -144,21 +185,21 @@ export const navGroups = [
     label: "Ceremonies",
     items: [
       { href: "/homas", label: "Homas", description: "Fire rituals" },
-      { href: "/yagas", label: "Yagas", description: "Extended observances" },
       { href: "/pujas", label: "Pujas", description: "Worship" },
       { href: "/samskaras", label: "Samskaras", description: "Life-cycle rites" },
+      { href: "/consultation", label: "Consultation", description: "Astrology & vastu" },
     ],
   },
 ];
 
 export const priestNav = {
   href: "/about",
-  label: "The Priest",
-  description: "Mahakaal Prabhu",
+  label: "About",
+  description: "Pt. Praveen Sagar",
 };
 
 /** The single action on the site. There is no second, competing one. */
 export const primaryAction = {
   href: "/contact",
-  label: "Contact the priest",
+  label: "Tell me your occasion",
 };

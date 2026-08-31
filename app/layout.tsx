@@ -1,5 +1,9 @@
 import type { Metadata, Viewport } from "next";
-import { Newsreader, Plus_Jakarta_Sans } from "next/font/google";
+import {
+  Cormorant_Garamond,
+  Newsreader,
+  Plus_Jakarta_Sans,
+} from "next/font/google";
 import "./globals.css";
 import { site, priest } from "@/content/site";
 import Nav from "@/components/layout/Nav";
@@ -8,12 +12,28 @@ import RevealObserver from "@/components/ui/RevealObserver";
 import SmoothScroll from "@/components/layout/SmoothScroll";
 
 /**
- * Two typefaces. Newsreader for headings and ceremony names, Jakarta for
- * everything read at body size.
+ * Three typefaces, each with one job.
  *
- * The Devanagari and Tamil faces were dropped with the decorative Sanskrit
- * lockup that used them — two extra font downloads for one ornament.
+ * Cormorant Garamond is the display face — high-contrast old-style with very
+ * fine hairlines, the sort of letterform cut for title pages. It carries the
+ * hero, the section headings and the priest's name, and it is the reason the
+ * type now looks composed rather than defaulted.
+ *
+ * Newsreader stays for ceremony names and running serif text: Cormorant is
+ * beautiful at 40px and thin to the point of frailty at 18px, so it is kept
+ * off body sizes deliberately.
+ *
+ * Jakarta remains for UI and prose.
  */
+const cormorant = Cormorant_Garamond({
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
+  style: ["normal", "italic"],
+  variable: "--font-cormorant",
+  display: "swap",
+  adjustFontFallback: false,
+});
+
 const newsreader = Newsreader({
   subsets: ["latin"],
   weight: "variable",
@@ -80,7 +100,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${newsreader.variable} ${jakarta.variable}`}
+      className={`${cormorant.variable} ${newsreader.variable} ${jakarta.variable}`}
       suppressHydrationWarning
     >
       <head>

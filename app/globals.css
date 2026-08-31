@@ -15,6 +15,7 @@
 
 @layer base {
   :root {
+    --font-cormorant: "Cormorant Garamond", Georgia, serif;
     --font-newsreader: "Newsreader", Georgia, serif;
     --font-jakarta: "Plus Jakarta Sans", system-ui, sans-serif;
     --font-tiro-sanskrit: "Tiro Devanagari Sanskrit", serif;
@@ -83,9 +84,10 @@
 
   h1, h2, h3, h4 {
     @apply font-display text-maroon;
-    font-weight: 500;
-    font-variation-settings: "opsz" 48;
-    letter-spacing: -.018em;
+    /* Cormorant's strokes are much finer than Newsreader's, so the weight
+       goes up and the tracking opens slightly to compensate. */
+    font-weight: 600;
+    letter-spacing: -.01em;
     text-wrap: balance;
   }
 
@@ -517,8 +519,19 @@
     font-style: italic;
   }
 
+  /* The priest's name inside the lead gets the gold, so the one proper noun
+     on the first screen is the one thing that catches the eye after the
+     painting. */
+  .shrine__lead strong {
+    color: var(--gold-light);
+    font-weight: 500;
+    font-family: var(--font-cormorant);
+    font-size: 1.14em;
+    letter-spacing: .005em;
+  }
+
   .shrine__lead {
-    max-width: 38ch;
+    max-width: 40ch;
     margin-top: .85rem;
     color: rgba(248, 244, 236, .8);
     font-size: .9375rem;
@@ -689,6 +702,319 @@
 
   @media (min-width: 768px) {
     .head__title { font-size: 2.35rem; }
+  }
+
+  /* --- The priest's name ----------------------------------------------- */
+
+  /* The one piece of type on the site with a treatment of its own. A visitor
+     is deciding about a person, so the person's name is set as the display
+     object rather than as another heading: brushed gold, generously tracked,
+     with the initiated name beneath at label size. */
+  .priest__name {
+    font-family: var(--font-cormorant);
+    font-weight: 600;
+    font-size: clamp(2.1rem, 8vw, 2.9rem);
+    line-height: 1.02;
+    letter-spacing: -.012em;
+    background: linear-gradient(96deg, #8a2f24 0%, #b97932 46%, #8a2f24 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  /* The dark bands need the lighter end of the gradient to stay legible. */
+  .marked--dark .priest__name,
+  .surface-maroon .priest__name {
+    background: linear-gradient(96deg, #e2c78d 0%, #f2e0b4 48%, #c9a25f 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+  }
+
+  .priest__initiated {
+    margin-top: .5rem;
+    color: theme("colors.bronze");
+    font-family: var(--font-newsreader);
+    font-size: 1.0625rem;
+    font-style: italic;
+  }
+
+  .priest__initiated::before {
+    content: "";
+    display: inline-block;
+    width: 1.4rem;
+    height: 1px;
+    margin-right: .6rem;
+    vertical-align: .3em;
+    background: var(--gold);
+  }
+
+  .priest__teachers {
+    margin-top: .35rem;
+    color: theme("colors.stone");
+    font-size: .9375rem;
+    font-style: italic;
+  }
+
+  @media (min-width: 768px) {
+    .priest__name { font-size: clamp(2.9rem, 4.4vw, 3.6rem); }
+  }
+
+  /* --- Consultation --------------------------------------------------- */
+
+  .consult {
+    display: grid;
+    gap: 1.25rem;
+    margin-top: 1.75rem;
+  }
+
+  .consult__link {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    overflow: hidden;
+    border: 1px solid theme("colors.hairline");
+    border-radius: 2px;
+    background: theme("colors.paper");
+    transition: border-color 260ms var(--ease-calm),
+      transform 320ms var(--ease-out), box-shadow 320ms var(--ease-out);
+  }
+
+  .consult__link:hover {
+    transform: translateY(-3px);
+    border-color: theme("colors.bronze");
+    box-shadow: 0 24px 48px -30px rgba(45, 25, 14, .55);
+  }
+
+  .consult__frame {
+    position: relative;
+    aspect-ratio: 16 / 10;
+    overflow: hidden;
+    background: theme("colors.cream");
+  }
+
+  .consult__img {
+    object-fit: cover;
+    transition: transform 900ms var(--ease-out);
+  }
+
+  .consult__link:hover .consult__img { transform: scale(1.04); }
+
+  .consult__text { padding: 1.15rem 1.15rem 1.3rem; }
+
+  .consult__sanskrit {
+    color: theme("colors.bronze");
+    font-family: var(--font-newsreader);
+    font-size: .9375rem;
+    font-style: italic;
+  }
+
+  .consult__title {
+    margin-top: .3rem;
+    font-size: 1.5rem;
+    line-height: 1.15;
+  }
+
+  .consult__lead {
+    margin-top: .5rem;
+    color: theme("colors.charcoal");
+    font-size: .9375rem;
+    line-height: 1.55;
+  }
+
+  .consult__more {
+    display: inline-flex;
+    align-items: center;
+    gap: .4rem;
+    margin-top: .85rem;
+    color: theme("colors.maroon");
+    font-size: .75rem;
+    font-weight: 600;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+  }
+
+  .consult__more svg { transition: transform 300ms var(--ease-out); }
+  .consult__link:hover .consult__more svg { transform: translateX(3px); }
+
+  @media (min-width: 768px) {
+    .consult { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1.5rem; }
+    .consult__title { font-size: 1.75rem; }
+  }
+
+  /* --- Consultation page ---------------------------------------------- */
+
+  .advice {
+    display: flex;
+    flex-direction: column;
+    gap: 3rem;
+    margin-top: 2.5rem;
+  }
+
+  .advice__frame {
+    position: relative;
+    aspect-ratio: 4 / 3;
+    overflow: hidden;
+    border: 1px solid theme("colors.hairline");
+    border-radius: 2px;
+  }
+
+  .advice__img { object-fit: cover; }
+
+  .advice__text { margin-top: 1.25rem; }
+
+  .advice__sanskrit {
+    color: theme("colors.bronze");
+    font-family: var(--font-newsreader);
+    font-size: 1.0625rem;
+    font-style: italic;
+  }
+
+  .advice__title { margin-top: .3rem; font-size: 1.75rem; line-height: 1.12; }
+
+  .advice__lead {
+    max-width: 46ch;
+    margin-top: .7rem;
+    color: theme("colors.charcoal");
+    font-size: 1.0625rem;
+    line-height: 1.55;
+  }
+
+  .advice__para {
+    max-width: 62ch;
+    margin-top: .9rem;
+    color: theme("colors.charcoal");
+  }
+
+  .advice__note {
+    max-width: 62ch;
+    margin-top: 1.1rem;
+    padding-top: .9rem;
+    border-top: 1px solid theme("colors.hairline");
+    color: theme("colors.stone");
+    font-size: .9375rem;
+    line-height: 1.55;
+  }
+
+  @media (min-width: 768px) {
+    .advice__item {
+      display: grid;
+      grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+      gap: 2.5rem;
+      align-items: start;
+    }
+
+    .advice__text { margin-top: 0; }
+    .advice__title { font-size: 2.15rem; }
+  }
+
+  /* --- Gallery -------------------------------------------------------- */
+
+  .shots {
+    display: grid;
+    gap: 1rem;
+    margin-top: 1.75rem;
+  }
+
+  .shots__frame {
+    position: relative;
+    aspect-ratio: 4 / 3;
+    overflow: hidden;
+    border: 1px solid theme("colors.hairline");
+    border-radius: 2px;
+    background: theme("colors.paper");
+  }
+
+  .shots__img {
+    object-fit: cover;
+    transition: transform 900ms var(--ease-out);
+  }
+
+  .shots__item:hover .shots__img { transform: scale(1.04); }
+
+  .shots figcaption {
+    margin-top: .6rem;
+    color: theme("colors.stone");
+    font-size: .875rem;
+  }
+
+  @media (min-width: 640px) {
+    .shots { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  }
+
+  @media (min-width: 1024px) {
+    .shots { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1.5rem; }
+  }
+
+  /* --- Ceremony detail page -------------------------------------------- */
+
+  .rite__back {
+    display: inline-flex;
+    align-items: center;
+    gap: .45rem;
+    min-height: 40px;
+    color: theme("colors.bronze");
+    font-size: .75rem;
+    font-weight: 600;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+  }
+
+  .rite__back:hover { color: theme("colors.maroon"); }
+
+  .rite__title {
+    margin-top: .5rem;
+    font-size: clamp(2rem, 8vw, 2.6rem);
+    line-height: 1.08;
+  }
+
+  .rite__facts {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.1rem 2.5rem;
+    margin-top: 1.25rem;
+    padding-block: 1.1rem;
+    border-block: 1px solid theme("colors.hairline");
+  }
+
+  .rite__facts dt {
+    color: theme("colors.stone");
+    font-size: .6875rem;
+    font-weight: 600;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+  }
+
+  .rite__facts dd {
+    margin-top: .3rem;
+    color: theme("colors.maroon");
+    font-family: var(--font-newsreader);
+    font-size: 1.0625rem;
+  }
+
+  .rite__body { margin-top: 1.5rem; }
+
+  .rite__body p {
+    max-width: 64ch;
+    margin-top: .9rem;
+    color: theme("colors.charcoal");
+    font-size: 1.0625rem;
+    line-height: 1.65;
+  }
+
+  .rite__body p:first-child { margin-top: 0; }
+
+  .rite__note {
+    max-width: 60ch;
+    margin-top: 1.75rem;
+    padding-top: 1rem;
+    border-top: 1px solid theme("colors.hairline");
+    color: theme("colors.stone");
+    font-size: .9375rem;
+    line-height: 1.55;
+  }
+
+  @media (min-width: 768px) {
+    .rite__title { font-size: 3rem; }
   }
 
   /* --- Sourced marks --------------------------------------------------- */
@@ -964,12 +1290,24 @@
   .cxg__items { margin-top: .25rem; }
 
   .cxi {
+    border-bottom: 1px solid theme("colors.hairline");
+  }
+
+  /* The whole row is the link, so the tap target is the row rather than the
+     ceremony name alone. */
+  .cxi__link {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
     gap: .28rem;
-    padding-block: .9rem;
-    border-bottom: 1px solid theme("colors.hairline");
+    padding: .9rem .5rem .9rem 0;
+    transition: padding-left 320ms var(--ease-out),
+      background-color 260ms var(--ease-calm);
+  }
+
+  .cxi__link:hover {
+    padding-left: .7rem;
+    background: rgba(201, 162, 95, .07);
   }
 
   .cxi:last-child { border-bottom: 0; }
@@ -1038,7 +1376,7 @@
 
     .cxg__items { margin-top: 0; border-top: 1px solid theme("colors.hairline"); }
 
-    .cxi {
+    .cxi__link {
       display: grid;
       grid-template-columns: minmax(0, 6fr) minmax(0, 5fr) auto;
       column-gap: 1.5rem;

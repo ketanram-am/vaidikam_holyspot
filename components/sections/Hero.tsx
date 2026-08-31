@@ -84,13 +84,13 @@ export default function Hero() {
 
         <div className="container-page shrine__inner">
           <m.h1 id="hero-title" className="shrine__title" {...rise(0.15)}>
-            Homas, yagas, pujas
-            <span>and the samskaras</span>
+            Homas, pujas, samskaras
+            <span>and Vedic consultation</span>
           </m.h1>
 
           <m.p className="shrine__lead" {...rise(0.25)}>
-            Performed by {priest.name} — for families in India and for devotees
-            living abroad.
+            Performed by <strong>{priest.name}</strong> in Bengaluru — for
+            families and individuals, in India and abroad.
           </m.p>
 
           <m.div className="shrine__actions" {...rise(0.35)}>

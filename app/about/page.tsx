@@ -7,7 +7,7 @@ import { priest, site } from "@/content/site";
 
 export const metadata = pageMetadata({
   title: "The Priest",
-  description: priest.bio[0],
+  description: priest.bioShort[0],
   path: "/about",
 });
 
@@ -16,7 +16,7 @@ const jsonLd = {
   "@type": "Person",
   name: priest.name,
   jobTitle: "Vedic Priest",
-  description: priest.bio[0],
+  description: priest.bioShort[0],
   worksFor: { "@type": "Organization", name: site.name, url: site.url },
 };
 
@@ -42,16 +42,17 @@ export default function AboutPage() {
           </Reveal>
 
           <Reveal delay={0.06} className="priest__body">
-            <p className="priest__eyebrow">The priest</p>
+            <p className="priest__eyebrow">{priest.experience} of practice</p>
             <h1 id="about-title" className="priest__name">
               {priest.name}
             </h1>
+            <p className="priest__initiated">{priest.initiatedName}</p>
             <p className="priest__role">
               {[priest.honorific, priest.sampradaya, priest.location]
                 .filter(Boolean)
                 .join(" · ")}
             </p>
-            {priest.bio.map((paragraph) => (
+            {priest.bioLong.map((paragraph) => (
               <p key={paragraph} className="priest__para">
                 {paragraph}
               </p>
@@ -60,7 +61,8 @@ export default function AboutPage() {
                 supplies one. Until then the page does not pretend otherwise. */}
             {!priest.portrait && (
               <p className="priest__note">
-                The photograph above is Srirangam, not {priest.name}.
+                The photograph above is Srirangam, not a portrait. Send me one
+                and it will replace it.
               </p>
             )}
           </Reveal>
