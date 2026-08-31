@@ -41,11 +41,11 @@ export const priest = {
   location: "Bengaluru",
   experience: "15+ years",
   /**
-   * His portrait. Drop a file at public/images/priest/portrait.jpg and set
+   * His portrait. Drop a file at public/images/priest/portrait-main.jpg and set
    * this to that path — it then replaces the Srirangam stand-in on both the
    * About page and the home page. See the README in that folder.
    */
-  portrait: "/images/priest/portrait.jpg" as string | null,
+  portrait: "/images/priest/portrait-main.jpg" as string | null,
 
   /**
    * Further photographs of him — performing ceremonies, with his teachers.

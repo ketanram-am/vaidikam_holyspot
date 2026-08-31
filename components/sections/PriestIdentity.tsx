@@ -24,7 +24,10 @@ export default function PriestIdentity() {
                 : "The pillared hall of Sri Ranganathaswamy Temple, Srirangam"
             }
             showPlaceholderLabel={false}
-            sizes="(max-width: 767px) 100vw, 40vw"
+            // A real portrait gets the clean frame; the temple stand-in keeps
+            // the ornamental one it was designed for.
+            plain={Boolean(priest.portrait)}
+            sizes="(max-width: 767px) 92vw, (max-width: 1279px) 34vw, 22rem"
             // A portrait is cropped 4:5 at every size; the temple stand-in is
             // landscape and would be mangled by that on a phone.
             className={

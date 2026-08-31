@@ -652,6 +652,13 @@
 
   .priest { display: flex; flex-direction: column; gap: 1.75rem; }
 
+  /* Full column width on a phone — a portrait wants the space. Capped and
+     centred above that, so on a tablet it does not become a slab. */
+  .priest__media {
+    width: 100%;
+    max-width: 24rem;
+  }
+
   .priest__body { display: flex; flex-direction: column; gap: .85rem; }
 
   .priest__eyebrow {
@@ -685,7 +692,18 @@
 
   @media (min-width: 768px) {
     .priest { flex-direction: row; align-items: flex-start; gap: 3rem; }
-    .priest__media { flex: 0 0 34%; }
+
+    /*
+      Sized in `clamp` rather than as a percentage. A percentage made the
+      portrait 437px on a 1440 screen and would keep growing on a 27" monitor,
+      which is how it came to dominate the biography beside it. A clamp holds
+      it between 15rem and 21rem, so it is recognisably the same portrait on a
+      laptop and on a large display.
+    */
+    .priest__media {
+      flex: 0 0 auto;
+      width: clamp(15rem, 26vw, 21rem);
+    }
     .priest__body { flex: 1; }
   }
 
@@ -784,6 +802,18 @@
 
   @media (min-width: 768px) {
     .priest__name { font-size: clamp(2.9rem, 4.4vw, 3.6rem); }
+  }
+
+  /* --- Portrait frame -------------------------------------------------- */
+
+  /* For photographs of a person. One hairline and a lifted shadow, so the
+     frame reads as a mount rather than as ornament competing with the face. */
+  .portrait-frame {
+    border: 1px solid rgba(130, 87, 47, .35);
+    border-radius: 2px;
+    box-shadow:
+      0 1px 0 rgba(255, 255, 255, .5) inset,
+      0 22px 44px -26px rgba(45, 25, 14, .5);
   }
 
   /* --- Consultation --------------------------------------------------- */

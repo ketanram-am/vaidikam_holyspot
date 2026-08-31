@@ -41,7 +41,8 @@ export default function AboutPage() {
                   : "The pillared hall of Sri Ranganathaswamy Temple, Srirangam"
               }
               showPlaceholderLabel={false}
-              sizes="(max-width: 767px) 100vw, 40vw"
+              plain={Boolean(priest.portrait)}
+              sizes="(max-width: 767px) 92vw, (max-width: 1279px) 34vw, 22rem"
               className={
                 priest.portrait
                   ? "aspect-[4/5]"
