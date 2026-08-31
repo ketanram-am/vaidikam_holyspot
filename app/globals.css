@@ -15,6 +15,7 @@
 
 @layer base {
   :root {
+    --font-cormorant: "Cormorant Garamond", Georgia, serif;
     --font-newsreader: "Newsreader", Georgia, serif;
     --font-jakarta: "Plus Jakarta Sans", system-ui, sans-serif;
     --font-tiro-sanskrit: "Tiro Devanagari Sanskrit", serif;
@@ -83,9 +84,10 @@
 
   h1, h2, h3, h4 {
     @apply font-display text-maroon;
-    font-weight: 500;
-    font-variation-settings: "opsz" 48;
-    letter-spacing: -.018em;
+    /* Cormorant's strokes are much finer than Newsreader's, so the weight
+       goes up and the tracking opens slightly to compensate. */
+    font-weight: 600;
+    letter-spacing: -.01em;
     text-wrap: balance;
   }
 
@@ -517,9 +519,48 @@
     font-style: italic;
   }
 
+  /* The two names, given real size on the first screen. After the painting
+     they are what a visitor is actually here to read. */
+  .shrine__who { margin-top: 1.1rem; }
+
+  .shrine__by {
+    color: rgba(226, 199, 141, .72);
+    font-size: .625rem;
+    font-weight: 600;
+    letter-spacing: .24em;
+    text-transform: uppercase;
+  }
+
+  .shrine__name {
+    margin-top: .35rem;
+    color: theme("colors.ivory");
+    font-family: var(--font-cormorant);
+    font-weight: 600;
+    font-size: clamp(1.5rem, 5.6vw, 1.9rem);
+    line-height: 1.08;
+    letter-spacing: -.01em;
+    text-shadow: 0 2px 20px rgba(0, 0, 0, .7);
+  }
+
+  /* The initiated name is the one the devotees this site is for will
+     recognise, so it is set in gold at nearly the same size rather than as a
+     footnote. */
+  .shrine__initiated {
+    margin-top: .3rem;
+    font-family: var(--font-cormorant);
+    font-style: italic;
+    font-weight: 500;
+    font-size: clamp(1.35rem, 5vw, 1.7rem);
+    line-height: 1.12;
+    background: linear-gradient(96deg, #e2c78d 0%, #f6e6bd 50%, #c9a25f 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
   .shrine__lead {
-    max-width: 38ch;
-    margin-top: .85rem;
+    max-width: 40ch;
+    margin-top: .7rem;
     color: rgba(248, 244, 236, .8);
     font-size: .9375rem;
     line-height: 1.55;
@@ -611,6 +652,13 @@
 
   .priest { display: flex; flex-direction: column; gap: 1.75rem; }
 
+  /* Full column width on a phone — a portrait wants the space. Capped and
+     centred above that, so on a tablet it does not become a slab. */
+  .priest__media {
+    width: 100%;
+    max-width: 24rem;
+  }
+
   .priest__body { display: flex; flex-direction: column; gap: .85rem; }
 
   .priest__eyebrow {
@@ -644,7 +692,18 @@
 
   @media (min-width: 768px) {
     .priest { flex-direction: row; align-items: flex-start; gap: 3rem; }
-    .priest__media { flex: 0 0 34%; }
+
+    /*
+      Sized in `clamp` rather than as a percentage. A percentage made the
+      portrait 437px on a 1440 screen and would keep growing on a 27" monitor,
+      which is how it came to dominate the biography beside it. A clamp holds
+      it between 15rem and 21rem, so it is recognisably the same portrait on a
+      laptop and on a large display.
+    */
+    .priest__media {
+      flex: 0 0 auto;
+      width: clamp(15rem, 26vw, 21rem);
+    }
     .priest__body { flex: 1; }
   }
 
@@ -691,6 +750,464 @@
     .head__title { font-size: 2.35rem; }
   }
 
+  /* --- The priest's name ----------------------------------------------- */
+
+  /* The one piece of type on the site with a treatment of its own. A visitor
+     is deciding about a person, so the person's name is set as the display
+     object rather than as another heading: brushed gold, generously tracked,
+     with the initiated name beneath at label size. */
+  .priest__name {
+    font-family: var(--font-cormorant);
+    font-weight: 600;
+    font-size: clamp(2.1rem, 8vw, 2.9rem);
+    line-height: 1.02;
+    letter-spacing: -.012em;
+    background: linear-gradient(96deg, #8a2f24 0%, #b97932 46%, #8a2f24 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  /* The dark bands need the lighter end of the gradient to stay legible. */
+  .marked--dark .priest__name,
+  .surface-maroon .priest__name {
+    background: linear-gradient(96deg, #e2c78d 0%, #f2e0b4 48%, #c9a25f 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+  }
+
+  /* Nearly as large as the practising name, and in gold. Devotees will know
+     him by this one. */
+  .priest__initiated {
+    margin-top: .45rem;
+    font-family: var(--font-cormorant);
+    font-style: italic;
+    font-weight: 500;
+    font-size: clamp(1.6rem, 6vw, 2.1rem);
+    line-height: 1.1;
+    background: linear-gradient(96deg, #b97932 0%, #d9a959 50%, #b97932 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+
+
+  .priest__teachers {
+    margin-top: .35rem;
+    color: theme("colors.stone");
+    font-size: .9375rem;
+    font-style: italic;
+  }
+
+  @media (min-width: 768px) {
+    .priest__name { font-size: clamp(2.9rem, 4.4vw, 3.6rem); }
+  }
+
+  /* --- Portrait frame -------------------------------------------------- */
+
+  /* For photographs of a person. One hairline and a lifted shadow, so the
+     frame reads as a mount rather than as ornament competing with the face. */
+  .portrait-frame {
+    border: 1px solid rgba(130, 87, 47, .35);
+    border-radius: 2px;
+    box-shadow:
+      0 1px 0 rgba(255, 255, 255, .5) inset,
+      0 22px 44px -26px rgba(45, 25, 14, .5);
+  }
+
+  /* --- Consultation --------------------------------------------------- */
+
+  .consult {
+    display: grid;
+    gap: 1.25rem;
+    margin-top: 1.75rem;
+  }
+
+  .consult__link {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    overflow: hidden;
+    border: 1px solid theme("colors.hairline");
+    border-radius: 2px;
+    background: theme("colors.paper");
+    transition: border-color 260ms var(--ease-calm),
+      transform 320ms var(--ease-out), box-shadow 320ms var(--ease-out);
+  }
+
+  .consult__link:hover {
+    transform: translateY(-3px);
+    border-color: theme("colors.bronze");
+    box-shadow: 0 24px 48px -30px rgba(45, 25, 14, .55);
+  }
+
+  .consult__frame {
+    position: relative;
+    /* Was 16/10 and dominated the card. The photograph is context here, not
+       the subject — the words are. */
+    aspect-ratio: 21 / 9;
+    overflow: hidden;
+    background: theme("colors.cream");
+  }
+
+  .consult__img {
+    object-fit: cover;
+    transition: transform 900ms var(--ease-out);
+  }
+
+  .consult__link:hover .consult__img { transform: scale(1.04); }
+
+  .consult__text { padding: 1.15rem 1.15rem 1.3rem; }
+
+  .consult__sanskrit {
+    color: theme("colors.bronze");
+    font-family: var(--font-newsreader);
+    font-size: .9375rem;
+    font-style: italic;
+  }
+
+  .consult__title {
+    margin-top: .3rem;
+    font-size: 1.5rem;
+    line-height: 1.15;
+  }
+
+  .consult__lead {
+    margin-top: .5rem;
+    color: theme("colors.charcoal");
+    font-size: .9375rem;
+    line-height: 1.55;
+  }
+
+  .consult__more {
+    display: inline-flex;
+    align-items: center;
+    gap: .4rem;
+    margin-top: .85rem;
+    color: theme("colors.maroon");
+    font-size: .75rem;
+    font-weight: 600;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+  }
+
+  .consult__more svg { transition: transform 300ms var(--ease-out); }
+  .consult__link:hover .consult__more svg { transform: translateX(3px); }
+
+  @media (min-width: 768px) {
+    .consult { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1.5rem; }
+    .consult__title { font-size: 1.75rem; }
+  }
+
+  /* --- Consultation page ---------------------------------------------- */
+
+  .advice {
+    display: flex;
+    flex-direction: column;
+    gap: 3rem;
+    margin-top: 2.5rem;
+  }
+
+  .advice__frame {
+    position: relative;
+    max-width: 22rem;
+    aspect-ratio: 3 / 2;
+    overflow: hidden;
+    border: 1px solid theme("colors.hairline");
+    border-radius: 2px;
+  }
+
+  .advice__img { object-fit: cover; }
+
+  .advice__text { margin-top: 1.25rem; }
+
+  .advice__sanskrit {
+    color: theme("colors.bronze");
+    font-family: var(--font-newsreader);
+    font-size: 1.0625rem;
+    font-style: italic;
+  }
+
+  .advice__title { margin-top: .3rem; font-size: 1.75rem; line-height: 1.12; }
+
+  .advice__lead {
+    max-width: 46ch;
+    margin-top: .7rem;
+    color: theme("colors.charcoal");
+    font-size: 1.0625rem;
+    line-height: 1.55;
+  }
+
+  .advice__para {
+    max-width: 62ch;
+    margin-top: .9rem;
+    color: theme("colors.charcoal");
+  }
+
+  .advice__note {
+    max-width: 62ch;
+    margin-top: 1.1rem;
+    padding-top: .9rem;
+    border-top: 1px solid theme("colors.hairline");
+    color: theme("colors.stone");
+    font-size: .9375rem;
+    line-height: 1.55;
+  }
+
+  @media (min-width: 768px) {
+    .advice__item {
+      display: grid;
+      grid-template-columns: minmax(0, 4fr) minmax(0, 8fr);
+      gap: 2.5rem;
+      align-items: start;
+    }
+
+    .advice__text { margin-top: 0; }
+    .advice__title { font-size: 2.15rem; }
+  }
+
+  /* --- Photograph sets (PhotoSet) --------------------------------------- */
+
+  /*
+    A snap rail on a phone, a grid from `md`.
+
+    The rail is deliberate: four photographs in a phone-width grid come out
+    ~160px each, which is a contact sheet rather than a way of looking at
+    pictures. One at 82vw is large enough to actually see, and swiping is how
+    people look at photographs on a phone anyway.
+  */
+  .pset {
+    display: flex;
+    gap: .875rem;
+    margin-top: 1.75rem;
+    margin-inline: calc(var(--gutter) * -1);
+    padding-inline: var(--gutter);
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scroll-padding-inline: var(--gutter);
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .pset::-webkit-scrollbar { display: none; }
+
+  .pset__item {
+    flex: none;
+    width: 82vw;
+    max-width: 22rem;
+    scroll-snap-align: start;
+  }
+
+  .pset__button {
+    display: block;
+    width: 100%;
+    text-align: left;
+    cursor: zoom-in;
+  }
+
+  /* Must be a positioned block: next/image `fill` escapes to the nearest
+     positioned ancestor otherwise, which is how a photograph ended up
+     spilling across the page below the footer. */
+  .pset__frame {
+    position: relative;
+    display: block;
+    overflow: hidden;
+    border: 1px solid theme("colors.hairline");
+    border-radius: 2px;
+    background: theme("colors.paper");
+  }
+
+  .pset[data-shape="portrait"] .pset__frame { aspect-ratio: 4 / 5; }
+  .pset[data-shape="landscape"] .pset__frame { aspect-ratio: 4 / 3; }
+
+  .pset__img {
+    object-fit: cover;
+    transition: transform 900ms var(--ease-out);
+  }
+
+  .pset__button:hover .pset__img { transform: scale(1.04); }
+
+  .pset__caption {
+    display: block;
+    margin-top: .6rem;
+    color: theme("colors.stone");
+    font-size: .875rem;
+    line-height: 1.4;
+  }
+
+  .pset__hint {
+    margin-top: .9rem;
+    color: theme("colors.stone");
+    font-size: .75rem;
+    font-weight: 600;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+  }
+
+  @media (min-width: 768px) {
+    .pset {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 1.25rem;
+      margin-inline: 0;
+      padding-inline: 0;
+      overflow: visible;
+    }
+
+    .pset__item { width: auto; max-width: none; }
+    .pset__hint { display: none; }
+  }
+
+  @media (min-width: 1024px) {
+    .pset { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1.5rem; }
+  }
+
+  /* --- Lightbox --------------------------------------------------------- */
+
+  .lbox {
+    position: fixed;
+    inset: 0;
+    z-index: 80;
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    place-items: center;
+    padding: 1rem;
+    background: rgba(16, 7, 5, .94);
+    backdrop-filter: blur(6px);
+    cursor: zoom-out;
+  }
+
+  .lbox__figure {
+    grid-column: 2;
+    display: flex;
+    max-height: 88svh;
+    flex-direction: column;
+    align-items: center;
+    cursor: default;
+  }
+
+  .lbox__img {
+    width: auto;
+    max-width: 100%;
+    max-height: 76svh;
+    height: auto;
+    border: 1px solid rgba(226, 199, 141, .35);
+    border-radius: 2px;
+    object-fit: contain;
+  }
+
+  .lbox__figure figcaption {
+    margin-top: .9rem;
+    color: rgba(226, 199, 141, .85);
+    font-size: .9375rem;
+    text-align: center;
+  }
+
+  .lbox__close {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    display: grid;
+    place-items: center;
+    width: 44px;
+    height: 44px;
+    border: 1px solid rgba(226, 199, 141, .35);
+    border-radius: 50%;
+    color: var(--gold-light);
+  }
+
+  .lbox__nav {
+    display: grid;
+    place-items: center;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    color: var(--gold-light);
+    transition: background-color 200ms var(--ease-calm);
+  }
+
+  .lbox__nav:hover { background: rgba(226, 199, 141, .14); }
+  .lbox__nav--prev { grid-column: 1; }
+  .lbox__nav--next { grid-column: 3; }
+
+  @media (min-width: 768px) {
+    .lbox { padding: 2.5rem; }
+    .lbox__nav { width: 56px; height: 56px; }
+  }
+
+  /* --- Ceremony detail page -------------------------------------------- */
+
+  .rite__back {
+    display: inline-flex;
+    align-items: center;
+    gap: .45rem;
+    min-height: 40px;
+    color: theme("colors.bronze");
+    font-size: .75rem;
+    font-weight: 600;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+  }
+
+  .rite__back:hover { color: theme("colors.maroon"); }
+
+  .rite__title {
+    margin-top: .5rem;
+    font-size: clamp(2rem, 8vw, 2.6rem);
+    line-height: 1.08;
+  }
+
+  .rite__facts {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.1rem 2.5rem;
+    margin-top: 1.25rem;
+    padding-block: 1.1rem;
+    border-block: 1px solid theme("colors.hairline");
+  }
+
+  .rite__facts dt {
+    color: theme("colors.stone");
+    font-size: .6875rem;
+    font-weight: 600;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+  }
+
+  .rite__facts dd {
+    margin-top: .3rem;
+    color: theme("colors.maroon");
+    font-family: var(--font-newsreader);
+    font-size: 1.0625rem;
+  }
+
+  .rite__body { margin-top: 1.5rem; }
+
+  .rite__body p {
+    max-width: 64ch;
+    margin-top: .9rem;
+    color: theme("colors.charcoal");
+    font-size: 1.0625rem;
+    line-height: 1.65;
+  }
+
+  .rite__body p:first-child { margin-top: 0; }
+
+  .rite__note {
+    max-width: 60ch;
+    margin-top: 1.75rem;
+    padding-top: 1rem;
+    border-top: 1px solid theme("colors.hairline");
+    color: theme("colors.stone");
+    font-size: .9375rem;
+    line-height: 1.55;
+  }
+
+  @media (min-width: 768px) {
+    .rite__title { font-size: 3rem; }
+  }
+
   /* --- Sourced marks --------------------------------------------------- */
 
   /* Every mark is a masked block, so a real SVG file takes `background`. */
@@ -704,12 +1221,6 @@
     -webkit-mask-size: contain;
   }
 
-  .head__tilak {
-    width: .55rem;
-    height: 1.3rem;
-    flex: none;
-    background: var(--gold);
-  }
 
   .head__rule {
     width: 4.5rem;
@@ -964,12 +1475,24 @@
   .cxg__items { margin-top: .25rem; }
 
   .cxi {
+    border-bottom: 1px solid theme("colors.hairline");
+  }
+
+  /* The whole row is the link, so the tap target is the row rather than the
+     ceremony name alone. */
+  .cxi__link {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
     gap: .28rem;
-    padding-block: .9rem;
-    border-bottom: 1px solid theme("colors.hairline");
+    padding: .9rem .5rem .9rem 0;
+    transition: padding-left 320ms var(--ease-out),
+      background-color 260ms var(--ease-calm);
+  }
+
+  .cxi__link:hover {
+    padding-left: .7rem;
+    background: rgba(201, 162, 95, .07);
   }
 
   .cxi:last-child { border-bottom: 0; }
@@ -1038,7 +1561,7 @@
 
     .cxg__items { margin-top: 0; border-top: 1px solid theme("colors.hairline"); }
 
-    .cxi {
+    .cxi__link {
       display: grid;
       grid-template-columns: minmax(0, 6fr) minmax(0, 5fr) auto;
       column-gap: 1.5rem;

@@ -1,6 +1,5 @@
 export type ServiceCategorySlug =
   | "homas"
-  | "yagas"
   | "pujas"
   | "samskaras"
   | "consultation";
@@ -33,14 +32,6 @@ export const categories: ServiceCategory[] = [
     short: "Fire rituals",
   },
   {
-    slug: "yagas",
-    title: "Yagas",
-    singular: "Yaga",
-    description:
-      "Larger observances, longer in duration and requiring more priests and preparation than a homa.",
-    short: "Extended observances",
-  },
-  {
     slug: "pujas",
     title: "Pujas",
     singular: "Puja",
@@ -61,8 +52,8 @@ export const categories: ServiceCategory[] = [
     title: "Consultation",
     singular: "Consultation",
     description:
-      "For families unsure which ceremony applies to their occasion.",
-    short: "Guidance",
+      "Astrological and vastu guidance — for choosing a time, and for advice on a place.",
+    short: "Astrology & vastu",
   },
 ];
 

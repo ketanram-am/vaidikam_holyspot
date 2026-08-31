@@ -11,6 +11,14 @@ type Props = {
   /** Placeholders label themselves with the alt text; suppress where the
    *  caller already renders a visible caption. */
   showPlaceholderLabel?: boolean;
+  /**
+   * Drops the decorative treatment: the double inset frame, the tint, and the
+   * gradient. Use for photographs OF SOMEONE. The ornamental frame was built
+   * for contextual temple imagery, where losing 11px a side and gaining a
+   * sepia wash costs nothing — on a portrait it eats the subject and turns a
+   * person's skin yellow.
+   */
+  plain?: boolean;
 };
 
 /**
@@ -25,16 +33,27 @@ export default function SacredImage({
   sizes = "(max-width: 767px) 100vw, (max-width: 1279px) 50vw, 33vw",
   priority = false,
   showPlaceholderLabel = true,
+  plain = false,
 }: Props) {
   return (
     <div
-      className={`sacred-niche corner-frame group/image relative border border-bronze/35 bg-paper ${className}`}
+      className={`sacred-niche group/image relative bg-paper ${
+        plain ? "portrait-frame" : "corner-frame border border-bronze/35"
+      } ${className}`}
     >
-      <div className="absolute inset-[clamp(0.38rem,1vw,0.7rem)] overflow-hidden border border-bronze/25 bg-gradient-to-br from-paper via-cream to-sand shadow-[inset_0_0_0_1px_rgba(32,26,23,.08),inset_0_8px_24px_rgba(32,26,23,.12)]">
-        <span
-          aria-hidden="true"
-          className="pointer-events-none absolute inset-1.5 z-10 border border-ivory/25"
-        />
+      <div
+        className={
+          plain
+            ? "absolute inset-0 overflow-hidden"
+            : "absolute inset-[clamp(0.38rem,1vw,0.7rem)] overflow-hidden border border-bronze/25 bg-gradient-to-br from-paper via-cream to-sand shadow-[inset_0_0_0_1px_rgba(32,26,23,.08),inset_0_8px_24px_rgba(32,26,23,.12)]"
+        }
+      >
+        {!plain && (
+          <span
+            aria-hidden="true"
+            className="pointer-events-none absolute inset-1.5 z-10 border border-ivory/25"
+          />
+        )}
         {src ? (
           <>
             <Image
@@ -43,11 +62,19 @@ export default function SacredImage({
               fill
               sizes={sizes}
               priority={priority}
-              className="object-cover saturate-[.9] contrast-[1.03] sepia-[.025] transition-[transform,filter] duration-[1600ms] ease-arrive group-hover/image:scale-[1.035] group-hover/image:saturate-[1.04]"
+              className={
+                plain
+                  ? "object-cover"
+                  : "object-cover saturate-[.9] contrast-[1.03] sepia-[.025] transition-[transform,filter] duration-[1600ms] ease-arrive group-hover/image:scale-[1.035] group-hover/image:saturate-[1.04]"
+              }
             />
             <span
               aria-hidden="true"
-              className="pointer-events-none absolute inset-0 bg-gradient-to-t from-soot/15 via-transparent to-ivory/[0.04]"
+              className={
+                plain
+                  ? "hidden"
+                  : "pointer-events-none absolute inset-0 bg-gradient-to-t from-soot/15 via-transparent to-ivory/[0.04]"
+              }
             />
           </>
         ) : (

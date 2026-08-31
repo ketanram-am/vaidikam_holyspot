@@ -1,15 +1,19 @@
 import type { MetadataRoute } from "next";
 import { site } from "@/content/site";
+import { allCeremonies } from "@/content/ceremonies";
 
 const paths = [
   "",
   "/about",
   "/contact",
   "/services",
+  "/consultation",
   "/homas",
-  "/yagas",
   "/pujas",
   "/samskaras",
+  // Every named ceremony has its own page, and each is the page a search for
+  // that ceremony by name should land on.
+  ...allCeremonies().map((c) => `/${c.category}/${c.slug}`),
 ];
 
 export default function sitemap(): MetadataRoute.Sitemap {

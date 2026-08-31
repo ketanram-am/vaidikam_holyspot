@@ -41,7 +41,12 @@ const config: Config = {
       fontFamily: {
         serif: ["var(--font-newsreader)", "Iowan Old Style", "Georgia", "serif"],
         sans: ["var(--font-jakarta)", "Avenir Next", "system-ui", "sans-serif"],
-        display: ["var(--font-newsreader)", "Iowan Old Style", "Georgia", "serif"],
+        display: [
+          "var(--font-cormorant)",
+          "Iowan Old Style",
+          "Georgia",
+          "serif",
+        ],
         devanagari: ["var(--font-tiro-sanskrit)", "Noto Serif Devanagari", "serif"],
         tamil: ["var(--font-tiro-tamil)", "Noto Serif Tamil", "serif"],
       },

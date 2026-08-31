@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 import Section from "@/components/ui/Section";
 import Reveal from "@/components/ui/Reveal";
 import {
@@ -30,9 +31,11 @@ function slugify(value: string) {
 export default function CeremonyList({
   index,
   categoryTitle,
+  categorySlug,
 }: {
   index: CeremonyIndex;
   categoryTitle: string;
+  categorySlug: string;
 }) {
   const total = ceremonyCount(index);
 
@@ -109,8 +112,7 @@ export default function CeremonyList({
                 {group.items.map((ceremony) => {
                   // The group heading already states the purpose it collects,
                   // so repeating it on the first ceremony of "Beginnings" as
-                  // "BEGINNINGS" is noise. The tag appears only where it adds
-                  // something the heading did not say.
+                  // "BEGINNINGS" is noise.
                   const tag =
                     ceremony.purpose.toLowerCase() ===
                     group.title.toLowerCase()
@@ -119,9 +121,15 @@ export default function CeremonyList({
 
                   return (
                     <li key={ceremony.name} className="cxi">
-                      <h4 className="cxi__name">{ceremony.name}</h4>
-                      <p className="cxi__deity">{ceremony.deity}</p>
-                      {tag && <p className="cxi__purpose">{tag}</p>}
+                      {/* Each row is now a link to the rite's own page. */}
+                      <Link
+                        href={`/${categorySlug}/${ceremony.slug}`}
+                        className="cxi__link"
+                      >
+                        <h4 className="cxi__name">{ceremony.name}</h4>
+                        <p className="cxi__deity">{ceremony.deity}</p>
+                        {tag && <p className="cxi__purpose">{tag}</p>}
+                      </Link>
                     </li>
                   );
                 })}

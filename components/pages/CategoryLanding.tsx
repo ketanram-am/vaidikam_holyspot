@@ -33,7 +33,11 @@ export default function CategoryLanding({
       </Section>
 
       {ceremonies && (
-        <CeremonyList index={ceremonies} categoryTitle={category.title} />
+        <CeremonyList
+          index={ceremonies}
+          categoryTitle={category.title}
+          categorySlug={category.slug}
+        />
       )}
 
       <ContactCTA />
