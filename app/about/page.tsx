@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Section from "@/components/ui/Section";
 import Reveal from "@/components/ui/Reveal";
 import SacredImage from "@/components/ui/SacredImage";
@@ -32,11 +33,19 @@ export default function AboutPage() {
         <div className="priest">
           <Reveal className="priest__media">
             <SacredImage
-              src={priest.practiceImage}
-              alt="The pillared hall of Sri Ranganathaswamy Temple, Srirangam"
+              src={priest.portrait ?? priest.practiceImage}
+              alt={
+                priest.portrait
+                  ? priest.name
+                  : "The pillared hall of Sri Ranganathaswamy Temple, Srirangam"
+              }
               showPlaceholderLabel={false}
               sizes="(max-width: 767px) 100vw, 40vw"
-              className="aspect-[4/3] md:aspect-[4/5]"
+              className={
+                priest.portrait
+                  ? "aspect-[4/5]"
+                  : "aspect-[4/3] md:aspect-[4/5]"
+              }
               priority
             />
           </Reveal>
@@ -59,15 +68,48 @@ export default function AboutPage() {
             ))}
             {/* An image of the priest replaces the temple study once he
                 supplies one. Until then the page does not pretend otherwise. */}
+            {/* Says so plainly rather than letting a temple photograph pass
+                as a portrait. Drop public/images/priest/portrait.jpg and set
+                `priest.portrait` to remove this. */}
             {!priest.portrait && (
               <p className="priest__note">
-                The photograph above is Srirangam, not a portrait. Send me one
-                and it will replace it.
+                The photograph above is Srirangam, not a portrait of{" "}
+                {priest.name}.
               </p>
             )}
           </Reveal>
         </div>
       </Section>
+
+      {/* Renders nothing while `priest.photos` is empty — a row of empty
+          frames would be worse than no row. */}
+      {priest.photos.length > 0 && (
+        <Section tone="cream" label="Photographs">
+          <ul className="pphotos">
+            {priest.photos.map((photo, i) => (
+              <Reveal
+                as="li"
+                key={photo.src}
+                index={i % 3}
+                className="pphotos__item"
+              >
+                <figure>
+                  <div className="pphotos__frame">
+                    <Image
+                      src={photo.src}
+                      alt={photo.alt}
+                      fill
+                      sizes="(max-width: 639px) 92vw, (max-width: 1023px) 46vw, 31vw"
+                      className="pphotos__img"
+                    />
+                  </div>
+                  <figcaption>{photo.caption}</figcaption>
+                </figure>
+              </Reveal>
+            ))}
+          </ul>
+        </Section>
+      )}
 
       <ContactCTA />
     </main>

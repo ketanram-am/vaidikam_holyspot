@@ -945,6 +945,46 @@
     .shots { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1.5rem; }
   }
 
+  /* --- Photographs of the priest --------------------------------------- */
+
+  /* Shares the gallery's shape but stays a separate class: his photographs
+     are portraits and ceremony shots, and want a taller frame than the
+     landscape puja pictures. */
+  .pphotos {
+    display: grid;
+    gap: 1rem;
+  }
+
+  .pphotos__frame {
+    position: relative;
+    aspect-ratio: 3 / 4;
+    overflow: hidden;
+    border: 1px solid theme("colors.hairline");
+    border-radius: 2px;
+    background: theme("colors.paper");
+  }
+
+  .pphotos__img {
+    object-fit: cover;
+    transition: transform 900ms var(--ease-out);
+  }
+
+  .pphotos__item:hover .pphotos__img { transform: scale(1.04); }
+
+  .pphotos figcaption {
+    margin-top: .6rem;
+    color: theme("colors.stone");
+    font-size: .875rem;
+  }
+
+  @media (min-width: 640px) {
+    .pphotos { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  }
+
+  @media (min-width: 1024px) {
+    .pphotos { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1.5rem; }
+  }
+
   /* --- Ceremony detail page -------------------------------------------- */
 
   .rite__back {

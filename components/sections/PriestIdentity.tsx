@@ -17,11 +17,19 @@ export default function PriestIdentity() {
       <div className="priest">
         <Reveal className="priest__media">
           <SacredImage
-            src={priest.practiceImage}
-            alt="The pillared hall of Sri Ranganathaswamy Temple, Srirangam"
+            src={priest.portrait ?? priest.practiceImage}
+            alt={
+              priest.portrait
+                ? priest.name
+                : "The pillared hall of Sri Ranganathaswamy Temple, Srirangam"
+            }
             showPlaceholderLabel={false}
             sizes="(max-width: 767px) 100vw, 40vw"
-            className="aspect-[4/3] md:aspect-[4/5]"
+            // A portrait is cropped 4:5 at every size; the temple stand-in is
+            // landscape and would be mangled by that on a phone.
+            className={
+              priest.portrait ? "aspect-[4/5]" : "aspect-[4/3] md:aspect-[4/5]"
+            }
           />
         </Reveal>
 

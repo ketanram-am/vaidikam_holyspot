@@ -40,7 +40,21 @@ export const priest = {
   honorific: "Vedic Priest & Spiritual Guide",
   location: "Bengaluru",
   experience: "15+ years",
+  /**
+   * His portrait. Drop a file at public/images/priest/portrait.jpg and set
+   * this to that path — it then replaces the Srirangam stand-in on both the
+   * About page and the home page. See the README in that folder.
+   */
   portrait: null as string | null,
+
+  /**
+   * Further photographs of him — performing ceremonies, with his teachers.
+   * Shown as a row beneath the biography on the About page. Empty renders
+   * nothing rather than placeholder tiles.
+   */
+  photos: [] as { src: string; alt: string; caption: string }[],
+
+  /** Stands in for the portrait until one is supplied. */
   practiceImage: "/images/temple/srirangam-hall.jpg" as string | null,
   sampradaya: "Pāñcarātra tradition · Gaudiya Vedānta" as string | null,
 
