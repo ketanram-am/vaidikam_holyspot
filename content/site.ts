@@ -45,14 +45,50 @@ export const priest = {
    * this to that path — it then replaces the Srirangam stand-in on both the
    * About page and the home page. See the README in that folder.
    */
-  portrait: null as string | null,
+  portrait: "/images/priest/portrait.jpg" as string | null,
 
   /**
    * Further photographs of him — performing ceremonies, with his teachers.
    * Shown as a row beneath the biography on the About page. Empty renders
    * nothing rather than placeholder tiles.
    */
-  photos: [] as { src: string; alt: string; caption: string }[],
+  photos: [
+    {
+      src: "/images/priest/karpura-aarti.jpg",
+      alt: "Pt. Praveen Sagar offering karpūra āratī",
+      caption: "Offering karpūra āratī",
+    },
+    {
+      src: "/images/priest/meditating.jpg",
+      alt: "Pt. Praveen Sagar seated in meditation",
+      caption: "In meditation",
+    },
+    {
+      src: "/images/priest/at-the-shrine.jpg",
+      alt: "Pt. Praveen Sagar at a shrine",
+      caption: "At the shrine",
+    },
+    {
+      src: "/images/priest/with-indradyumna-swami.jpg",
+      alt: "Pt. Praveen Sagar with HH Indradyumna Swami",
+      caption: "With HH Indradyumna Swami Maharaj",
+    },
+    {
+      src: "/images/priest/with-indradyumna-swami-2.jpg",
+      alt: "Pt. Praveen Sagar with HH Indradyumna Swami Maharaj",
+      caption: "With HH Indradyumna Swami Maharaj",
+    },
+    {
+      src: "/images/priest/with-jayapataka-swami.jpg",
+      alt: "Pt. Praveen Sagar with HH Jayapataka Swami",
+      caption: "With HH Jayapataka Swami",
+    },
+    {
+      src: "/images/priest/shatakopam-jayapataka-swami.jpg",
+      alt: "Pt. Praveen Sagar offering the śaṭhakopam to HH Jayapataka Swami",
+      caption: "Offering the śaṭhakopam to HH Jayapataka Swami",
+    },
+  ] as { src: string; alt: string; caption: string }[],
 
   /** Stands in for the portrait until one is supplied. */
   practiceImage: "/images/temple/srirangam-hall.jpg" as string | null,
@@ -155,7 +191,28 @@ export const galleryPhotos: {
   src: string;
   alt: string;
   caption: string;
-}[] = [];
+}[] = [
+  {
+    src: "/images/gallery/ceremony-elders.jpg",
+    alt: "A ceremony being performed for an elderly couple at a temple shrine",
+    caption: "A ceremony for an elderly couple",
+  },
+  {
+    src: "/images/gallery/abhishekam-giri-govardhan.jpg",
+    alt: "Abhiṣekam performed at Giri Govardhan",
+    caption: "Abhiṣekam at Giri Govardhan",
+  },
+  {
+    src: "/images/gallery/ceremony-01.jpg",
+    alt: "A Vedic ceremony in progress",
+    caption: "A ceremony in progress",
+  },
+  {
+    src: "/images/gallery/ceremony-02.jpg",
+    alt: "A Vedic ceremony in progress",
+    caption: "A ceremony in progress",
+  },
+];
 
 /**
  * Contextual imagery: Sri Vaishnava architecture and public-domain devotional

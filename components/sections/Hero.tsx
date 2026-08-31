@@ -88,10 +88,14 @@ export default function Hero() {
             <span>and Vedic consultation</span>
           </m.h1>
 
-          <m.p className="shrine__lead" {...rise(0.25)}>
-            Performed by <strong>{priest.name}</strong> in Bengaluru — for
-            families and individuals, in India and abroad.
-          </m.p>
+          <m.div className="shrine__who" {...rise(0.25)}>
+            <p className="shrine__by">Performed by</p>
+            <p className="shrine__name">{priest.name}</p>
+            <p className="shrine__initiated">{priest.initiatedName}</p>
+            <p className="shrine__lead">
+              Bengaluru — for families and individuals, in India and abroad.
+            </p>
+          </m.div>
 
           <m.div className="shrine__actions" {...rise(0.35)}>
             <Link href={primaryAction.href} className="btn btn-gold">

@@ -519,20 +519,48 @@
     font-style: italic;
   }
 
-  /* The priest's name inside the lead gets the gold, so the one proper noun
-     on the first screen is the one thing that catches the eye after the
-     painting. */
-  .shrine__lead strong {
-    color: var(--gold-light);
-    font-weight: 500;
+  /* The two names, given real size on the first screen. After the painting
+     they are what a visitor is actually here to read. */
+  .shrine__who { margin-top: 1.1rem; }
+
+  .shrine__by {
+    color: rgba(226, 199, 141, .72);
+    font-size: .625rem;
+    font-weight: 600;
+    letter-spacing: .24em;
+    text-transform: uppercase;
+  }
+
+  .shrine__name {
+    margin-top: .35rem;
+    color: theme("colors.ivory");
     font-family: var(--font-cormorant);
-    font-size: 1.14em;
-    letter-spacing: .005em;
+    font-weight: 600;
+    font-size: clamp(1.5rem, 5.6vw, 1.9rem);
+    line-height: 1.08;
+    letter-spacing: -.01em;
+    text-shadow: 0 2px 20px rgba(0, 0, 0, .7);
+  }
+
+  /* The initiated name is the one the devotees this site is for will
+     recognise, so it is set in gold at nearly the same size rather than as a
+     footnote. */
+  .shrine__initiated {
+    margin-top: .3rem;
+    font-family: var(--font-cormorant);
+    font-style: italic;
+    font-weight: 500;
+    font-size: clamp(1.35rem, 5vw, 1.7rem);
+    line-height: 1.12;
+    background: linear-gradient(96deg, #e2c78d 0%, #f6e6bd 50%, #c9a25f 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
   }
 
   .shrine__lead {
     max-width: 40ch;
-    margin-top: .85rem;
+    margin-top: .7rem;
     color: rgba(248, 244, 236, .8);
     font-size: .9375rem;
     line-height: 1.55;
@@ -730,23 +758,22 @@
     background-clip: text;
   }
 
+  /* Nearly as large as the practising name, and in gold. Devotees will know
+     him by this one. */
   .priest__initiated {
-    margin-top: .5rem;
-    color: theme("colors.bronze");
-    font-family: var(--font-newsreader);
-    font-size: 1.0625rem;
+    margin-top: .45rem;
+    font-family: var(--font-cormorant);
     font-style: italic;
+    font-weight: 500;
+    font-size: clamp(1.6rem, 6vw, 2.1rem);
+    line-height: 1.1;
+    background: linear-gradient(96deg, #b97932 0%, #d9a959 50%, #b97932 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
   }
 
-  .priest__initiated::before {
-    content: "";
-    display: inline-block;
-    width: 1.4rem;
-    height: 1px;
-    margin-right: .6rem;
-    vertical-align: .3em;
-    background: var(--gold);
-  }
+
 
   .priest__teachers {
     margin-top: .35rem;
@@ -787,7 +814,9 @@
 
   .consult__frame {
     position: relative;
-    aspect-ratio: 16 / 10;
+    /* Was 16/10 and dominated the card. The photograph is context here, not
+       the subject — the words are. */
+    aspect-ratio: 21 / 9;
     overflow: hidden;
     background: theme("colors.cream");
   }
@@ -852,7 +881,8 @@
 
   .advice__frame {
     position: relative;
-    aspect-ratio: 4 / 3;
+    max-width: 22rem;
+    aspect-ratio: 3 / 2;
     overflow: hidden;
     border: 1px solid theme("colors.hairline");
     border-radius: 2px;
@@ -898,7 +928,7 @@
   @media (min-width: 768px) {
     .advice__item {
       display: grid;
-      grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+      grid-template-columns: minmax(0, 4fr) minmax(0, 8fr);
       gap: 2.5rem;
       align-items: start;
     }
@@ -907,82 +937,173 @@
     .advice__title { font-size: 2.15rem; }
   }
 
-  /* --- Gallery -------------------------------------------------------- */
+  /* --- Photograph sets (PhotoSet) --------------------------------------- */
 
-  .shots {
-    display: grid;
-    gap: 1rem;
+  /*
+    A snap rail on a phone, a grid from `md`.
+
+    The rail is deliberate: four photographs in a phone-width grid come out
+    ~160px each, which is a contact sheet rather than a way of looking at
+    pictures. One at 82vw is large enough to actually see, and swiping is how
+    people look at photographs on a phone anyway.
+  */
+  .pset {
+    display: flex;
+    gap: .875rem;
     margin-top: 1.75rem;
+    margin-inline: calc(var(--gutter) * -1);
+    padding-inline: var(--gutter);
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scroll-padding-inline: var(--gutter);
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
   }
 
-  .shots__frame {
+  .pset::-webkit-scrollbar { display: none; }
+
+  .pset__item {
+    flex: none;
+    width: 82vw;
+    max-width: 22rem;
+    scroll-snap-align: start;
+  }
+
+  .pset__button {
+    display: block;
+    width: 100%;
+    text-align: left;
+    cursor: zoom-in;
+  }
+
+  /* Must be a positioned block: next/image `fill` escapes to the nearest
+     positioned ancestor otherwise, which is how a photograph ended up
+     spilling across the page below the footer. */
+  .pset__frame {
     position: relative;
-    aspect-ratio: 4 / 3;
+    display: block;
     overflow: hidden;
     border: 1px solid theme("colors.hairline");
     border-radius: 2px;
     background: theme("colors.paper");
   }
 
-  .shots__img {
+  .pset[data-shape="portrait"] .pset__frame { aspect-ratio: 4 / 5; }
+  .pset[data-shape="landscape"] .pset__frame { aspect-ratio: 4 / 3; }
+
+  .pset__img {
     object-fit: cover;
     transition: transform 900ms var(--ease-out);
   }
 
-  .shots__item:hover .shots__img { transform: scale(1.04); }
+  .pset__button:hover .pset__img { transform: scale(1.04); }
 
-  .shots figcaption {
+  .pset__caption {
+    display: block;
     margin-top: .6rem;
     color: theme("colors.stone");
     font-size: .875rem;
+    line-height: 1.4;
   }
 
-  @media (min-width: 640px) {
-    .shots { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .pset__hint {
+    margin-top: .9rem;
+    color: theme("colors.stone");
+    font-size: .75rem;
+    font-weight: 600;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+  }
+
+  @media (min-width: 768px) {
+    .pset {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 1.25rem;
+      margin-inline: 0;
+      padding-inline: 0;
+      overflow: visible;
+    }
+
+    .pset__item { width: auto; max-width: none; }
+    .pset__hint { display: none; }
   }
 
   @media (min-width: 1024px) {
-    .shots { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1.5rem; }
+    .pset { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1.5rem; }
   }
 
-  /* --- Photographs of the priest --------------------------------------- */
+  /* --- Lightbox --------------------------------------------------------- */
 
-  /* Shares the gallery's shape but stays a separate class: his photographs
-     are portraits and ceremony shots, and want a taller frame than the
-     landscape puja pictures. */
-  .pphotos {
+  .lbox {
+    position: fixed;
+    inset: 0;
+    z-index: 80;
     display: grid;
-    gap: 1rem;
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    place-items: center;
+    padding: 1rem;
+    background: rgba(16, 7, 5, .94);
+    backdrop-filter: blur(6px);
+    cursor: zoom-out;
   }
 
-  .pphotos__frame {
-    position: relative;
-    aspect-ratio: 3 / 4;
-    overflow: hidden;
-    border: 1px solid theme("colors.hairline");
+  .lbox__figure {
+    grid-column: 2;
+    display: flex;
+    max-height: 88svh;
+    flex-direction: column;
+    align-items: center;
+    cursor: default;
+  }
+
+  .lbox__img {
+    width: auto;
+    max-width: 100%;
+    max-height: 76svh;
+    height: auto;
+    border: 1px solid rgba(226, 199, 141, .35);
     border-radius: 2px;
-    background: theme("colors.paper");
+    object-fit: contain;
   }
 
-  .pphotos__img {
-    object-fit: cover;
-    transition: transform 900ms var(--ease-out);
+  .lbox__figure figcaption {
+    margin-top: .9rem;
+    color: rgba(226, 199, 141, .85);
+    font-size: .9375rem;
+    text-align: center;
   }
 
-  .pphotos__item:hover .pphotos__img { transform: scale(1.04); }
-
-  .pphotos figcaption {
-    margin-top: .6rem;
-    color: theme("colors.stone");
-    font-size: .875rem;
+  .lbox__close {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    display: grid;
+    place-items: center;
+    width: 44px;
+    height: 44px;
+    border: 1px solid rgba(226, 199, 141, .35);
+    border-radius: 50%;
+    color: var(--gold-light);
   }
 
-  @media (min-width: 640px) {
-    .pphotos { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .lbox__nav {
+    display: grid;
+    place-items: center;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    color: var(--gold-light);
+    transition: background-color 200ms var(--ease-calm);
   }
 
-  @media (min-width: 1024px) {
-    .pphotos { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1.5rem; }
+  .lbox__nav:hover { background: rgba(226, 199, 141, .14); }
+  .lbox__nav--prev { grid-column: 1; }
+  .lbox__nav--next { grid-column: 3; }
+
+  @media (min-width: 768px) {
+    .lbox { padding: 2.5rem; }
+    .lbox__nav { width: 56px; height: 56px; }
   }
 
   /* --- Ceremony detail page -------------------------------------------- */
@@ -1070,12 +1191,6 @@
     -webkit-mask-size: contain;
   }
 
-  .head__tilak {
-    width: .55rem;
-    height: 1.3rem;
-    flex: none;
-    background: var(--gold);
-  }
 
   .head__rule {
     width: 4.5rem;

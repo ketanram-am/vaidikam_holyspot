@@ -1,8 +1,9 @@
-import Image from "next/image";
 import Section from "@/components/ui/Section";
 import Reveal from "@/components/ui/Reveal";
 import SacredImage from "@/components/ui/SacredImage";
 import ContactCTA from "@/components/sections/ContactCTA";
+import SectionHead from "@/components/ui/SectionHead";
+import PhotoSet from "@/components/ui/PhotoSet";
 import { pageMetadata } from "@/lib/seo";
 import { priest, site } from "@/content/site";
 
@@ -81,33 +82,14 @@ export default function AboutPage() {
         </div>
       </Section>
 
-      {/* Renders nothing while `priest.photos` is empty — a row of empty
-          frames would be worse than no row. */}
       {priest.photos.length > 0 && (
-        <Section tone="cream" label="Photographs">
-          <ul className="pphotos">
-            {priest.photos.map((photo, i) => (
-              <Reveal
-                as="li"
-                key={photo.src}
-                index={i % 3}
-                className="pphotos__item"
-              >
-                <figure>
-                  <div className="pphotos__frame">
-                    <Image
-                      src={photo.src}
-                      alt={photo.alt}
-                      fill
-                      sizes="(max-width: 639px) 92vw, (max-width: 1023px) 46vw, 31vw"
-                      className="pphotos__img"
-                    />
-                  </div>
-                  <figcaption>{photo.caption}</figcaption>
-                </figure>
-              </Reveal>
-            ))}
-          </ul>
+        <Section tone="cream" labelledBy="pphotos-title">
+          <SectionHead
+            id="pphotos-title"
+            eyebrow="In practice"
+            title="Photographs"
+          />
+          <PhotoSet photos={priest.photos} shape="portrait" />
         </Section>
       )}
 

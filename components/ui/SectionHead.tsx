@@ -1,13 +1,12 @@
 import Reveal from "@/components/ui/Reveal";
-import Mark from "@/components/ui/Mark";
 
 /**
- * The one heading pattern: the sourced tilak, the eyebrow, the title, and a
- * gold rule.
+ * The one heading pattern: eyebrow, title, gold rule.
  *
- * The lamp and rule-diamond that used to sit here were drawn by hand and read
- * as clip-art. The tilak is a real emblem; the rule is now just a rule, which
- * is honest about being one.
+ * A hand-drawn lamp, then a rule-diamond, then the sourced tilak all sat here
+ * in turn. Even the real tilak was wrong in this position — it is a mark worn
+ * on a forehead, not a bullet before a label, and repeating it above every
+ * band made it decoration. The heading is now just type and a rule.
  */
 export default function SectionHead({
   id,
@@ -22,10 +21,7 @@ export default function SectionHead({
 }) {
   return (
     <Reveal className="head">
-      <p className="head__eyebrow">
-        <Mark name="gaudiya-tilak" className="head__tilak" />
-        {eyebrow}
-      </p>
+      <p className="head__eyebrow">{eyebrow}</p>
       <h2 id={id} className="head__title">
         {title}
       </h2>
