@@ -19,7 +19,7 @@ export const site = {
   name: "Vaidikam Holyspot",
   // Canonical origin. Set to the live domain before launch — metadata,
   // sitemap, and JSON-LD all derive absolute URLs from it.
-  url: "https://vaidhikamholyspot.com",
+  url: "https://vaidhikam.com",
   /** One factual sentence. Used for meta description and the hero. */
   promise:
     "Vedic homas, pujas and samskaras, with astrological and vastu consultation — for families and individuals in India and abroad.",
