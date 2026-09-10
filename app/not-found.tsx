@@ -4,8 +4,7 @@ import { FlameMark, RingMotif } from "@/components/ui/Motifs";
 const routes = [
   { href: "/services", label: "Services" },
   { href: "/about", label: "About the priest" },
-  { href: "/faqs", label: "FAQs" },
-  { href: "/booking", label: "Request a ritual" },
+  { href: "/contact", label: "Contact the priest" },
 ];
 
 export default function NotFound() {
