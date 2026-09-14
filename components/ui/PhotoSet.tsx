@@ -72,7 +72,7 @@ export default function PhotoSet({
   const paused =
     manuallyPaused || open !== null || reducedMotion === true || photos.length < 2;
   const filmStyle: FilmStyle = {
-    "--pset-duration": `${Math.max(16, photos.length * 2.6)}s`,
+    "--pset-duration": `${Math.max(24, photos.length * 3.8)}s`,
   };
   const reels = photos.length > 1 ? [0, 1] : [0];
 

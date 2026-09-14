@@ -979,6 +979,8 @@
     margin-left: -50vw;
     padding-block: 1rem;
     background: linear-gradient(90deg, rgba(116, 47, 39, .04), transparent 18% 82%, rgba(116, 47, 39, .04));
+    -webkit-mask-image: linear-gradient(90deg, transparent, #000 5%, #000 95%, transparent);
+    mask-image: linear-gradient(90deg, transparent, #000 5%, #000 95%, transparent);
     touch-action: pan-y;
   }
 
@@ -1006,7 +1008,7 @@
 
   .pset__card {
     position: relative;
-    flex: 0 0 82vw;
+    flex: 0 0 96vw;
     overflow: hidden;
     border: 1px solid rgba(130, 87, 47, .3);
     border-radius: 3px;
@@ -1077,9 +1079,12 @@
       padding-block: 1.25rem;
       border-block: 1px solid theme("colors.hairline");
       background: rgba(252, 249, 243, .55);
+      -webkit-mask-image: linear-gradient(90deg, transparent, #000 3%, #000 97%, transparent);
+      mask-image: linear-gradient(90deg, transparent, #000 3%, #000 97%, transparent);
     }
     .pset__reel { gap: 1rem; padding-right: 1rem; }
-    .pset__card { flex-basis: clamp(30rem, 42vw, 42rem); }
+    .pset__card { flex-basis: clamp(28rem, 37vw, 37rem); }
+    .pset[data-shape="landscape"] .pset__card { aspect-ratio: 3 / 2; }
     .pset__caption { inset-inline: 1.25rem; bottom: 1.15rem; font-size: 1.05rem; }
   }
 
