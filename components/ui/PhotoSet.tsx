@@ -1,7 +1,8 @@
 "use client";
 
 import Image from "next/image";
-import { useCallback, useEffect, useRef, useState } from "react";
+import type { CSSProperties } from "react";
+import { useCallback, useEffect, useState } from "react";
 import {
   AnimatePresence,
   LazyMotion,
@@ -22,6 +23,7 @@ import {
  */
 
 export type Photo = { src: string; alt: string; caption: string };
+type FilmStyle = CSSProperties & { "--pset-duration": string };
 
 export default function PhotoSet({
   photos,
@@ -32,11 +34,7 @@ export default function PhotoSet({
   shape?: "portrait" | "landscape";
 }) {
   const [open, setOpen] = useState<number | null>(null);
-  const [activeIndex, setActiveIndex] = useState(0);
   const [manuallyPaused, setManuallyPaused] = useState(false);
-  const [hovered, setHovered] = useState(false);
-  const touchStart = useRef<number | null>(null);
-  const suppressOpen = useRef(false);
   const reducedMotion = useReducedMotion();
 
   const close = useCallback(() => setOpen(null), []);
@@ -49,26 +47,6 @@ export default function PhotoSet({
       ),
     [photos.length]
   );
-  const show = useCallback(
-    (index: number) => {
-      setActiveIndex((index + photos.length) % photos.length);
-      setManuallyPaused(true);
-    },
-    [photos.length]
-  );
-
-  const paused = manuallyPaused || hovered || open !== null || reducedMotion;
-
-  useEffect(() => {
-    if (paused || photos.length < 2) return;
-
-    const timer = window.setInterval(() => {
-      setActiveIndex((current) => (current + 1) % photos.length);
-    }, 4500);
-
-    return () => window.clearInterval(timer);
-  }, [paused, photos.length]);
-
   useEffect(() => {
     if (open === null) return;
 
@@ -90,150 +68,64 @@ export default function PhotoSet({
 
   if (photos.length === 0) return null;
 
-  const currentPhoto = photos[activeIndex];
   const lightboxPhoto = open === null ? null : photos[open];
-  const visiblePhotos =
-    photos.length === 1
-      ? [{ photo: currentPhoto, index: activeIndex, position: "current" }]
-      : [
-          {
-            photo: photos[(activeIndex - 1 + photos.length) % photos.length],
-            index: (activeIndex - 1 + photos.length) % photos.length,
-            position: "previous",
-          },
-          { photo: currentPhoto, index: activeIndex, position: "current" },
-          {
-            photo: photos[(activeIndex + 1) % photos.length],
-            index: (activeIndex + 1) % photos.length,
-            position: "next",
-          },
-        ];
+  const paused =
+    manuallyPaused || open !== null || reducedMotion === true || photos.length < 2;
+  const filmStyle: FilmStyle = {
+    "--pset-duration": `${Math.max(16, photos.length * 2.6)}s`,
+  };
+  const reels = photos.length > 1 ? [0, 1] : [0];
 
   return (
     <LazyMotion features={domAnimation} strict>
       <div
         className="pset"
         data-shape={shape}
-        onMouseEnter={() => setHovered(true)}
-        onMouseLeave={() => setHovered(false)}
-        onTouchStart={(event) => {
-          touchStart.current = event.touches[0]?.clientX ?? null;
-          suppressOpen.current = false;
-          setManuallyPaused(true);
-        }}
-        onTouchEnd={(event) => {
-          if (touchStart.current === null) return;
-          const distance =
-            (event.changedTouches[0]?.clientX ?? touchStart.current) -
-            touchStart.current;
-          touchStart.current = null;
-
-          if (Math.abs(distance) < 40) return;
-          suppressOpen.current = true;
-          show(activeIndex + (distance < 0 ? 1 : -1));
-        }}
+        data-paused={paused}
+        style={filmStyle}
+        onTouchStart={() => setManuallyPaused(true)}
       >
         <div className="pset__stage">
-          <AnimatePresence mode="wait" initial={false}>
-            <m.div
-              key={activeIndex}
-              className="pset__track"
-              initial={{ opacity: 0, x: 22 }}
-              animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: -22 }}
-              transition={{
-                duration: reducedMotion ? 0 : 0.48,
-                ease: [0.16, 1, 0.3, 1],
-              }}
-            >
-              {visiblePhotos.map(({ photo, index, position }) => (
-                <figure
-                  key={`${position}-${photo.src}`}
-                  className="pset__card"
-                  data-position={position}
-                  aria-hidden={position !== "current"}
-                >
-                  <button
-                    type="button"
-                    className="pset__button"
-                    tabIndex={position === "current" ? 0 : -1}
-                    onClick={() => {
-                      if (suppressOpen.current) {
-                        suppressOpen.current = false;
-                        return;
-                      }
-                      if (position === "current") {
+          <div className="pset__track">
+            {reels.map((reel) => (
+              <div
+                key={reel}
+                className="pset__reel"
+                aria-hidden={reel === 1 ? "true" : undefined}
+              >
+                {photos.map((photo, index) => (
+                  <figure key={`${reel}-${photo.src}`} className="pset__card">
+                    <button
+                      type="button"
+                      className="pset__button"
+                      tabIndex={reel === 0 ? 0 : -1}
+                      onFocus={() => setManuallyPaused(true)}
+                      onClick={() => {
                         setManuallyPaused(true);
-                        setOpen(activeIndex);
-                      } else {
-                        show(index);
-                      }
-                    }}
-                    aria-label={
-                      position === "current"
-                        ? `View: ${photo.caption}`
-                        : `Show ${position} photograph`
-                    }
-                  >
-                    <Image
-                      src={photo.src}
-                      alt={position === "current" ? photo.alt : ""}
-                      fill
-                      sizes="(max-width: 767px) 64vw, (max-width: 1199px) 31vw, 380px"
-                      className="pset__img"
-                      priority={activeIndex === 0 && position === "current"}
-                    />
-                    <span className="pset__shade" aria-hidden="true" />
-                    {position === "current" && (
+                        setOpen(index);
+                      }}
+                      aria-label={`View: ${photo.caption}`}
+                    >
+                      <Image
+                        src={photo.src}
+                        alt={reel === 0 ? photo.alt : ""}
+                        fill
+                        sizes="(max-width: 767px) 82vw, 42vw"
+                        className="pset__img"
+                        priority={reel === 0 && index === 0}
+                      />
+                      <span className="pset__shade" aria-hidden="true" />
                       <span className="pset__caption">{photo.caption}</span>
-                    )}
-                  </button>
-                </figure>
-              ))}
-            </m.div>
-          </AnimatePresence>
-
-          {photos.length > 1 && (
-            <>
-              <button
-                type="button"
-                className="pset__nav pset__nav--prev"
-                onClick={() => show(activeIndex - 1)}
-                aria-label="Previous photograph"
-              >
-                <CaretLeftIcon size={22} weight="bold" aria-hidden="true" />
-              </button>
-              <button
-                type="button"
-                className="pset__nav pset__nav--next"
-                onClick={() => show(activeIndex + 1)}
-                aria-label="Next photograph"
-              >
-                <CaretRightIcon size={22} weight="bold" aria-hidden="true" />
-              </button>
-            </>
-          )}
+                    </button>
+                  </figure>
+                ))}
+              </div>
+            ))}
+          </div>
         </div>
 
         {photos.length > 1 && (
           <div className="pset__controls">
-            <div
-              className="pset__dots"
-              role="group"
-              aria-label="Choose photograph"
-            >
-              {photos.map((photo, index) => (
-                <button
-                  type="button"
-                  key={photo.src}
-                  className="pset__dot"
-                  data-active={index === activeIndex}
-                  onClick={() => show(index)}
-                  aria-label={`Show photograph ${index + 1}: ${photo.caption}`}
-                  aria-current={index === activeIndex ? "true" : undefined}
-                />
-              ))}
-            </div>
             <button
               type="button"
               className="pset__pause"

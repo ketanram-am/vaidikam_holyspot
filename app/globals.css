@@ -973,35 +973,49 @@
 
   .pset__stage {
     position: relative;
+    left: 50%;
+    width: 100vw;
     overflow: hidden;
-    margin-inline: calc(var(--gutter) * -1);
-    padding-block: .75rem;
+    margin-left: -50vw;
+    padding-block: 1rem;
     background: linear-gradient(90deg, rgba(116, 47, 39, .04), transparent 18% 82%, rgba(116, 47, 39, .04));
     touch-action: pan-y;
   }
 
   .pset__track {
-    display: grid;
-    grid-template-columns: 18vw 60vw 18vw;
-    gap: 2vw;
-    align-items: center;
-    justify-content: center;
-    height: 45vw;
+    display: flex;
+    width: max-content;
+    animation: pset-film var(--pset-duration) linear infinite;
+    will-change: transform;
+  }
+
+  .pset[data-paused="true"] .pset__track {
+    animation-play-state: paused;
+  }
+
+  .pset__reel {
+    display: flex;
+    flex: none;
+    gap: .75rem;
+    padding-right: .75rem;
+  }
+
+  @keyframes pset-film {
+    to { transform: translateX(-50%); }
   }
 
   .pset__card {
     position: relative;
-    height: 100%;
+    flex: 0 0 82vw;
     overflow: hidden;
     border: 1px solid rgba(130, 87, 47, .3);
     border-radius: 3px;
     background: #21110d;
     box-shadow: 0 20px 48px -32px rgba(45, 25, 14, .8);
-    transition: opacity 260ms var(--ease-calm), transform 320ms var(--ease-out);
   }
 
-  .pset__card[data-position="previous"],
-  .pset__card[data-position="next"] { opacity: .56; transform: scale(.9); }
+  .pset[data-shape="portrait"] .pset__card { aspect-ratio: 4 / 5; }
+  .pset[data-shape="landscape"] .pset__card { aspect-ratio: 4 / 3; }
 
   .pset__button {
     position: relative;
@@ -1027,7 +1041,7 @@
 
   .pset__caption {
     position: absolute;
-    inset-inline: 1rem 4rem;
+    inset-inline: 1rem;
     bottom: 1rem;
     color: theme("colors.ivory");
     font-family: var(--font-newsreader);
@@ -1036,49 +1050,12 @@
     text-shadow: 0 1px 12px rgba(0, 0, 0, .7);
   }
 
-  .pset__nav {
-    position: absolute;
-    top: 50%;
-    z-index: 2;
-    display: grid;
-    place-items: center;
-    width: 42px;
-    height: 42px;
-    border: 1px solid rgba(248, 244, 236, .4);
-    border-radius: 50%;
-    background: rgba(27, 11, 8, .5);
-    color: theme("colors.ivory");
-    opacity: .88;
-    backdrop-filter: blur(5px);
-    transform: translateY(-50%);
-    transition: background-color 200ms var(--ease-calm), opacity 200ms var(--ease-calm);
-  }
-
-  .pset__nav:hover { background: rgba(27, 11, 8, .78); opacity: 1; }
-  .pset__nav--prev { left: calc(20vw - 1.25rem); }
-  .pset__nav--next { right: calc(20vw - 1.25rem); }
-
   .pset__controls {
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    justify-content: flex-end;
     gap: 1rem;
     margin-top: .85rem;
-  }
-
-  .pset__dots { display: flex; align-items: center; gap: .38rem; }
-
-  .pset__dot {
-    width: .42rem;
-    height: .42rem;
-    border-radius: 999px;
-    background: rgba(130, 87, 47, .25);
-    transition: width 260ms var(--ease-out), background-color 260ms var(--ease-calm);
-  }
-
-  .pset__dot[data-active="true"] {
-    width: 1.65rem;
-    background: theme("colors.maroon");
   }
 
   .pset__pause {
@@ -1097,28 +1074,17 @@
   @media (min-width: 768px) {
     .pset { max-width: none; }
     .pset__stage {
-      margin-inline: 0;
-      padding: 1rem;
-      border: 1px solid theme("colors.hairline");
-      border-radius: 3px;
+      padding-block: 1.25rem;
+      border-block: 1px solid theme("colors.hairline");
       background: rgba(252, 249, 243, .55);
     }
-    .pset__track {
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 1rem;
-      height: auto;
-    }
-    .pset__card { height: auto; }
-    .pset[data-shape="portrait"] .pset__card { aspect-ratio: 4 / 5; }
-    .pset[data-shape="landscape"] .pset__card { aspect-ratio: 4 / 3; }
-    .pset__card[data-position="previous"],
-    .pset__card[data-position="next"] { opacity: .78; transform: none; }
-    .pset__card[data-position="previous"]:hover,
-    .pset__card[data-position="next"]:hover { opacity: 1; transform: translateY(-3px); }
+    .pset__reel { gap: 1rem; padding-right: 1rem; }
+    .pset__card { flex-basis: clamp(30rem, 42vw, 42rem); }
     .pset__caption { inset-inline: 1.25rem; bottom: 1.15rem; font-size: 1.05rem; }
-    .pset__nav { width: 48px; height: 48px; }
-    .pset__nav--prev { left: 1.75rem; }
-    .pset__nav--next { right: 1.75rem; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .pset__track { animation: none; }
   }
 
   /* --- Lightbox --------------------------------------------------------- */
