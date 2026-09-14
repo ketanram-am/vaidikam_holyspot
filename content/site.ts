@@ -16,7 +16,7 @@
  */
 
 export const site = {
-  name: "VAIDHIKAM Holyspot",
+  name: "VAIDHIKAM",
   // Canonical origin. Set to the live domain before launch — metadata,
   // sitemap, and JSON-LD all derive absolute URLs from it.
   url: "https://vaidhikam.com",
