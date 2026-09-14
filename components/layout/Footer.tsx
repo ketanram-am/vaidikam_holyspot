@@ -18,7 +18,9 @@ export default function Footer() {
         <div className="foot__brand">
           <BrandLockup />
           <p className="foot__role">
-            {priest.name} · {priest.honorific}
+            {priest.name}
+            <br />
+            {priest.honorific} · {priest.location}
           </p>
         </div>
 

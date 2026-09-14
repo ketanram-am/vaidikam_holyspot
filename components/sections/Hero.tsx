@@ -12,7 +12,7 @@ import {
   useTransform,
 } from "framer-motion";
 import { ArrowDownIcon, ArrowRightIcon } from "@phosphor-icons/react/dist/ssr";
-import { priest, primaryAction, site } from "@/content/site";
+import { priest, site } from "@/content/site";
 
 /**
  * The opening: Sri Narasimha as the page itself.
@@ -98,8 +98,8 @@ export default function Hero() {
           </m.div>
 
           <m.div className="shrine__actions" {...rise(0.35)}>
-            <Link href={primaryAction.href} className="btn btn-gold">
-              {primaryAction.label}
+            <Link href="/#ceremonies" className="btn btn-gold">
+              Explore ceremonies
               <ArrowRightIcon size={16} weight="bold" aria-hidden="true" />
             </Link>
             <a href="#ceremonies" className="shrine__scroll">

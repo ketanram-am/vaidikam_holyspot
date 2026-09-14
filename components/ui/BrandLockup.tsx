@@ -24,7 +24,7 @@ export default function BrandLockup({
       </span>
       {!compact && (
         <span className="brand-wordmark">
-          <span>Vaidikam</span>
+          <span>VAIDHIKAM</span>
           <span>Holyspot</span>
         </span>
       )}

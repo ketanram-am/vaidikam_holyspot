@@ -1,7 +1,6 @@
 import Hero from "@/components/sections/Hero";
 import PriestIdentity from "@/components/sections/PriestIdentity";
 import Services from "@/components/sections/Services";
-import Consultations from "@/components/sections/Consultations";
 import Gallery from "@/components/sections/Gallery";
 import ContactCTA from "@/components/sections/ContactCTA";
 import BandDivider from "@/components/ui/BandDivider";
@@ -57,10 +56,6 @@ export default function Home() {
         <Hero />
         <PriestIdentity />
         <Services />
-        <Consultations />
-        {/* Renders nothing until real photographs are registered in
-            content/site.ts — an empty grid of placeholders would be worse
-            than no section. */}
         <Gallery />
         <BandDivider />
         <ContactCTA />

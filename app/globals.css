@@ -903,24 +903,28 @@
   /* --- Consultation page ---------------------------------------------- */
 
   .advice {
-    display: flex;
-    flex-direction: column;
-    gap: 3rem;
-    margin-top: 2.5rem;
+    display: grid;
+    gap: 1rem;
+    margin-top: 2rem;
+  }
+
+  .advice__item {
+    overflow: hidden;
+    border: 1px solid theme("colors.hairline");
+    border-radius: 3px;
+    background: theme("colors.paper");
   }
 
   .advice__frame {
     position: relative;
-    max-width: 22rem;
-    aspect-ratio: 3 / 2;
+    width: 100%;
+    aspect-ratio: 16 / 9;
     overflow: hidden;
-    border: 1px solid theme("colors.hairline");
-    border-radius: 2px;
   }
 
   .advice__img { object-fit: cover; }
 
-  .advice__text { margin-top: 1.25rem; }
+  .advice__text { padding: 1.1rem 1.15rem 1.25rem; }
 
   .advice__sanskrit {
     color: theme("colors.bronze");
@@ -947,8 +951,8 @@
 
   .advice__note {
     max-width: 62ch;
-    margin-top: 1.1rem;
-    padding-top: .9rem;
+    margin-top: .85rem;
+    padding-top: .75rem;
     border-top: 1px solid theme("colors.hairline");
     color: theme("colors.stone");
     font-size: .9375rem;
@@ -956,70 +960,46 @@
   }
 
   @media (min-width: 768px) {
-    .advice__item {
-      display: grid;
-      grid-template-columns: minmax(0, 4fr) minmax(0, 8fr);
-      gap: 2.5rem;
-      align-items: start;
-    }
-
-    .advice__text { margin-top: 0; }
-    .advice__title { font-size: 2.15rem; }
+    .advice { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1.5rem; }
+    .advice__title { font-size: 1.85rem; }
   }
 
-  /* --- Photograph sets (PhotoSet) --------------------------------------- */
+  /* --- Photograph showcase (PhotoSet) ----------------------------------- */
 
-  /*
-    A snap rail on a phone, a grid from `md`.
-
-    The rail is deliberate: four photographs in a phone-width grid come out
-    ~160px each, which is a contact sheet rather than a way of looking at
-    pictures. One at 82vw is large enough to actually see, and swiping is how
-    people look at photographs on a phone anyway.
-  */
   .pset {
-    display: flex;
-    gap: .875rem;
     margin-top: 1.75rem;
-    margin-inline: calc(var(--gutter) * -1);
-    padding-inline: var(--gutter);
-    overflow-x: auto;
-    scroll-snap-type: x mandatory;
-    scroll-padding-inline: var(--gutter);
-    scrollbar-width: none;
-    -webkit-overflow-scrolling: touch;
+    margin-inline: auto;
   }
 
-  .pset::-webkit-scrollbar { display: none; }
+  .pset[data-shape="landscape"] { max-width: 68rem; }
+  .pset[data-shape="portrait"] { max-width: 38rem; }
 
-  .pset__item {
-    flex: none;
-    width: 82vw;
-    max-width: 22rem;
-    scroll-snap-align: start;
+  .pset__stage {
+    position: relative;
+    overflow: hidden;
+    border: 1px solid rgba(130, 87, 47, .35);
+    border-radius: 3px;
+    background: #21110d;
+    box-shadow: 0 28px 65px -38px rgba(45, 25, 14, .72);
+    touch-action: pan-y;
+  }
+
+  .pset[data-shape="portrait"] .pset__stage { aspect-ratio: 4 / 5; }
+  .pset[data-shape="landscape"] .pset__stage { aspect-ratio: 16 / 10; }
+
+  .pset__slide {
+    position: absolute;
+    inset: 0;
   }
 
   .pset__button {
+    position: relative;
     display: block;
+    height: 100%;
     width: 100%;
     text-align: left;
     cursor: zoom-in;
   }
-
-  /* Must be a positioned block: next/image `fill` escapes to the nearest
-     positioned ancestor otherwise, which is how a photograph ended up
-     spilling across the page below the footer. */
-  .pset__frame {
-    position: relative;
-    display: block;
-    overflow: hidden;
-    border: 1px solid theme("colors.hairline");
-    border-radius: 2px;
-    background: theme("colors.paper");
-  }
-
-  .pset[data-shape="portrait"] .pset__frame { aspect-ratio: 4 / 5; }
-  .pset[data-shape="landscape"] .pset__frame { aspect-ratio: 4 / 3; }
 
   .pset__img {
     object-fit: cover;
@@ -1028,39 +1008,86 @@
 
   .pset__button:hover .pset__img { transform: scale(1.04); }
 
-  .pset__caption {
-    display: block;
-    margin-top: .6rem;
-    color: theme("colors.stone");
-    font-size: .875rem;
-    line-height: 1.4;
+  .pset__shade {
+    position: absolute;
+    inset: 42% 0 0;
+    background: linear-gradient(180deg, transparent, rgba(20, 8, 5, .78));
   }
 
-  .pset__hint {
-    margin-top: .9rem;
+  .pset__caption {
+    position: absolute;
+    inset-inline: 1rem 4rem;
+    bottom: 1rem;
+    color: theme("colors.ivory");
+    font-family: var(--font-newsreader);
+    font-size: 1rem;
+    line-height: 1.4;
+    text-shadow: 0 1px 12px rgba(0, 0, 0, .7);
+  }
+
+  .pset__nav {
+    position: absolute;
+    top: 50%;
+    z-index: 2;
+    display: grid;
+    place-items: center;
+    width: 42px;
+    height: 42px;
+    border: 1px solid rgba(248, 244, 236, .4);
+    border-radius: 50%;
+    background: rgba(27, 11, 8, .5);
+    color: theme("colors.ivory");
+    opacity: .88;
+    backdrop-filter: blur(5px);
+    transform: translateY(-50%);
+    transition: background-color 200ms var(--ease-calm), opacity 200ms var(--ease-calm);
+  }
+
+  .pset__nav:hover { background: rgba(27, 11, 8, .78); opacity: 1; }
+  .pset__nav--prev { left: .75rem; }
+  .pset__nav--next { right: .75rem; }
+
+  .pset__controls {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-top: .85rem;
+  }
+
+  .pset__dots { display: flex; align-items: center; gap: .45rem; }
+
+  .pset__dot {
+    width: 1.7rem;
+    height: 3px;
+    border-radius: 999px;
+    background: rgba(130, 87, 47, .25);
+    transition: width 260ms var(--ease-out), background-color 260ms var(--ease-calm);
+  }
+
+  .pset__dot[data-active="true"] {
+    width: 2.6rem;
+    background: theme("colors.maroon");
+  }
+
+  .pset__pause {
+    display: inline-flex;
+    align-items: center;
+    gap: .4rem;
+    min-height: 40px;
+    padding-inline: .55rem;
     color: theme("colors.stone");
-    font-size: .75rem;
+    font-size: .6875rem;
     font-weight: 600;
     letter-spacing: .1em;
     text-transform: uppercase;
   }
 
   @media (min-width: 768px) {
-    .pset {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 1.25rem;
-      margin-inline: 0;
-      padding-inline: 0;
-      overflow: visible;
-    }
-
-    .pset__item { width: auto; max-width: none; }
-    .pset__hint { display: none; }
-  }
-
-  @media (min-width: 1024px) {
-    .pset { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1.5rem; }
+    .pset__caption { inset-inline: 1.5rem 5rem; bottom: 1.35rem; font-size: 1.15rem; }
+    .pset__nav { width: 48px; height: 48px; }
+    .pset__nav--prev { left: 1.25rem; }
+    .pset__nav--next { right: 1.25rem; }
   }
 
   /* --- Lightbox --------------------------------------------------------- */
@@ -1536,42 +1563,45 @@
   }
 
   @media (min-width: 1024px) {
-    .cx__groups { gap: 3rem; margin-top: 3rem; }
-
-    .cxg {
+    .cx__groups {
       display: grid;
-      grid-template-columns: minmax(0, 4fr) minmax(0, 8fr);
-      gap: 2.5rem;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 1.25rem;
+      margin-top: 2rem;
       align-items: start;
     }
 
-    /* The group head follows the reader down its own rows, so a long list
-       never loses the deity it belongs to. */
-    .cxg__head {
-      position: sticky;
-      top: calc(var(--nav-height) + 2rem);
-      flex-direction: column;
-      gap: 1rem;
-      align-items: flex-start;
-      padding-bottom: 0;
-      border-bottom: 0;
+    .cx__groups--top { margin-top: 0; }
+
+    .cxg {
+      padding: 1.2rem;
+      border: 1px solid theme("colors.hairline");
+      border-radius: 3px;
+      background: rgba(252, 249, 243, .7);
     }
 
-    .cxg__figure { width: 100%; height: auto; aspect-ratio: 4 / 5; }
+    .cxg__head {
+      position: static;
+      flex-direction: row;
+      gap: .9rem;
+      align-items: center;
+      padding-bottom: .85rem;
+      border-bottom: 1px solid theme("colors.hairline");
+    }
 
-    .cxg__items { margin-top: 0; border-top: 1px solid theme("colors.hairline"); }
+    .cxg__figure { width: 5rem; height: 6.25rem; }
+
+    .cxg__items { margin-top: .15rem; border-top: 0; }
 
     .cxi__link {
-      display: grid;
-      grid-template-columns: minmax(0, 6fr) minmax(0, 5fr) auto;
-      column-gap: 1.5rem;
-      align-items: baseline;
-      padding-block: 1.1rem;
+      display: flex;
+      gap: .25rem;
+      padding-block: .8rem;
     }
 
-    .cxi__name { font-size: 1.2rem; }
-
-    .cxi__purpose { margin-top: 0; justify-self: end; }
+    .cxi__name { font-size: 1.08rem; }
+    .cxi__deity { font-size: .84rem; }
+    .cxi__purpose { margin-top: .15rem; }
   }
 
   /* --- Q&A ------------------------------------------------------------ */
@@ -1669,36 +1699,93 @@
 
   /* --- Contact -------------------------------------------------------- */
 
+  .contact__intro {
+    max-width: 42rem;
+    margin-inline: auto;
+    text-align: center;
+  }
+
+  .contact__eyebrow {
+    color: theme("colors.bronze");
+    font-size: .6875rem;
+    font-weight: 600;
+    letter-spacing: .2em;
+    text-transform: uppercase;
+  }
+
+  .contact__title {
+    margin-top: .65rem;
+    font-size: clamp(2rem, 9vw, 3.4rem);
+    line-height: 1.04;
+  }
+
   .contact__lead {
     max-width: 48ch;
-    margin-top: .85rem;
+    margin: .9rem auto 0;
     color: theme("colors.charcoal");
     font-size: 1.0625rem;
     line-height: 1.55;
   }
 
   .contact__channels {
-    margin-top: 1.75rem;
-    border-top: 1px solid theme("colors.hairline");
+    display: grid;
+    gap: .75rem;
+    max-width: 56rem;
+    margin: 2rem auto 0;
   }
 
-  .contact__channels a {
+  .contact__channel a {
     display: flex;
-    align-items: baseline;
-    justify-content: space-between;
+    align-items: center;
     gap: 1rem;
-    min-height: 60px;
-    padding-block: 1rem;
-    border-bottom: 1px solid theme("colors.hairline");
+    min-height: 76px;
+    padding: 1rem 1.1rem;
+    border: 1px solid theme("colors.hairline");
+    border-radius: 3px;
+    background: rgba(252, 249, 243, .72);
     color: theme("colors.maroon");
-    font-family: var(--font-newsreader);
-    font-size: 1.2rem;
+    box-shadow: 0 14px 35px -30px rgba(45, 25, 14, .6);
+    transition: border-color 220ms var(--ease-calm), transform 220ms var(--ease-out);
   }
 
-  .contact__channels a span {
+  .contact__channel a:hover {
+    border-color: theme("colors.bronze");
+    transform: translateY(-2px);
+  }
+
+  .contact__channel > a > svg { flex: none; color: theme("colors.bronze"); }
+
+  .contact__channel-copy { display: flex; min-width: 0; flex-direction: column; }
+
+  .contact__channel-copy strong {
+    font-family: var(--font-newsreader);
+    font-size: 1.12rem;
+    font-weight: 600;
+  }
+
+  .contact__channel-copy span {
+    overflow-wrap: anywhere;
     color: theme("colors.charcoal");
-    font-family: var(--font-jakarta);
-    font-size: .9375rem;
+    font-size: .8125rem;
+  }
+
+  .contact__channel-action {
+    margin-left: auto;
+    font-size: .6875rem;
+    font-weight: 700;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+  }
+
+  .contact__channel--primary a {
+    border-color: theme("colors.maroon");
+    background: theme("colors.maroon");
+    color: theme("colors.ivory");
+  }
+
+  .contact__channel--primary > a > svg,
+  .contact__channel--primary .contact__channel-copy span {
+    color: var(--gold-light);
   }
 
   .contact__missing {
@@ -1709,7 +1796,55 @@
     font-size: .9375rem;
   }
 
-  .qa--contact { margin-top: 2.75rem; }
+  .contact__guide {
+    max-width: 56rem;
+    margin: 2rem auto 0;
+    padding: 1.25rem;
+    border: 1px solid theme("colors.hairline");
+    border-radius: 3px;
+    background: rgba(239, 230, 214, .45);
+  }
+
+  .contact__guide-title {
+    color: theme("colors.maroon");
+    font-family: var(--font-newsreader);
+    font-size: 1.12rem;
+    font-weight: 600;
+  }
+
+  .contact__guide ul {
+    display: grid;
+    gap: .7rem;
+    margin-top: .9rem;
+  }
+
+  .contact__guide li {
+    display: flex;
+    align-items: center;
+    gap: .65rem;
+    color: theme("colors.charcoal");
+    font-size: .9rem;
+  }
+
+  .contact__guide li svg { flex: none; color: theme("colors.bronze"); }
+
+  .contact__guide > p:last-child {
+    margin-top: 1rem;
+    padding-top: .85rem;
+    border-top: 1px solid theme("colors.hairline");
+    color: theme("colors.stone");
+    font-size: .8125rem;
+  }
+
+  @media (min-width: 768px) {
+    .contact__channels {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .contact__channel--primary { grid-column: 1 / -1; }
+    .contact__channel--primary a { min-height: 92px; }
+    .contact__guide ul { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  }
 
   /* --- Closing CTA ---------------------------------------------------- */
 
@@ -1745,16 +1880,7 @@
     background: linear-gradient(90deg, transparent, var(--gold-dim) 30%, var(--gold-dim) 70%, transparent);
   }
 
-  .cta__eyebrow {
-    color: var(--gold-light);
-    font-size: .6875rem;
-    font-weight: 600;
-    letter-spacing: .2em;
-    text-transform: uppercase;
-  }
-
   .cta__title {
-    margin-top: .7rem;
     color: theme("colors.ivory");
     font-size: 1.75rem;
     line-height: 1.12;
@@ -1775,33 +1901,29 @@
   }
 
   .cta__actions {
-    display: flex;
-    flex-direction: column;
-    gap: 1.5rem;
     margin-top: 1.75rem;
   }
 
   .cta__button { width: 100%; }
 
-  /* The direct routes. Set as a list of icon links so WhatsApp, phone, and
-     email are each one tap and visibly distinct. */
   .cta__direct {
     display: flex;
     flex-direction: column;
-    gap: .1rem;
+    gap: .45rem;
+    margin-top: 1.5rem;
   }
 
   .cta__direct a {
-    display: inline-flex;
-    align-items: center;
-    gap: .6rem;
+    display: inline-block;
     min-height: 44px;
     color: rgba(248, 244, 236, .88);
     font-size: .9375rem;
+    line-height: 44px;
+    text-decoration: underline;
+    text-decoration-color: rgba(226, 199, 141, .45);
+    text-underline-offset: 4px;
     transition: color 200ms var(--ease-calm);
   }
-
-  .cta__direct a svg { color: var(--gold-light); flex: none; }
 
   .cta__direct a:hover { color: var(--gold-light); }
 
@@ -1814,16 +1936,13 @@
   @media (min-width: 768px) {
     .cta { padding-block: 4.5rem; }
     .cta__title { font-size: 2.35rem; }
-
-    .cta__actions {
-      flex-direction: row;
-      align-items: center;
-      gap: 2.5rem;
-    }
-
     .cta__button { width: auto; }
-
-    .cta__direct { flex-direction: row; gap: 1.75rem; }
+    .cta__direct { flex-direction: row; align-items: center; gap: 0; }
+    .cta__direct li + li::before {
+      margin-inline: .75rem;
+      color: var(--gold-light);
+      content: "·";
+    }
   }
 
   /* --- Footer --------------------------------------------------------- */
@@ -1873,10 +1992,16 @@
 
   @media (min-width: 768px) {
     .foot__inner {
-      flex-direction: row;
-      justify-content: space-between;
+      display: grid;
+      grid-template-columns: minmax(13rem, 1.1fr) minmax(20rem, auto) minmax(18rem, 1.2fr);
+      align-items: start;
+      gap: 2rem;
       padding-block: 3.5rem;
     }
+
+    .foot__nav { justify-content: center; }
+    .foot__contact { justify-content: flex-end; text-align: right; }
+    .foot__legal { text-align: center; }
   }
 
   /* --- Image frame ---------------------------------------------------- */

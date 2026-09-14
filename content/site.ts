@@ -16,7 +16,7 @@
  */
 
 export const site = {
-  name: "Vaidikam Holyspot",
+  name: "VAIDHIKAM Holyspot",
   // Canonical origin. Set to the live domain before launch — metadata,
   // sitemap, and JSON-LD all derive absolute URLs from it.
   url: "https://vaidhikam.com",
@@ -92,7 +92,7 @@ export const priest = {
 
   /** Stands in for the portrait until one is supplied. */
   practiceImage: "/images/temple/srirangam-hall.jpg" as string | null,
-  sampradaya: "Pāñcarātra tradition · Gaudiya Vedānta" as string | null,
+  sampradaya: null as string | null,
 
   /** Homepage version — short, his own words, first person. */
   bioShort: [
@@ -156,7 +156,7 @@ export const consultations = [
     image: "/images/deity/navagraha-sculptures.jpg",
     imageAlt:
       "Black basalt panels of Surya, Soma and Mangala from a Navagraha set",
-    lead: "For choosing a time, and for understanding which observance suits your circumstances.",
+    lead: "Choose an auspicious time and the observance suited to your occasion.",
     body: [
       "Most of what families ask me for is muhūrta — an auspicious time. A marriage, a gṛha praveśa, a naming, the start of something: the tradition holds that when a rite is performed matters as much as that it is performed, and settling that is the first thing I do for most ceremonies.",
       "I also read a chart to advise which observance is appropriate. Where the Navagraha are indicated I will say so plainly, and where they are not I will say that too.",
@@ -169,7 +169,7 @@ export const consultations = [
     sanskrit: "Vāstu",
     image: "/images/temple/srirangam-hall.jpg",
     imageAlt: "The pillared hall of Sri Ranganathaswamy Temple, Srirangam",
-    lead: "For a new home or a new site, before you move in and before you build.",
+    lead: "Practical traditional guidance for a new home or site, before building or moving in.",
     body: [
       "Vāstu concerns the placement and orientation of a dwelling — the direction it faces, where the kitchen and the shrine sit, how the site is entered. I look at a plan, or at the place itself, and advise what the tradition asks for.",
       "It usually leads to a rite rather than replacing one: Vāstu Śānti to propitiate the deities of the site, Gṛha Praveśa on entering, and Vāstu Rakṣoghna where a site needs clearing. Those are ceremonies I perform myself, so the advice and the rite are not handed between two people.",
@@ -204,11 +204,6 @@ export const galleryPhotos: {
   },
   {
     src: "/images/gallery/ceremony-01.jpg",
-    alt: "A Vedic ceremony in progress",
-    caption: "A ceremony in progress",
-  },
-  {
-    src: "/images/gallery/ceremony-02.jpg",
     alt: "A Vedic ceremony in progress",
     caption: "A ceremony in progress",
   },
@@ -271,6 +266,6 @@ export const priestNav = {
 
 /** The single action on the site. There is no second, competing one. */
 export const primaryAction = {
-  href: "/contact",
-  label: "Tell me your occasion",
+  href: "/#ceremonies",
+  label: "Explore ceremonies",
 };

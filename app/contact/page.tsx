@@ -1,7 +1,14 @@
+import {
+  CalendarBlankIcon,
+  EnvelopeSimpleIcon,
+  MapPinIcon,
+  PhoneIcon,
+  WhatsappLogoIcon,
+} from "@phosphor-icons/react/dist/ssr";
 import Section from "@/components/ui/Section";
 import Reveal from "@/components/ui/Reveal";
 import { pageMetadata } from "@/lib/seo";
-import { site, priest, practical } from "@/content/site";
+import { site, priest } from "@/content/site";
 
 export const metadata = pageMetadata({
   title: "Contact",
@@ -10,12 +17,7 @@ export const metadata = pageMetadata({
 });
 
 /**
- * Contact.
- *
- * Removed: "No Sanskrit terminology is required." as a headline, the numbered
- * list of things to mention (which the field labels say anyway), the
- * "Prepare an enquiry" button leading to a second form, and the paragraph
- * explaining that no placeholder inbox is being presented as genuine.
+ * A direct, mobile-first contact page without a form or unnecessary copy.
  */
 export default function ContactPage() {
   const { email, phone, whatsapp } = site.contact;
@@ -24,56 +26,79 @@ export default function ContactPage() {
   return (
     <main id="main">
       <Section tone="ivory" labelledBy="contact-title" className="page-top">
-        <Reveal className="contact">
-          <h1 id="contact-title" className="sec__title">
-            Contact {priest.name}
+        <Reveal className="contact__intro">
+          <p className="contact__eyebrow">Direct enquiry</p>
+          <h1 id="contact-title" className="contact__title">
+            Begin with your occasion
           </h1>
           <p className="contact__lead">
-            Tell him the occasion, where your family is based, and when you need
-            the ceremony. You do not need to know its Sanskrit name.
+            Share what you are planning, where you are based, and your preferred
+            date. {priest.name} will guide you from there.
           </p>
+        </Reveal>
 
-          {hasDirect ? (
+        {hasDirect ? (
+          <Reveal delay={0.06}>
             <ul className="contact__channels">
               {whatsapp && (
-                <li>
+                <li className="contact__channel contact__channel--primary">
                   <a href={`https://wa.me/${whatsapp.replace(/\D/g, "")}`}>
-                    WhatsApp <span>{whatsapp}</span>
+                    <WhatsappLogoIcon size={25} weight="fill" aria-hidden="true" />
+                    <span className="contact__channel-copy">
+                      <strong>WhatsApp</strong>
+                      <span>{whatsapp}</span>
+                    </span>
+                    <span className="contact__channel-action">Message</span>
                   </a>
                 </li>
               )}
               {phone && (
-                <li>
+                <li className="contact__channel">
                   <a href={`tel:${phone.replace(/\s/g, "")}`}>
-                    Phone <span>{phone}</span>
+                    <PhoneIcon size={24} weight="duotone" aria-hidden="true" />
+                    <span className="contact__channel-copy">
+                      <strong>Phone</strong>
+                      <span>{phone}</span>
+                    </span>
                   </a>
                 </li>
               )}
               {email && (
-                <li>
+                <li className="contact__channel">
                   <a href={`mailto:${email}`}>
-                    Email <span>{email}</span>
+                    <EnvelopeSimpleIcon
+                      size={24}
+                      weight="duotone"
+                      aria-hidden="true"
+                    />
+                    <span className="contact__channel-copy">
+                      <strong>Email</strong>
+                      <span>{email}</span>
+                    </span>
                   </a>
                 </li>
               )}
             </ul>
-          ) : (
+          </Reveal>
+        ) : (
+          <Reveal>
             <p className="contact__missing">
               No contact details have been set yet. Add a WhatsApp number,
               phone, or email to <code>site.contact</code> in{" "}
               <code>content/site.ts</code> and they will appear here.
             </p>
-          )}
-        </Reveal>
+          </Reveal>
+        )}
 
-        <dl className="qa qa--contact">
-          {practical.map((item, i) => (
-            <Reveal key={item.q} index={i} className="qa__item">
-              <dt className="qa__q">{item.q}</dt>
-              <dd className="qa__a">{item.a}</dd>
-            </Reveal>
-          ))}
-        </dl>
+        <Reveal className="contact__guide">
+          <p className="contact__guide-title">Helpful details to share</p>
+          <ul>
+            <li><CalendarBlankIcon size={20} aria-hidden="true" />The occasion and preferred date</li>
+            <li><MapPinIcon size={20} aria-hidden="true" />Your city or ceremony location</li>
+            <li><WhatsappLogoIcon size={20} aria-hidden="true" />Any questions you would like answered</li>
+          </ul>
+          <p>You do not need to know the Sanskrit name of the ceremony.</p>
+        </Reveal>
       </Section>
     </main>
   );

@@ -1,28 +1,24 @@
 "use client";
 
 import Image from "next/image";
-import { useCallback, useEffect, useState } from "react";
-import { AnimatePresence, LazyMotion, domAnimation, m } from "framer-motion";
+import { useCallback, useEffect, useRef, useState } from "react";
+import {
+  AnimatePresence,
+  LazyMotion,
+  domAnimation,
+  m,
+  useReducedMotion,
+} from "framer-motion";
 import {
   CaretLeftIcon,
   CaretRightIcon,
+  PauseIcon,
+  PlayIcon,
   XIcon,
 } from "@phosphor-icons/react/dist/ssr";
 
 /**
- * A photograph set that works the same way on a phone and on a desktop.
- *
- * On a phone it is a snap rail — one photograph filling most of the screen,
- * swiped horizontally. That is how people look at photos on a phone, and it
- * shows each one large instead of shrinking four into a grid.
- *
- * On desktop it is a grid, because there the screen has room for several at
- * once and a rail would waste it.
- *
- * Either way, tapping a photograph opens it full-screen with arrows and
- * keyboard navigation. The lightbox is what makes this a real way of looking
- * at pictures rather than a decorative strip: these are somebody's ceremonies
- * and his teachers, and they deserve to be seen at size.
+ * An autoplaying, touch-pausable photograph showcase with full-screen viewing.
  */
 
 export type Photo = { src: string; alt: string; caption: string };
@@ -36,9 +32,15 @@ export default function PhotoSet({
   shape?: "portrait" | "landscape";
 }) {
   const [open, setOpen] = useState<number | null>(null);
+  const [activeIndex, setActiveIndex] = useState(0);
+  const [manuallyPaused, setManuallyPaused] = useState(false);
+  const [hovered, setHovered] = useState(false);
+  const touchStart = useRef<number | null>(null);
+  const suppressOpen = useRef(false);
+  const reducedMotion = useReducedMotion();
 
   const close = useCallback(() => setOpen(null), []);
-  const step = useCallback(
+  const stepLightbox = useCallback(
     (by: number) =>
       setOpen((current) =>
         current === null
@@ -47,6 +49,25 @@ export default function PhotoSet({
       ),
     [photos.length]
   );
+  const show = useCallback(
+    (index: number) => {
+      setActiveIndex((index + photos.length) % photos.length);
+      setManuallyPaused(true);
+    },
+    [photos.length]
+  );
+
+  const paused = manuallyPaused || hovered || open !== null || reducedMotion;
+
+  useEffect(() => {
+    if (paused || photos.length < 2) return;
+
+    const timer = window.setInterval(() => {
+      setActiveIndex((current) => (current + 1) % photos.length);
+    }, 4500);
+
+    return () => window.clearInterval(timer);
+  }, [paused, photos.length]);
 
   useEffect(() => {
     if (open === null) return;
@@ -56,8 +77,8 @@ export default function PhotoSet({
 
     const onKey = (event: KeyboardEvent) => {
       if (event.key === "Escape") close();
-      if (event.key === "ArrowRight") step(1);
-      if (event.key === "ArrowLeft") step(-1);
+      if (event.key === "ArrowRight") stepLightbox(1);
+      if (event.key === "ArrowLeft") stepLightbox(-1);
     };
 
     document.addEventListener("keydown", onKey);
@@ -65,51 +86,144 @@ export default function PhotoSet({
       document.body.style.overflow = previous;
       document.removeEventListener("keydown", onKey);
     };
-  }, [open, close, step]);
+  }, [open, close, stepLightbox]);
 
   if (photos.length === 0) return null;
 
-  const active = open === null ? null : photos[open];
+  const currentPhoto = photos[activeIndex];
+  const lightboxPhoto = open === null ? null : photos[open];
 
   return (
     <LazyMotion features={domAnimation} strict>
-      <ul className="pset" data-shape={shape}>
-        {photos.map((photo, i) => (
-          <li key={photo.src} className="pset__item">
+      <div
+        className="pset"
+        data-shape={shape}
+        onMouseEnter={() => setHovered(true)}
+        onMouseLeave={() => setHovered(false)}
+        onTouchStart={(event) => {
+          touchStart.current = event.touches[0]?.clientX ?? null;
+          suppressOpen.current = false;
+          setManuallyPaused(true);
+        }}
+        onTouchEnd={(event) => {
+          if (touchStart.current === null) return;
+          const distance =
+            (event.changedTouches[0]?.clientX ?? touchStart.current) -
+            touchStart.current;
+          touchStart.current = null;
+
+          if (Math.abs(distance) < 40) return;
+          suppressOpen.current = true;
+          show(activeIndex + (distance < 0 ? 1 : -1));
+        }}
+      >
+        <div className="pset__stage">
+          <AnimatePresence mode="wait" initial={false}>
+            <m.figure
+              key={currentPhoto.src}
+              className="pset__slide"
+              initial={{ opacity: 0, scale: 1.015 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{
+                duration: reducedMotion ? 0 : 0.55,
+                ease: [0.16, 1, 0.3, 1],
+              }}
+            >
+              <button
+                type="button"
+                className="pset__button"
+                onClick={() => {
+                  if (suppressOpen.current) {
+                    suppressOpen.current = false;
+                    return;
+                  }
+                  setManuallyPaused(true);
+                  setOpen(activeIndex);
+                }}
+                aria-label={`View: ${currentPhoto.caption}`}
+              >
+                <Image
+                  src={currentPhoto.src}
+                  alt={currentPhoto.alt}
+                  fill
+                  sizes="(max-width: 767px) 100vw, 1200px"
+                  className="pset__img"
+                  priority={activeIndex === 0}
+                />
+                <span className="pset__shade" aria-hidden="true" />
+                <span className="pset__caption">
+                  {currentPhoto.caption}
+                </span>
+              </button>
+            </m.figure>
+          </AnimatePresence>
+
+          {photos.length > 1 && (
+            <>
+              <button
+                type="button"
+                className="pset__nav pset__nav--prev"
+                onClick={() => show(activeIndex - 1)}
+                aria-label="Previous photograph"
+              >
+                <CaretLeftIcon size={22} weight="bold" aria-hidden="true" />
+              </button>
+              <button
+                type="button"
+                className="pset__nav pset__nav--next"
+                onClick={() => show(activeIndex + 1)}
+                aria-label="Next photograph"
+              >
+                <CaretRightIcon size={22} weight="bold" aria-hidden="true" />
+              </button>
+            </>
+          )}
+        </div>
+
+        {photos.length > 1 && (
+          <div className="pset__controls">
+            <div
+              className="pset__dots"
+              role="group"
+              aria-label="Choose photograph"
+            >
+              {photos.map((photo, index) => (
+                <button
+                  type="button"
+                  key={photo.src}
+                  className="pset__dot"
+                  data-active={index === activeIndex}
+                  onClick={() => show(index)}
+                  aria-label={`Show photograph ${index + 1}: ${photo.caption}`}
+                  aria-current={index === activeIndex ? "true" : undefined}
+                />
+              ))}
+            </div>
             <button
               type="button"
-              className="pset__button"
-              onClick={() => setOpen(i)}
-              aria-label={`View: ${photo.caption}`}
+              className="pset__pause"
+              onClick={() => setManuallyPaused((value) => !value)}
+              aria-label={manuallyPaused ? "Play slideshow" : "Pause slideshow"}
             >
-              <span className="pset__frame">
-                <Image
-                  src={photo.src}
-                  alt={photo.alt}
-                  fill
-                  sizes="(max-width: 767px) 82vw, (max-width: 1023px) 46vw, 31vw"
-                  className="pset__img"
-                />
-              </span>
-              <span className="pset__caption">{photo.caption}</span>
+              {manuallyPaused ? (
+                <PlayIcon size={15} weight="fill" aria-hidden="true" />
+              ) : (
+                <PauseIcon size={15} weight="fill" aria-hidden="true" />
+              )}
+              {manuallyPaused ? "Play" : "Pause"}
             </button>
-          </li>
-        ))}
-      </ul>
-
-      {/* The rail is scrollable but that is only obvious once you try, so on
-          touch widths a count sits underneath. */}
-      <p className="pset__hint">
-        {photos.length} photographs — swipe, or tap to enlarge
-      </p>
+          </div>
+        )}
+      </div>
 
       <AnimatePresence>
-        {active && (
+        {lightboxPhoto && (
           <m.div
             className="lbox"
             role="dialog"
             aria-modal="true"
-            aria-label={active.caption}
+            aria-label={lightboxPhoto.caption}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
@@ -130,7 +244,7 @@ export default function PhotoSet({
               className="lbox__nav lbox__nav--prev"
               onClick={(event) => {
                 event.stopPropagation();
-                step(-1);
+                stepLightbox(-1);
               }}
               aria-label="Previous photograph"
             >
@@ -141,20 +255,20 @@ export default function PhotoSet({
               className="lbox__figure"
               // Stops a click on the picture itself from closing the lightbox.
               onClick={(event) => event.stopPropagation()}
-              key={active.src}
+              key={lightboxPhoto.src}
               initial={{ opacity: 0, scale: 0.97 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.28, ease: [0.16, 1, 0.3, 1] }}
             >
               <Image
-                src={active.src}
-                alt={active.alt}
+                src={lightboxPhoto.src}
+                alt={lightboxPhoto.alt}
                 width={1440}
                 height={1800}
                 sizes="(max-width: 767px) 94vw, 78vw"
                 className="lbox__img"
               />
-              <figcaption>{active.caption}</figcaption>
+              <figcaption>{lightboxPhoto.caption}</figcaption>
             </m.figure>
 
             <button
@@ -162,7 +276,7 @@ export default function PhotoSet({
               className="lbox__nav lbox__nav--next"
               onClick={(event) => {
                 event.stopPropagation();
-                step(1);
+                stepLightbox(1);
               }}
               aria-label="Next photograph"
             >

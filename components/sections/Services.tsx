@@ -8,7 +8,7 @@ import { categories } from "@/content/services";
 import { ceremonyIndex, ceremonyCount } from "@/content/ceremonies";
 
 /**
- * What he performs. A plain list of four links.
+ * What he performs. A compact list of ceremonies and related guidance.
  *
  * The old version was a decorated row per category: a large italic number, a
  * drawn ritual icon, a title, a sentence, a second line of example fragments,
@@ -29,31 +29,29 @@ export default function Services() {
       <SectionHead
         id="ceremonies-title"
         eyebrow="What is performed"
-        title="Ceremonies"
-        lead="Where the ceremonies are named individually, the count is shown."
+        title="Ceremonies & guidance"
+        lead="Choose a ceremony, or begin with guidance on timing and place."
       />
 
       <ul className="catlist">
-        {categories
-          .filter((category) => category.slug !== "consultation")
-          .map((category, i) => {
-            const index = ceremonyIndex[category.slug];
-            const count = index ? ceremonyCount(index) : 0;
+        {categories.map((category, i) => {
+          const index = ceremonyIndex[category.slug];
+          const count = index ? ceremonyCount(index) : 0;
 
-            return (
-              <Reveal as="li" key={category.slug} index={i}>
-                <Link href={`/${category.slug}`} className="catlist__row">
-                  <span className="catlist__name">{category.title}</span>
-                  <span className="catlist__meta">
-                    {count > 0 ? `${count} named` : category.short}
-                  </span>
-                  <span aria-hidden="true" className="catlist__arrow">
-                    <ArrowRightIcon size={20} weight="bold" />
-                  </span>
-                </Link>
-              </Reveal>
-            );
-          })}
+          return (
+            <Reveal as="li" key={category.slug} index={i}>
+              <Link href={`/${category.slug}`} className="catlist__row">
+                <span className="catlist__name">{category.title}</span>
+                <span className="catlist__meta">
+                  {count > 0 ? `${count} named` : category.short}
+                </span>
+                <span aria-hidden="true" className="catlist__arrow">
+                  <ArrowRightIcon size={20} weight="bold" />
+                </span>
+              </Link>
+            </Reveal>
+          );
+        })}
       </ul>
     </Section>
   );

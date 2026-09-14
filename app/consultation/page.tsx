@@ -17,11 +17,11 @@ export default function ConsultationPage() {
       <Section tone="ivory" labelledBy="consult-page-title" className="page-top">
         <Reveal className="cathead">
           <h1 id="consult-page-title" className="cathead__title">
-            Consultation
+            Guidance for your occasion
           </h1>
           <p className="cathead__lead">
-            Before a ceremony there is usually a question of timing, or of a
-            place. Both are things I advise on directly.
+            Astrological timing and vastu guidance, considered alongside the
+            ceremony rather than as a separate service.
           </p>
         </Reveal>
 
@@ -51,13 +51,6 @@ export default function ConsultationPage() {
                   {item.title}
                 </h2>
                 <p className="advice__lead">{item.lead}</p>
-                {item.body.map((paragraph) => (
-                  <p key={paragraph} className="advice__para">
-                    {paragraph}
-                  </p>
-                ))}
-                {/* Stating the limits is the point: it is what separates this
-                    from the prediction-and-remedies trade. */}
                 <p className="advice__note">{item.note}</p>
               </div>
             </Reveal>

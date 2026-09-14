@@ -16,8 +16,9 @@ export default function Gallery() {
     <Section tone="cream" labelledBy="gallery-title">
       <SectionHead
         id="gallery-title"
-        eyebrow="From the ceremonies"
-        title="Pujas and homas performed"
+        eyebrow="Ceremonies performed"
+        title="From recent observances"
+        lead="A glimpse of the care and tradition brought to each occasion."
       />
       <PhotoSet photos={galleryPhotos} shape="landscape" />
     </Section>
