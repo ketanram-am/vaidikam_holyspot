@@ -49,8 +49,7 @@ export const priest = {
 
   /**
    * Further photographs of him — performing ceremonies, with his teachers.
-   * Shown as a row beneath the biography on the About page. Empty renders
-   * nothing rather than placeholder tiles.
+   * Shown on the homepage and beneath the biography on the About page.
    */
   photos: [
     {
@@ -153,9 +152,8 @@ export const consultations = [
     slug: "astrology",
     title: "Astrological consultation",
     sanskrit: "Jyotiṣa",
-    image: "/images/deity/navagraha-sculptures.jpg",
-    imageAlt:
-      "Black basalt panels of Surya, Soma and Mangala from a Navagraha set",
+    image: "/images/consultation/astrology-chart.jpg",
+    imageAlt: "Astrological charts being reviewed during a consultation",
     lead: "Choose an auspicious time and the observance suited to your occasion.",
     body: [
       "Most of what families ask me for is muhūrta — an auspicious time. A marriage, a gṛha praveśa, a naming, the start of something: the tradition holds that when a rite is performed matters as much as that it is performed, and settling that is the first thing I do for most ceremonies.",
@@ -167,8 +165,8 @@ export const consultations = [
     slug: "vastu",
     title: "Vastu consultation",
     sanskrit: "Vāstu",
-    image: "/images/temple/srirangam-hall.jpg",
-    imageAlt: "The pillared hall of Sri Ranganathaswamy Temple, Srirangam",
+    image: "/images/consultation/vastu-home.jpg",
+    imageAlt: "A carefully arranged home interior with balanced natural light",
     lead: "Practical traditional guidance for a new home or site, before building or moving in.",
     body: [
       "Vāstu concerns the placement and orientation of a dwelling — the direction it faces, where the kitchen and the shrine sit, how the site is entered. I look at a plan, or at the place itself, and advise what the tradition asks for.",
@@ -179,10 +177,8 @@ export const consultations = [
 ];
 
 /**
- * Photographs of pujas and ceremonies.
- *
- * EMPTY BY DESIGN until real photographs are supplied. Drop files into
- * public/images/gallery/ (see the README there) and register them here.
+ * Photographs of pujas and ceremonies. These are combined with the priest's
+ * practice photographs in the homepage gallery.
  *
  * Consent first: these are private religious occasions and the people in them
  * are identifiable. Nothing goes in without the family agreeing.
@@ -208,6 +204,9 @@ export const galleryPhotos: {
     caption: "A ceremony in progress",
   },
 ];
+
+/** Every real practice photograph shown together on the homepage. */
+export const homePhotos = [...galleryPhotos, ...priest.photos];
 
 /**
  * Contextual imagery: Sri Vaishnava architecture and public-domain devotional

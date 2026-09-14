@@ -92,6 +92,22 @@ export default function PhotoSet({
 
   const currentPhoto = photos[activeIndex];
   const lightboxPhoto = open === null ? null : photos[open];
+  const visiblePhotos =
+    photos.length === 1
+      ? [{ photo: currentPhoto, index: activeIndex, position: "current" }]
+      : [
+          {
+            photo: photos[(activeIndex - 1 + photos.length) % photos.length],
+            index: (activeIndex - 1 + photos.length) % photos.length,
+            position: "previous",
+          },
+          { photo: currentPhoto, index: activeIndex, position: "current" },
+          {
+            photo: photos[(activeIndex + 1) % photos.length],
+            index: (activeIndex + 1) % photos.length,
+            position: "next",
+          },
+        ];
 
   return (
     <LazyMotion features={domAnimation} strict>
@@ -119,44 +135,62 @@ export default function PhotoSet({
       >
         <div className="pset__stage">
           <AnimatePresence mode="wait" initial={false}>
-            <m.figure
-              key={currentPhoto.src}
-              className="pset__slide"
-              initial={{ opacity: 0, scale: 1.015 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0 }}
+            <m.div
+              key={activeIndex}
+              className="pset__track"
+              initial={{ opacity: 0, x: 22 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: -22 }}
               transition={{
-                duration: reducedMotion ? 0 : 0.55,
+                duration: reducedMotion ? 0 : 0.48,
                 ease: [0.16, 1, 0.3, 1],
               }}
             >
-              <button
-                type="button"
-                className="pset__button"
-                onClick={() => {
-                  if (suppressOpen.current) {
-                    suppressOpen.current = false;
-                    return;
-                  }
-                  setManuallyPaused(true);
-                  setOpen(activeIndex);
-                }}
-                aria-label={`View: ${currentPhoto.caption}`}
-              >
-                <Image
-                  src={currentPhoto.src}
-                  alt={currentPhoto.alt}
-                  fill
-                  sizes="(max-width: 767px) 100vw, 1200px"
-                  className="pset__img"
-                  priority={activeIndex === 0}
-                />
-                <span className="pset__shade" aria-hidden="true" />
-                <span className="pset__caption">
-                  {currentPhoto.caption}
-                </span>
-              </button>
-            </m.figure>
+              {visiblePhotos.map(({ photo, index, position }) => (
+                <figure
+                  key={`${position}-${photo.src}`}
+                  className="pset__card"
+                  data-position={position}
+                  aria-hidden={position !== "current"}
+                >
+                  <button
+                    type="button"
+                    className="pset__button"
+                    tabIndex={position === "current" ? 0 : -1}
+                    onClick={() => {
+                      if (suppressOpen.current) {
+                        suppressOpen.current = false;
+                        return;
+                      }
+                      if (position === "current") {
+                        setManuallyPaused(true);
+                        setOpen(activeIndex);
+                      } else {
+                        show(index);
+                      }
+                    }}
+                    aria-label={
+                      position === "current"
+                        ? `View: ${photo.caption}`
+                        : `Show ${position} photograph`
+                    }
+                  >
+                    <Image
+                      src={photo.src}
+                      alt={position === "current" ? photo.alt : ""}
+                      fill
+                      sizes="(max-width: 767px) 64vw, (max-width: 1199px) 31vw, 380px"
+                      className="pset__img"
+                      priority={activeIndex === 0 && position === "current"}
+                    />
+                    <span className="pset__shade" aria-hidden="true" />
+                    {position === "current" && (
+                      <span className="pset__caption">{photo.caption}</span>
+                    )}
+                  </button>
+                </figure>
+              ))}
+            </m.div>
           </AnimatePresence>
 
           {photos.length > 1 && (

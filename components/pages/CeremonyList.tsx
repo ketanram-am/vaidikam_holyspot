@@ -1,5 +1,17 @@
-import Image from "next/image";
 import Link from "next/link";
+import {
+  Baby,
+  BookOpen,
+  Feather,
+  Gem,
+  Heart,
+  House,
+  Orbit,
+  ShieldCheck,
+  Sparkles,
+  Sunrise,
+  type LucideIcon,
+} from "lucide-react";
 import Section from "@/components/ui/Section";
 import Reveal from "@/components/ui/Reveal";
 import {
@@ -16,17 +28,24 @@ function slugify(value: string) {
     .replace(/^-|-$/g, "");
 }
 
+const groupIcons: Record<string, LucideIcon> = {
+  Beginnings: Sparkles,
+  Protection: ShieldCheck,
+  Garuda: Feather,
+  "The Navagraha": Orbit,
+  Prosperity: Gem,
+  "A dwelling": House,
+  "Before birth": Heart,
+  Infancy: Baby,
+  Learning: BookOpen,
+  "Coming of age": Sunrise,
+};
+
 /**
  * The named ceremony inventory.
  *
- * Each group is headed by a piece of real devotional artwork rather than by a
- * drawn icon, and each ceremony is three short facts: name, deity addressed,
- * purpose. A visitor from outside the tradition can therefore learn what a
- * ceremony is *for* without reading a paragraph, which is the whole job of
- * this page.
- *
- * Nothing is collapsed behind a disclosure — on a phone a tap that hides
- * content costs more than the scroll it saves.
+ * Consistent SVG markers replace unrelated artwork so the groups read as one
+ * ordered system. Each ceremony remains a compact set of searchable facts.
  */
 export default function CeremonyList({
   index,
@@ -60,7 +79,11 @@ export default function CeremonyList({
   };
 
   return (
-    <Section tone="cream" labelledBy="ceremony-index-title" className="cx">
+    <Section
+      tone="cream"
+      labelledBy="ceremony-index-title"
+      className="cx"
+    >
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(itemListLd) }}
@@ -77,6 +100,7 @@ export default function CeremonyList({
       <div className="cx__groups cx__groups--top">
         {index.groups.map((group) => {
           const groupId = slugify(group.title);
+          const GroupIcon = groupIcons[group.title] ?? Sparkles;
 
           return (
             <Reveal
@@ -87,17 +111,9 @@ export default function CeremonyList({
               className="cxg"
             >
               <div className="cxg__head">
-                {group.image && (
-                  <div className="cxg__figure">
-                    <Image
-                      src={group.image.src}
-                      alt={group.image.alt}
-                      fill
-                      sizes="(max-width: 1023px) 96px, 132px"
-                      className="cxg__img"
-                    />
-                  </div>
-                )}
+                <span className="cxg__icon" aria-hidden="true">
+                  <GroupIcon size={25} strokeWidth={1.5} />
+                </span>
                 <div className="cxg__heading">
                   <h3 id={`${groupId}-h`} className="cxg__title">
                     {group.title}

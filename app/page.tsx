@@ -55,8 +55,8 @@ export default function Home() {
       <main id="main">
         <Hero />
         <PriestIdentity />
-        <Services />
         <Gallery />
+        <Services />
         <BandDivider />
         <ContactCTA />
       </main>

@@ -9,6 +9,10 @@ The website uses locally optimized copies of the following Wikimedia Commons pho
 - `art/lakshmi-ravi-varma.jpg` — “Lakshmi, by Raja Ravi Varma, 1930s, edit”, after Raja Ravi Varma / Ravi Varma Press, public domain. Source: https://commons.wikimedia.org/wiki/File:Lakshmi,_by_Raja_Ravi_Varma,_1930s,_edit.jpg
 - `art/yashoda-krishna.jpg` — “Yashoda with Krishna, Raja Ravi Varma”, Raja Ravi Varma, public domain. Source: https://commons.wikimedia.org/wiki/File:Yashoda_with_Krishna,_Raja_Ravi_Varma.jpg
 - `art/narasimha.webp` — Traditional Narasimha devotional painting supplied for the VAIDHIKAM Holyspot landing page; source and rights details pending confirmation.
+- `consultation/astrology-chart.jpg` — “Woman Holding Horoscope Diagrams” by Pavel Danilyuk, used under the Pexels license.
+  Source: https://www.pexels.com/photo/woman-holding-horoscope-diagrams-7222096/
+- `consultation/vastu-home.jpg` — “Brown Wooden Center Table” from Pexels, used under the Pexels license.
+  Source: https://www.pexels.com/photo/brown-wooden-center-table-276724/
 
 
 ## Deity and ceremony artwork (`deity/`)
