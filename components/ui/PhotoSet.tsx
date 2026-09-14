@@ -83,7 +83,6 @@ export default function PhotoSet({
         data-shape={shape}
         data-paused={paused}
         style={filmStyle}
-        onTouchStart={() => setManuallyPaused(true)}
       >
         <div className="pset__stage">
           <div className="pset__track">
