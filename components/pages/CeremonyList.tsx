@@ -161,7 +161,7 @@ export default function CeremonyList({
           {needsApproval && (
             <p>
               Wording on this page is drawn from published reference works and
-              is awaiting Mahakaal Prabhu’s own review.
+              is awaiting {site.name}&apos;s priest&apos;s own review.
             </p>
           )}
         </Reveal>
